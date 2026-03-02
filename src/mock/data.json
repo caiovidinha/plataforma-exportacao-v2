@@ -1,0 +1,532 @@
+{
+  "user": {
+    "id": "usr_001",
+    "name": "Carlos Mendonça",
+    "email": "carlos@castanheiraexport.com.br",
+    "role": "EXPORTADOR",
+    "company_name": "Castanheira Export Ltda.",
+    "cnpj": "12.345.678/0001-90",
+    "country": "BR",
+    "mapa_registered": false,
+    "created_at": "2024-01-15T10:00:00Z",
+    "updated_at": "2025-11-20T14:30:00Z"
+  },
+
+  "products": [
+    {
+      "id": "prod_001",
+      "name": "Castanha-do-Brasil Crua In Natura",
+      "description": "Castanha-do-Brasil (Bertholletia excelsa) colhida de florestas nativas do Amazonas, selecionada e processada conforme padrões internacionais de exportação.",
+      "category": "Oleaginosas",
+      "packaging": "Sacos de polipropileno 25kg ou big bags de 500kg",
+      "expiration_date": "2026-12-31",
+      "transport_modes": ["MARITIMO", "AEREO"],
+      "organoleptical": {
+        "appearance": "Amêndoas inteiras, uniformes, sem rachaduras visíveis",
+        "color": "Branca/marfim com películas levemente pardas",
+        "aroma": "Característico, suave, sem odores estranhos",
+        "format": "Oval-oblonga, ligeiramente achatada",
+        "texture": "Firme, crocante após secagem adequada",
+        "analysis_method": "Avaliação sensorial por painel treinado conforme ISO 6658"
+      },
+      "physicochemical": {
+        "aflatoxin_tolerance_by_country": [
+          { "country_code": "EU", "country_name": "União Europeia", "tolerance_ppb": 10 },
+          { "country_code": "US", "country_name": "Estados Unidos", "tolerance_ppb": 20 },
+          { "country_code": "JP", "country_name": "Japão", "tolerance_ppb": 10 },
+          { "country_code": "CN", "country_name": "China", "tolerance_ppb": 20 },
+          { "country_code": "AU", "country_name": "Austrália", "tolerance_ppb": 15 },
+          { "country_code": "GB", "country_name": "Reino Unido", "tolerance_ppb": 10 }
+        ],
+        "max_defective_units_pct": 5,
+        "max_broken_units_pct": 3,
+        "max_rancid_units_pct": 1,
+        "analysis_method": "AOAC 991.31 para aflatoxina; avaliação visual conforme Codex Alimentarius"
+      },
+      "nutritional": {
+        "serving_size_g": 30,
+        "calories_kcal": 185,
+        "total_fat_g": 18.8,
+        "saturated_fat_g": 4.3,
+        "sodium_mg": 1,
+        "total_carbs_g": 3.5,
+        "dietary_fiber_g": 2.1,
+        "proteins_g": 4.1,
+        "selenium_mcg": 544
+      },
+      "legal_requirements": [
+        {
+          "country_code": "EU",
+          "country_name": "União Europeia",
+          "documents": [
+            { "type": "FITOSSANITARIO", "name": "Certificado Fitossanitário MAPA", "required": true, "issuing_authority": "MAPA - Ministério da Agricultura", "notes": "Emitido pelo MAPA conforme Reg. (UE) 2019/1793" },
+            { "type": "ORIGEM", "name": "Certificado de Origem Form A (SGP)", "required": true, "issuing_authority": "MDIC / FIERJ / FIESP", "notes": "Para benefício tarifário do SGP" },
+            { "type": "HIGIENICO_SANITARIO", "name": "Análise de Aflatoxina ≤ 10 ppb", "required": true, "issuing_authority": "Laboratório credenciado MAPA", "notes": "Exigência Reg. (CE) 1881/2006" },
+            { "type": "MERCADO", "name": "Rastreabilidade de cadeia produtiva", "required": true, "issuing_authority": "Empresa auditora credenciada", "notes": "Exigência de sustentabilidade" }
+          ]
+        },
+        {
+          "country_code": "US",
+          "country_name": "Estados Unidos",
+          "documents": [
+            { "type": "FITOSSANITARIO", "name": "Certificado Fitossanitário USDA/APHIS", "required": true, "issuing_authority": "MAPA (Brasil) → USDA/APHIS (EUA)", "notes": "" },
+            { "type": "HIGIENICO_SANITARIO", "name": "Análise de Aflatoxina ≤ 20 ppb (FDA)", "required": true, "issuing_authority": "Laboratório credenciado FDA", "notes": "" },
+            { "type": "MERCADO", "name": "Prior Notice FDA", "required": true, "issuing_authority": "FDA", "notes": "Notificação prévia obrigatória conforme Bioterrorism Act" }
+          ]
+        }
+      ],
+      "images": [
+        "https://placehold.co/800x600/d4891f/ffffff?text=Castanha+do+Brasil",
+        "https://placehold.co/800x600/b86e15/ffffff?text=Embalagem+25kg"
+      ],
+      "certifications": ["Orgânico IBD", "Fair Trade", "Rainforest Alliance"],
+      "created_by": "usr_001",
+      "created_at": "2025-01-10T09:00:00Z",
+      "updated_at": "2025-11-01T12:00:00Z"
+    }
+  ],
+
+  "offers": [
+    {
+      "id": "off_001",
+      "product": {
+        "id": "prod_001",
+        "name": "Castanha-do-Brasil Crua In Natura",
+        "description": "Colhida de florestas nativas do Amazonas",
+        "images": ["https://placehold.co/400x300/d4891f/ffffff?text=Castanha"],
+        "packaging": "Sacos de polipropileno 25kg"
+      },
+      "exporter": {
+        "id": "usr_001",
+        "company_name": "Castanheira Export Ltda.",
+        "country": "BR",
+        "rating": 4.7,
+        "mapa_registered": false
+      },
+      "available_quantity_kg": 20000,
+      "price_per_kg_usd": 4.85,
+      "incoterm": "FOB",
+      "origin_port": "Porto de Belém (PA)",
+      "destination_ports": ["Hamburg", "Rotterdam", "Barcelona", "Miami"],
+      "delivery_days": 30,
+      "harvest_year": 2025,
+      "sale_modality": "SPOT",
+      "status": "ATIVA",
+      "created_at": "2025-11-01T10:00:00Z",
+      "expires_at": "2026-03-31T23:59:59Z"
+    },
+    {
+      "id": "off_002",
+      "product": {
+        "id": "prod_001",
+        "name": "Castanha-do-Brasil Orgânica IBD",
+        "description": "Certificada orgânica pela IBD, safra 2025",
+        "images": ["https://placehold.co/400x300/96541 3/ffffff?text=Organica"],
+        "packaging": "Big bags 500kg"
+      },
+      "exporter": {
+        "id": "usr_002",
+        "company_name": "AmazonNuts Export S.A.",
+        "country": "BR",
+        "rating": 4.9,
+        "mapa_registered": true
+      },
+      "available_quantity_kg": 50000,
+      "price_per_kg_usd": 5.20,
+      "incoterm": "CIF",
+      "origin_port": "Porto de Belém (PA)",
+      "destination_ports": ["Hamburg", "Rotterdam"],
+      "delivery_days": 45,
+      "harvest_year": 2025,
+      "sale_modality": "CONTRATO_LONGO_PRAZO",
+      "status": "ATIVA",
+      "created_at": "2025-10-15T14:00:00Z",
+      "expires_at": "2026-06-30T23:59:59Z"
+    }
+  ],
+
+  "matches": [
+    {
+      "id": "match_001",
+      "offer": {
+        "id": "off_001",
+        "product": {
+          "id": "prod_001",
+          "name": "Castanha-do-Brasil Crua In Natura",
+          "description": "Colhida de florestas nativas",
+          "images": [],
+          "packaging": "Sacos 25kg"
+        },
+        "exporter": { "id": "usr_001", "company_name": "Castanheira Export Ltda.", "country": "BR", "rating": 4.7, "mapa_registered": false },
+        "available_quantity_kg": 20000,
+        "price_per_kg_usd": 4.85,
+        "incoterm": "FOB",
+        "origin_port": "Porto de Belém (PA)",
+        "destination_ports": ["Hamburg"],
+        "delivery_days": 30,
+        "harvest_year": 2025,
+        "sale_modality": "SPOT",
+        "status": "NEGOCIANDO",
+        "created_at": "2025-11-01T10:00:00Z",
+        "expires_at": "2026-03-31T23:59:59Z"
+      },
+      "importer": { "id": "usr_imp_001", "company_name": "NaturKern GmbH", "country": "DE", "rating": 4.8, "mapa_registered": false },
+      "status": "ACEITO",
+      "created_at": "2025-11-05T16:00:00Z"
+    }
+  ],
+
+  "negotiations": [
+    {
+      "id": "neg_001",
+      "match_id": "match_001",
+      "exporter": { "id": "usr_001", "company_name": "Castanheira Export Ltda.", "country": "BR", "rating": 4.7, "mapa_registered": false },
+      "importer": { "id": "usr_imp_001", "company_name": "NaturKern GmbH", "country": "DE", "rating": 4.8, "mapa_registered": false },
+      "deal": {
+        "product_id": "prod_001",
+        "product_name": "Castanha-do-Brasil Crua In Natura",
+        "quantity_kg": 15000,
+        "price_per_kg_usd": 4.75,
+        "total_usd": 71250,
+        "payment_conditions": "30% adiantado, 70% contra apresentação do BL",
+        "delivery_days": 35,
+        "delivery_deadline": "2026-02-28",
+        "transport_mode": "MARITIMO",
+        "incoterm": "FOB",
+        "origin_port": "Porto de Belém (PA)",
+        "destination_port": "Porto de Hamburg"
+      },
+      "status": "ACORDO_FECHADO",
+      "messages": [
+        { "id": "msg_001", "negotiation_id": "neg_001", "sender_id": "usr_imp_001", "sender_name": "Hans Müller (NaturKern GmbH)", "content": "Bom dia! Estamos interessados em 15.000 kg. Pode confirmar disponibilidade para embarque em fevereiro?", "created_at": "2025-11-06T09:00:00Z" },
+        { "id": "msg_002", "negotiation_id": "neg_001", "sender_id": "usr_001", "sender_name": "Carlos Mendonça (Castanheira Export)", "content": "Bom dia Hans! Confirmamos disponibilidade. Podemos garantir embarque até 28/02. Qual a condição de pagamento preferida?", "created_at": "2025-11-06T10:15:00Z" },
+        { "id": "msg_003", "negotiation_id": "neg_001", "sender_id": "usr_imp_001", "sender_name": "Hans Müller (NaturKern GmbH)", "content": "Propomos 30% adiantado e 70% contra apresentação do BL. Aceita USD 4,75/kg?", "created_at": "2025-11-06T11:30:00Z" },
+        { "id": "msg_004", "negotiation_id": "neg_001", "sender_id": "usr_001", "sender_name": "Carlos Mendonça (Castanheira Export)", "content": "Aceito USD 4,75/kg com essas condições. Vamos fechar o contrato?", "created_at": "2025-11-06T14:00:00Z" }
+      ],
+      "created_at": "2025-11-06T08:30:00Z",
+      "agreed_at": "2025-11-07T09:00:00Z"
+    }
+  ],
+
+  "workflows": [
+    {
+      "id": "wf_001",
+      "contract_id": "ctr_001",
+      "negotiation": {
+        "product_name": "Castanha-do-Brasil Crua In Natura",
+        "quantity_kg": 15000,
+        "incoterm": "FOB",
+        "origin_port": "Porto de Belém (PA)",
+        "destination_port": "Porto de Hamburg"
+      },
+      "exporter": { "id": "usr_001", "company_name": "Castanheira Export Ltda.", "country": "BR", "rating": 4.7, "mapa_registered": false },
+      "importer": { "id": "usr_imp_001", "company_name": "NaturKern GmbH", "country": "DE", "rating": 4.8, "mapa_registered": false },
+      "incoterm": "FOB",
+      "overall_status": "EM_ANDAMENTO",
+      "current_step_code": "FISCALIZACAO_MAPA",
+      "estimated_completion": "2026-02-28",
+      "created_at": "2025-11-10T09:00:00Z",
+      "steps": [
+        {
+          "id": "step_001",
+          "order": 1,
+          "code": "ASSINATURA_CONTRATOS",
+          "title": "Assinatura de Contratos",
+          "description": "Assinatura do contrato principal, câmbio, despachante, terminal e transportadora via Gov.br",
+          "status": "CONCLUIDO",
+          "responsible_party": "Exportador + Importador",
+          "planned_date": "2025-11-12",
+          "actual_date": "2025-11-11",
+          "documents": [
+            { "id": "doc_001", "type": "OUTROS", "name": "Contrato Principal de Compra e Venda", "status": "ASSINADO", "url": "/mock/contrato-principal.pdf", "emitted_by": "Plataforma", "emitted_at": "2025-11-11T10:00:00Z" },
+            { "id": "doc_002", "type": "OUTROS", "name": "Contrato com Corretora de Câmbio", "status": "ASSINADO", "url": "/mock/contrato-cambio.pdf", "emitted_by": "Plataforma", "emitted_at": "2025-11-11T10:30:00Z" }
+          ],
+          "notes": "Todos os contratos assinados digitalmente via Gov.br"
+        },
+        {
+          "id": "step_002",
+          "order": 2,
+          "code": "EMISSAO_NF_ARMAZENAGEM",
+          "title": "Emissão de NF, Armazenagem e Recolhimento",
+          "description": "Emissão da Nota Fiscal. Armazenamento do produto. Recolhimento pela transportadora.",
+          "status": "CONCLUIDO",
+          "responsible_party": "Exportador + Transportadora",
+          "planned_date": "2025-11-20",
+          "actual_date": "2025-11-19",
+          "documents": [
+            { "id": "doc_003", "type": "NF", "name": "Nota Fiscal NF-e 12345", "status": "EMITIDO", "url": "/mock/nf-12345.pdf", "emitted_by": "Castanheira Export Ltda.", "emitted_at": "2025-11-19T08:00:00Z" }
+          ]
+        },
+        {
+          "id": "step_003",
+          "order": 3,
+          "code": "ENTRADA_REDEX",
+          "title": "Entrada no REDEX — Emissão de Invoice e Packing List",
+          "description": "Mercadoria entra no terminal alfandegário secundário (REDEX). Emissão e assinatura de Invoice e Packing List.",
+          "status": "CONCLUIDO",
+          "responsible_party": "Despachante + Exportador",
+          "planned_date": "2025-11-25",
+          "actual_date": "2025-11-26",
+          "documents": [
+            { "id": "doc_004", "type": "INVOICE", "name": "Invoice #INV-2025-001", "status": "ASSINADO", "url": "/mock/invoice-001.pdf", "emitted_by": "Plataforma", "emitted_at": "2025-11-26T09:00:00Z" },
+            { "id": "doc_005", "type": "PACKING_LIST", "name": "Packing List #PL-2025-001", "status": "ASSINADO", "url": "/mock/packing-list-001.pdf", "emitted_by": "Plataforma", "emitted_at": "2025-11-26T09:30:00Z" },
+            { "id": "doc_006", "type": "CERT_ORIGEM", "name": "Certificado de Origem Form A", "status": "EMITIDO", "url": "/mock/cert-origem-001.pdf", "emitted_by": "FIEPA", "emitted_at": "2025-11-27T11:00:00Z" }
+          ],
+          "notes": "Pequeno atraso de 1 dia na entrada no REDEX"
+        },
+        {
+          "id": "step_004",
+          "order": 4,
+          "code": "TERMINAL_PESAGEM_ESTUFAGEM",
+          "title": "Terminal: Pesagem, Armazenagem e Estufagem do Contêiner",
+          "description": "Terminal alfandegário pesa e armazena mercadoria. Companhia de Navegação libera contêiner. Terminal estufa com lacre.",
+          "status": "CONCLUIDO",
+          "responsible_party": "Terminal Alfandegário + Companhia de Navegação",
+          "planned_date": "2025-12-02",
+          "actual_date": "2025-12-03",
+          "documents": [],
+          "external_ref": "CNTR-HLCUBEL12345678"
+        },
+        {
+          "id": "step_005",
+          "order": 5,
+          "code": "FISCALIZACAO_MAPA",
+          "title": "Fiscalização MAPA — Auditoria e Análise Laboratorial",
+          "description": "Auditor fiscal MAPA agenda e realiza fiscalização. Amostra coletada para análise laboratorial de aflatoxina. Laudo emitido.",
+          "status": "EM_ANDAMENTO",
+          "responsible_party": "MAPA + Laboratório + Despachante + Empresa de Auditoria",
+          "planned_date": "2025-12-10",
+          "documents": [
+            { "id": "doc_007", "type": "LAUDO_LAB", "name": "Laudo Laboratorial — Aflatoxina", "status": "PENDENTE", "emitted_by": "LabControl Análises Ltda." }
+          ],
+          "blockers": ["Aguardando liberação da agenda do auditor fiscal MAPA"]
+        },
+        {
+          "id": "step_006",
+          "order": 6,
+          "code": "CERTIFICADO_FITOSSANITARIO",
+          "title": "Certificado Fitossanitário (Sinal Verde MAPA)",
+          "description": "MAPA emite o Certificado Fitossanitário autorizando exportação. Sinal verde para envio ao SISCOMEX.",
+          "status": "PENDENTE",
+          "responsible_party": "MAPA",
+          "planned_date": "2025-12-14",
+          "documents": [
+            { "id": "doc_008", "type": "CERT_FITOSSANITARIO", "name": "Certificado Fitossanitário MAPA", "status": "PENDENTE" }
+          ]
+        },
+        {
+          "id": "step_007",
+          "order": 7,
+          "code": "ENTRADA_SISCOMEX_DUE",
+          "title": "Entrada no SISCOMEX — Emissão da DU-E",
+          "description": "Contêiner movido para área primária (SISCOMEX). Passagem pelo canal de conferência. Despachante emite DU-E.",
+          "status": "PENDENTE",
+          "responsible_party": "Despachante + SISCOMEX",
+          "planned_date": "2025-12-16",
+          "documents": [
+            { "id": "doc_009", "type": "DUE", "name": "Declaração Única de Exportação (DU-E)", "status": "PENDENTE" }
+          ]
+        },
+        {
+          "id": "step_008",
+          "order": 8,
+          "code": "EMBARQUE_NAVIO_BL",
+          "title": "Embarque no Navio — Draft do BL — Saída do Porto",
+          "description": "Contêiner entra no navio. Companhia de Navegação emite Draft do BL. Após pagamento, BL original liberado.",
+          "status": "PENDENTE",
+          "responsible_party": "Companhia de Navegação + Corretora de Câmbio",
+          "planned_date": "2025-12-20",
+          "documents": [
+            { "id": "doc_010", "type": "BL", "name": "Bill of Lading — MSC HAMBURG", "status": "PENDENTE" }
+          ]
+        },
+        {
+          "id": "step_009",
+          "order": 9,
+          "code": "CHEGADA_PORTO_DESTINO",
+          "title": "Chegada ao Porto de Destino — Liberação Final",
+          "description": "Navio chega a Hamburg. Importador recebe documentação. Fiscalização local. Carga liberada.",
+          "status": "PENDENTE",
+          "responsible_party": "Importador",
+          "planned_date": "2026-01-25",
+          "documents": []
+        }
+      ]
+    }
+  ],
+
+  "liquidation": {
+    "wf_001": {
+      "workflow_id": "wf_001",
+      "incoterm": "FOB",
+      "payment_status": "AGUARDANDO_SWIFT",
+      "exchange_broker_id": "sp_006",
+      "exchange_rate": 5.72,
+      "amount_usd": 71250,
+      "amount_brl": 407550
+    }
+  },
+
+  "service_providers": [
+    {
+      "id": "sp_001",
+      "type": "TRANSPORTADORA",
+      "company_name": "NorteLog Transportes Ltda.",
+      "cnpj": "23.456.789/0001-01",
+      "country": "BR",
+      "city": "Belém",
+      "coverage_area": "Pará, Amazonas, Rondônia",
+      "rating": 4.5,
+      "reviews_count": 34,
+      "active": true
+    },
+    {
+      "id": "sp_002",
+      "type": "COMPANHIA_NAVEGACAO",
+      "company_name": "Mediterranean Shipping Company (MSC)",
+      "cnpj": "00.000.000/0001-00",
+      "country": "CH",
+      "city": "Genebra",
+      "ports_covered": ["Porto de Belém", "Porto de Santos", "Hamburg", "Rotterdam", "Barcelona"],
+      "rating": 4.8,
+      "reviews_count": 512,
+      "active": true
+    },
+    {
+      "id": "sp_003",
+      "type": "DESPACHANTE",
+      "company_name": "Parana Despachos Aduaneiros",
+      "cnpj": "34.567.890/0001-02",
+      "country": "BR",
+      "city": "Belém",
+      "fixed_fee_brl": 2800,
+      "rating": 4.6,
+      "reviews_count": 89,
+      "active": true
+    },
+    {
+      "id": "sp_004",
+      "type": "TERMINAL_ALFANDEGARIO",
+      "company_name": "Tegma Terminal Belém",
+      "cnpj": "45.678.901/0001-03",
+      "country": "BR",
+      "city": "Belém",
+      "ports_covered": ["Porto de Belém"],
+      "rating": 4.4,
+      "reviews_count": 127,
+      "active": true
+    },
+    {
+      "id": "sp_005",
+      "type": "LABORATORIO",
+      "company_name": "LabControl Análises Ltda.",
+      "cnpj": "56.789.012/0001-04",
+      "country": "BR",
+      "city": "Belém",
+      "mapa_accredited": true,
+      "mapa_accreditation_number": "MAPA-LAB-001-2023",
+      "rating": 4.9,
+      "reviews_count": 203,
+      "active": true
+    },
+    {
+      "id": "sp_006",
+      "type": "CORRETORA",
+      "company_name": "BrasilFX Corretora de Câmbio",
+      "cnpj": "67.890.123/0001-05",
+      "country": "BR",
+      "city": "São Paulo",
+      "currency_pairs": ["USD/BRL", "EUR/BRL", "GBP/BRL", "JPY/BRL"],
+      "exchange_rate_usd": 5.72,
+      "rating": 4.7,
+      "reviews_count": 341,
+      "active": true
+    },
+    {
+      "id": "sp_007",
+      "type": "SEGURADORA",
+      "company_name": "Bradesco Seguros S.A.",
+      "cnpj": "78.901.234/0001-06",
+      "country": "BR",
+      "city": "São Paulo",
+      "rating": 4.6,
+      "reviews_count": 1203,
+      "active": true
+    },
+    {
+      "id": "sp_008",
+      "type": "CERTIFICADORA",
+      "company_name": "Bureau Veritas Brasil",
+      "cnpj": "89.012.345/0001-07",
+      "country": "BR",
+      "city": "Santos",
+      "rating": 4.8,
+      "reviews_count": 567,
+      "active": true
+    }
+  ],
+
+  "insurance_policies": [
+    {
+      "id": "ins_001",
+      "workflow_id": "wf_001",
+      "type": "MERCADORIA",
+      "insurer_id": "sp_007",
+      "insurer_name": "Bradesco Seguros S.A.",
+      "coverage_usd": 75000,
+      "premium_brl": 3200,
+      "status": "ATIVO",
+      "valid_from": "2025-11-10",
+      "valid_until": "2026-02-28"
+    }
+  ],
+
+  "mapa_notices": [
+    {
+      "id": "mn_001",
+      "title": "Alerta: Novas Regras da UE para Aflatoxina em Castanha-do-Brasil (2025)",
+      "date": "2025-09-15",
+      "url": "https://www.gov.br/agricultura/pt-br",
+      "category": "ALERTA"
+    },
+    {
+      "id": "mn_002",
+      "title": "Normativa 37/2025 — Procedimentos para Certificado Fitossanitário",
+      "date": "2025-08-01",
+      "url": "https://www.gov.br/agricultura/pt-br",
+      "category": "NORMATIVA"
+    },
+    {
+      "id": "mn_003",
+      "title": "Informativo: Calendário de Fiscalização MAPA — Porto de Belém (Nov/Dez 2025)",
+      "date": "2025-10-20",
+      "url": "https://www.gov.br/agricultura/pt-br",
+      "category": "INFORMATIVO"
+    },
+    {
+      "id": "mn_004",
+      "title": "SIGVIG: Atualização dos Requisitos de Importação — Japão (aflatoxina)",
+      "date": "2025-07-10",
+      "url": "https://www.gov.br/agricultura/pt-br",
+      "category": "NORMATIVA"
+    }
+  ],
+
+  "exporters": [
+    { "id": "exp_001", "company_name": "Castanheira Export Ltda.", "cnpj": "12.345.678/0001-90", "country": "BR", "mapa_registered": false, "contact_email": "carlos@castanheiraexport.com.br", "contact_phone": "+55 91 99999-1234", "active": true, "created_at": "2024-01-15T10:00:00Z" },
+    { "id": "exp_002", "company_name": "AmazonNuts Export S.A.", "cnpj": "98.765.432/0001-11", "country": "BR", "mapa_registered": true, "mapa_registration_code": "MAPA-EXP-2024-001122", "contact_email": "comercial@amazonnuts.com.br", "contact_phone": "+55 91 98888-5678", "active": true, "created_at": "2023-06-20T08:00:00Z" }
+  ],
+
+  "importers": [
+    { "id": "imp_001", "company_name": "NaturKern GmbH", "cnpj_or_tax_id": "DE123456789", "country": "DE", "import_license": "DE-IMP-2024-9876", "contact_email": "hans@naturkern.de", "contact_phone": "+49 40 12345678", "active": true, "created_at": "2024-03-10T12:00:00Z" },
+    { "id": "imp_002", "company_name": "Selezione Nocci Srl", "cnpj_or_tax_id": "IT98765432101", "country": "IT", "contact_email": "mario@selezionenocci.it", "contact_phone": "+39 02 87654321", "active": true, "created_at": "2024-05-01T09:00:00Z" }
+  ],
+
+  "exchange_rates": {
+    "USD": 5.72,
+    "EUR": 6.18,
+    "GBP": 7.23,
+    "JPY": 0.038,
+    "updated_at": "2026-03-02T12:00:00Z"
+  }
+}

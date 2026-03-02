@@ -1,0 +1,160 @@
+Quais são as funcionabilidades da Plataforma?
+-Possibilitar o encontro entre comprador (importador) e vendedor (exportador)
+-Permitir que o importador conheça todas as informações sobre o produto (ficha técnica, quantidade disponível, tamanho, modalidade de venda, tempo de entrega, safra...) e permitir que o exportador conheça as informações das exigências legais para que o produto precisa para ter a autorização de entrada no país do importador, determinando quais os documentos que deverão ser apresentados pelo exportador (certificado fitossanitário, certificado de origem, certificado higiênico sanitário, certificações de mercado...)
+- Disponibilizar os serviços necessários para que o produto contratado chegue ao destino
+•	Contrato
+•	Contrato com empresa de cambio
+•	Contrato com o Despachante
+•	Contrato com o Terminal Alfandegário (empresa alfandegária)
+•	Contrato com laboratório credenciado pelo MAPA
+•	Assinatura de documentos pela Plataforma
+•	logística até o porto (terminal alfandegário ou aeroporto – transporte terrestre e/ou fluvial)
+•	despachante aduaneiro (entrada de documentos no Siscomex ou Redex para liberação da carga)
+•	Preparação de documentos necessários para exportação
+•	logística marítima ou aérea
+•	Terminal alfandegário -atividades em área alfandegária (armazenamento, ovação no container, até que esse container entre no navio)
+•	Preparação de documentos necessários para exportação
+•	Laboratório credenciado pelo MAPA para análise de aflatoxina
+•	Acompanhamento pelo Siscomex ou pelo Redex até a saída do navio
+
+
+
+
+-Disponibilizar os serviços segurança de comercialização
+•	Contrato
+•	Emissão de documentos e assinatura dentro da plataforma
+•	Seguro garantia de recebimento da carga (importador) e Seguro pagamento(exportador)
+•	Seguro safra 
+•	Seguro da mercadoria (Da saída até o destino)
+•	Auditoria do produto
+•	Acompanhamento de toda logística (as etapas do processo)
+•	O Pagamento (cambio)
+•	Proex
+
+
+- Disponibilizar acesso a plataforma do governo
+•	Estudo de mercado (Apex e CNA)
+•	Proex 
+•	Informativos do MAPA
+•	Gov.br para assinatura de contrato
+
+- Disponibilizar de um workflow de acompanhamento de todas as etapas a partir do match, contendo data prevista e realizada.
+•	Assinatura do contrato
+•	Contratos com os parceiros
+•	Local armazenamento do produto
+•	Recolhimento pela transportadora (que levará até o porto)
+•	Entrada no terminal alfandegário de origem
+•	Etapas da liberação (feita pelo despachante e MAPA)
+•	Saida da mercadoria do porto de origem.
+•	Chegada no porto destino
+•	Liberação da mercadoria no porto destino
+-  Disponibilizar dados para a negociação da exportação que devem estar no contrato como: detalhes como produto, quantidade, preço, condições de pagamento, prazo de entrega, transporte e INCOTERM para que possa ser construído o contrato, possibilitando o uso de chat para fechamento da negociação.
+
+-  Disponibilizar token
+•	A plataforma criará tokens que serão comprados pelos importadores e serão utilizados para financiar a plataforma e a produção da Castanha. Permitirá que o produtor use seu produto como moeda e ofertará benefícios e privilégios exclusivos aos seus detentores.
+
+Quais são as etapas da exportação
+•	Contrato com corretora de câmbio (necessário para constar no contrato)
+•	Contrato entre importador e exportador indicando o porto de origem e destino, condições da mercadoria, documentos que o importador necessita para liberação da carga no seu país, valores, forma de pagamento, forma de embarque (CIF ou FOB) ...
+•	Contrato com transportadora para envio da mercadoria até o porto ou aeroporto
+•	Contrato com despachante
+•	Contrato com a empresa de auditoria
+•	Contrato com a empresa marítima ou aérea
+•	Contrato com o Terminal alfandegário, uma empresa, (onde a mercadoria será pesada, armazena, estufada dentro do contêiner, movimentada dentro do pátio para fiscalização do MAPA e levada para ser colocada no navio)
+•	Disponibilizar a mercadoria
+•	Verificação pela empresa de auditoria
+•	Emissão da Nota Fiscal
+•	Envio da mercadoria até o porto ou aeroporto 
+•	Entrada no terminal alfandegário – Redex (uma área alfandegária secundária onde os serviços acontecem até a liberação de todos os documentos e depois vai para o Siscomex (área alfandegária primária onde a mercadoria vai ser liberada para entrar no navio)
+•	Etapa de liberação de documentos para que o Despachante possa enviar para o Redex  
+1.	NF
+2.	Invoice (Emitido e assinado na Plataforma)
+3.	Packing list (Emitido e assinado na Plataforma)
+4.	Certificado de Origem (Entidade autorizada para emitir COD)
+5.	Acho que precisa colocar os dados da conta que vai receber o pagamento (corretora de câmbio)
+•	Terminal Alfandegário pesa a mercadoria e armazena
+•	A empresa de Navegação libera o container para ser estufado pelo Terminal Alfandegário junto com o lacre para fechamento do container
+•	Despachante entra com essa documentação no Redex e pede para que o auditor fiscal do MAPA (Ministério da Agricultura) fiscalize a carga.
+•	Auditor fiscal marca dia e hora
+•	Terminal Alfandegário (leva o container até o pátio para a mercadoria ser fiscalizada)
+•	Despachante acompanha
+•	Empresa de Auditoria acompanha
+•	O Auditor fiscal recolhe uma amostra para ser analisada em laboratório credenciado pelo MAPA e lacra o container
+•	Laboratório recebe a amostra para análise e emite o laudo para o MAPA
+•	Se análise estiver dentro dos parâmetros exigido pelo país exportador o MAPA emite o Certificado Fitossanitário e libera a carga para exportação (Sinal verde do MAPA)
+•	Terminal Alfandegário leva o container até o Siscomex
+•	O container passa pelo Siscomex onde aleatoriamente será selecionado ou não para conferência
+•	O container fica liberado para entrar no navio
+•	O Siscomex libera a DU-E
+•	O Despachante emite a DU-E (Documento que finaliza a exportação emitida pelo Siscomex)
+•	O container é entregue para Companhia de Navegação para acondicionar no navio
+•	Container entra no navio
+•	A Companhia de navegação emite o draft do BL (cópia)
+•	Após o pagamento a Companhia de navegação libera o BL original
+•	O BL é emitido para o comprador (importador ou exportador)
+
+-Em caso de venda FOB
+•	O importador faz o pagamento e emite o swift (demonstrativo de pagamento) para a Corretora de câmbio
+•	A Corretora de câmbio recebe o pagamento e realiza o pagamento
+•	O exportador autoriza a empresa de navegação liberar o BL original para o comprador
+
+- Em caso de venda CIF (custo, seguro e frete)
+
+•	A mercadoria segue até o porto de destino
+•	A companhia de navegação informa a chegada do navio
+•	O exportador libera a documentação para o importador dar entrada no Ministério Agrícola do seu país (Certificado Fitossanitário, Invoice, Packing List, draft do BL)
+•	O importador solicita ao Ministério da Agricultura local a fiscalização da carga e coleta para análise de aflatoxina
+•	O exportador solicita a Companhia de Navegação a autorização para a abertura do container para ser fiscalizado e coletada a amostra pelo auditor fiscal 
+•	Empresa de auditoria acompanha
+•	Caso a análise esteja dentro do parâmetro do país do exportador
+•	O importador libera o swift (demonstrativo de pagamento) para corretora de cambio 
+•	A corretora de câmbio recebe o valor (em torno de 2dias úteis) e libera o pagamento para o exportador
+
+
+Quais são os elementos da ficha técnica do produto?
+•	Produto
+•	Descrição do Produto
+•	Embalagem
+•	Data de expiração
+•	Especificações do produto
+1.	Organoléptica (aspecto físico, cor, aroma, formato, textura) e forma de análise
+2.	Especificações Físicas e Químicas- (tolerância máxima de aflatoxina por país, quantidade limite de castanha com defeito ou quebrada, quantidade limite de castanha rançosa) e forma de análise
+3.	Qual o transporte utilizado (aéreo ou marítimo)
+4.	Especificação nutricional do produto
+
+•	Documento exemplo em anexo
+
+Quais são as entidades dessa plataforma?
+•	Seguradora
+•	Transportadora
+•	Companhia de Navegação
+•	Despachante aduaneiro
+•	Companhia de câmbio
+•	Terminal Alfandegário (Empresa dentro do terminal alfandegário)
+
+Quais são as variáveis de cada uma dessas entidades? 
+•	Seguradora (análise de risco do cliente)
+•	Transportadora (localização)
+•	Companhia de Navegação (Porto de origem e destino)
+•	Despachante aduaneiro (sem variação- tabelado)
+•	Companhia de câmbio (cotação da moeda -dólar, Euro...)
+•	Terminal alfandegário (Empresa dentro do terminal alfandegário) -(localização)
+
+Quais são os elementos externos que precisaremos consultar?
+•	MAPA
+•	REDEX
+•	SISCOMEX  - necessita de integração
+•	SWIFT (Sistema de pagamento)
+•	SIGVIG – necessita integração
+
+-  Funcionalidades de Cadastro (CRUD)
+•	Empresa exportadora e importadora
+•	Empresa seguradora
+•	Empresa transportadora
+•	Despachantes
+•	Corretoras
+•	Financeiras
+•	Produtos
+•	Empresas Certificadoras e Auditoras
+•	Laboratórios credenciados MAPA
+•	Terminal alfandegário
