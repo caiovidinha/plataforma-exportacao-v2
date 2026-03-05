@@ -4,8 +4,35 @@
 
 // ---- Utilitários -------------------------------------------
 export type Role = 'EXPORTADOR' | 'IMPORTADOR' | 'ADMIN'
+export type EntityRole = 
+  | 'EXPORTADOR'
+  | 'IMPORTADOR'
+  | 'TRANSPORTADORA'
+  | 'COMPANHIA_NAVEGACAO'
+  | 'DESPACHANTE'
+  | 'CORRETORA'
+  | 'TERMINAL_ALFANDEGARIO'
+  | 'SEGURADORA'
+  | 'CERTIFICADORA'
+  | 'LABORATORIO'
 export type Incoterm = 'FOB' | 'CIF'
 export type TransportMode = 'MARITIMO' | 'AEREO'
+
+// ---- Multi-user entity membership --------------------------
+/** Roles a user can have within a single entity/company account */
+export type EntityMemberRole = 'ADMIN' | 'OPERATOR' | 'VIEWER'
+
+export interface EntityMember {
+  id: string
+  name: string
+  email: string
+  /** Role of this person within the entity account */
+  entity_role: EntityMemberRole
+  /** When they joined / were invited */
+  joined_at: string
+  /** Whether they have confirmed their invitation */
+  active: boolean
+}
 
 // ---- Usuário / Perfil --------------------------------------
 export interface UserProfile {
@@ -13,6 +40,10 @@ export interface UserProfile {
   name: string
   email: string
   role: Role
+  /** Extended 10-type entity role */
+  entity_type?: EntityRole
+  /** UUID of the entity/company account this user belongs to */
+  entity_id?: string
   company_name: string
   cnpj: string
   country: string
