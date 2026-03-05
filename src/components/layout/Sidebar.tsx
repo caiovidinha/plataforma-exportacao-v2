@@ -30,6 +30,7 @@ import {
 import { cn } from '@/lib/utils'
 import { featureFlags } from '@/lib/feature-flags'
 import type { EntitySlug } from '@/lib/entity-config'
+import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
 
 const TRADING_ENTITIES: EntitySlug[] = ['exportador', 'importador']
 
@@ -174,6 +175,10 @@ export function Sidebar({
           <LogOut className="w-4 h-4" />
           {t('sidebar.logout')}
         </button>
+
+        <div className="mt-3 pt-3 border-t border-slate-700/50">
+          <LanguageSwitcher />
+        </div>
       </div>
     </aside>
   )
