@@ -10,6 +10,7 @@ import {
   ChevronDown, X, SlidersHorizontal,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 import type { ElementType } from 'react'
 
 const ICONS: Record<string, ElementType> = {
@@ -18,6 +19,7 @@ const ICONS: Record<string, ElementType> = {
 }
 
 export function MockEntitySwitcher() {
+  const t = useTranslations('devtools')
   const [open, setOpen] = useState(false)
   const { entityType, user, setEntityType } = useMockSession()
   const router = useRouter()
@@ -39,7 +41,7 @@ export function MockEntitySwitcher() {
           <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700 bg-slate-800/80">
             <div className="flex items-center gap-2">
               <SlidersHorizontal className="w-3.5 h-3.5 text-violet-400" />
-              <span className="text-xs font-semibold text-slate-200">Simular Entidade</span>
+              <span className="text-xs font-semibold text-slate-200">{t('simulateEntity')}</span>
             </div>
             <button onClick={() => setOpen(false)}>
               <X className="w-3.5 h-3.5 text-slate-500 hover:text-slate-300" />
@@ -48,7 +50,7 @@ export function MockEntitySwitcher() {
 
           {/* Current user info */}
           <div className="px-4 py-2.5 bg-slate-800/40 border-b border-slate-700/50">
-            <p className="text-xs text-slate-400">Logado como</p>
+            <p className="text-xs text-slate-400">{t('loggedAs')}</p>
             <p className="text-sm font-semibold text-slate-100 truncate">{user.company_name}</p>
             <p className="text-xs text-slate-500">{user.email}</p>
           </div>
@@ -75,7 +77,7 @@ export function MockEntitySwitcher() {
                     </p>
                     <p className="text-[10px] text-slate-500 truncate">{ENTITY_CONFIG[slug].tagline}</p>
                   </div>
-                  {isActive && <span className="ml-auto text-[10px] text-brand-400 font-semibold">ativo</span>}
+                  {isActive && <span className="ml-auto text-[10px] text-brand-400 font-semibold">{t('activeBadge')}</span>}
                 </button>
               )
             })}

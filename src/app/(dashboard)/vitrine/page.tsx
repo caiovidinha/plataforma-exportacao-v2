@@ -2,16 +2,19 @@ import { getOffers } from '@/lib/api'
 import { Ship, Plane, Package, Star, MapPin, Calendar, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
 import { cn, formatNumber } from '@/lib/utils'
+import { getTranslations } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
 import type { Offer } from '@/types'
 
 export const metadata = { title: 'Vitrine de Ofertas' }
 
 function OfferCard({ offer }: { offer: Offer }) {
+  const t = useTranslations('vitrine')
   const statusLabel = {
-    ATIVA: { label: 'Disponível', cls: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/30' },
-    NEGOCIANDO: { label: 'Negociando', cls: 'text-brand-400 bg-brand-400/10 border-brand-400/30' },
-    VENDIDA: { label: 'Vendida', cls: 'text-slate-400 bg-slate-400/10 border-slate-400/30' },
-    EXPIRADA: { label: 'Expirada', cls: 'text-red-400 bg-red-400/10 border-red-400/30' },
+    ATIVA: { label: t('statusAvailable'), cls: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/30' },
+    NEGOCIANDO: { label: t('statusNegotiating'), cls: 'text-brand-400 bg-brand-400/10 border-brand-400/30' },
+    VENDIDA: { label: t('statusSold'), cls: 'text-slate-400 bg-slate-400/10 border-slate-400/30' },
+    EXPIRADA: { label: t('statusExpired'), cls: 'text-red-400 bg-red-400/10 border-red-400/30' },
   }[offer.status]
 
   return (
@@ -42,18 +45,18 @@ function OfferCard({ offer }: { offer: Offer }) {
           <span className="text-xs text-slate-400">{offer.exporter.rating}</span>
         </div>
         {!offer.exporter.mapa_registered && (
-          <span className="text-xs text-amber-500 ml-1">⚠️ sem MAPA</span>
+          <span className="text-xs text-amber-500 ml-1">{t('noMapa')}</span>
         )}
       </div>
 
       {/* Dados chave */}
       <div className="grid grid-cols-2 gap-2 mb-3">
         <div className="bg-dark-100 rounded-lg px-2.5 py-2">
-          <p className="text-xs text-slate-500">Qtd. disponível</p>
+          <p className="text-xs text-slate-500">{t('availableQty')}</p>
           <p className="text-sm font-semibold text-white">{formatNumber(offer.available_quantity_kg)} kg</p>
         </div>
         <div className="bg-dark-100 rounded-lg px-2.5 py-2">
-          <p className="text-xs text-slate-500">Preço / kg</p>
+          <p className="text-xs text-slate-500">{t('pricePerKg')}</p>
           <p className="text-sm font-semibold text-brand-300">USD {offer.price_per_kg_usd.toFixed(2)}</p>
         </div>
       </div>
@@ -70,17 +73,17 @@ function OfferCard({ offer }: { offer: Offer }) {
           ) : (
             <Ship className="w-3 h-3" />
           )}
-          <span>Incoterm: <strong className="text-slate-300">{offer.incoterm}</strong></span>
-          <span className="ml-auto">{offer.delivery_days} dias</span>
+          <span>{t('incotermLabel')} <strong className="text-slate-300">{offer.incoterm}</strong></span>
+          <span className="ml-auto">{offer.delivery_days} {t('deliveryDays')}</span>
         </div>
         <div className="flex items-center gap-1.5">
           <Calendar className="w-3 h-3" />
-          <span>Safra {offer.harvest_year}</span>
+          <span>{t('harvest')} {offer.harvest_year}</span>
           <span className={cn('ml-auto badge', offer.sale_modality === 'SPOT'
             ? 'text-blue-400 border-blue-400/30'
             : 'text-violet-400 border-violet-400/30'
           )}>
-            {offer.sale_modality === 'SPOT' ? 'Spot' : 'Contrato Longo Prazo'}
+            {offer.sale_modality === 'SPOT' ? t('spotLabel') : t('longTermLabel')}
           </span>
         </div>
       </div>
@@ -90,34 +93,35 @@ function OfferCard({ offer }: { offer: Offer }) {
 
 export default async function VitrinePage() {
   const { data: offers } = await getOffers()
+  const t = await getTranslations('vitrine')
 
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="page-title">Vitrine de Ofertas</h1>
-          <p className="text-sm text-slate-400 mt-1">{offers.length} ofertas disponíveis</p>
+          <h1 className="page-title">{t('pageTitle')}</h1>
+          <p className="text-sm text-slate-400 mt-1">{t('offersCount', { count: offers.length })}</p>
         </div>
         <Link href="/vitrine/nova" className="btn-primary">
-          <TrendingUp className="w-4 h-4" /> Nova Oferta
+          <TrendingUp className="w-4 h-4" /> {t('newOffer')}
         </Link>
       </div>
 
       {/* Filtros */}
       <div className="card flex flex-wrap gap-3">
-        <input className="input w-48" placeholder="🔍 Buscar produto..." />
+        <input className="input w-48" placeholder={t('searchPlaceholder')} />
         <select className="input w-36">
-          <option value="">Incoterm</option>
+          <option value="">{t('filterIncoterm')}</option>
           <option value="FOB">FOB</option>
           <option value="CIF">CIF</option>
         </select>
         <select className="input w-40">
-          <option value="">Porto de Origem</option>
+          <option value="">{t('filterOriginPort')}</option>
           <option value="belem">Porto de Belém</option>
           <option value="santos">Porto de Santos</option>
         </select>
         <select className="input w-36">
-          <option value="">Safra</option>
+          <option value="">{t('filterHarvest')}</option>
           <option value="2025">2025</option>
           <option value="2024">2024</option>
         </select>
@@ -133,7 +137,7 @@ export default async function VitrinePage() {
       {offers.length === 0 && (
         <div className="text-center py-16">
           <Package className="w-12 h-12 mx-auto text-slate-600 mb-3" />
-          <p className="text-slate-400">Nenhuma oferta encontrada com esses filtros.</p>
+          <p className="text-slate-400">{t('noOffers')}</p>
         </div>
       )}
     </div>

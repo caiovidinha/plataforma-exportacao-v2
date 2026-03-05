@@ -60,7 +60,7 @@ export default function ContratosServicoPage() {
           </p>
         </div>
         <div className="text-right">
-          <p className="text-xs text-slate-500">Total portfolio value</p>
+          <p className="text-xs text-slate-500">{t('totalPortfolio')}</p>
           <p className="text-xl font-display font-bold text-emerald-400">
             R$ {total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
           </p>
@@ -71,7 +71,7 @@ export default function ContratosServicoPage() {
       <div className="flex gap-3 flex-wrap">
         {[
           { label: `${pendentes.length} ${t('PENDENTE')}`,  count: pendentes.length,  color: 'text-amber-400 bg-amber-400/10 border-amber-400/30' },
-          { label: `${contratados.length} Active`,           count: contratados.length, color: 'text-blue-400 bg-blue-400/10 border-blue-400/30' },
+          { label: t('activeCount', { count: contratados.length }), count: contratados.length, color: 'text-blue-400 bg-blue-400/10 border-blue-400/30' },
           { label: `${historico.filter(c=>c.status==='CONCLUIDO').length} ${t('CONCLUIDO')}`, count: historico.filter(c=>c.status==='CONCLUIDO').length, color: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/30' },
         ].map(({ label, count, color }) => (
           <span key={label} className={cn('border rounded-full px-3 py-1 text-xs font-medium', color)}>
@@ -97,7 +97,7 @@ export default function ContratosServicoPage() {
                     </div>
                     <div className="min-w-0">
                       <p className="text-sm font-semibold text-white">{c.service_type ?? c.description}</p>
-                      <p className="text-xs text-slate-400 mt-0.5">Requester: {c.requester_name ?? c.exporter}</p>
+                      <p className="text-xs text-slate-400 mt-0.5">{t('requester', { name: c.requester_name ?? c.exporter })}</p>
                       <div className="flex gap-3 mt-2 text-xs text-slate-500">
                         <span className="flex items-center gap-1">
                           <Package className="w-3 h-3" /> {c.product_name ?? c.importer}

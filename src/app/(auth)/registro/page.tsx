@@ -5,6 +5,7 @@ import {
   DollarSign, Warehouse, Shield, BadgeCheck, Microscope,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { getTranslations } from 'next-intl/server'
 import type { ElementType } from 'react'
 
 export const metadata = { title: 'Cadastro — O que você é?' }
@@ -14,13 +15,15 @@ const ICONS: Record<string, ElementType> = {
   DollarSign, Warehouse, Shield, BadgeCheck, Microscope,
 }
 
-export default function RegistroPage() {
+export default async function RegistroPage() {
+  const t = await getTranslations('registro')
+
   return (
     <div className="w-full max-w-3xl space-y-8">
       <div className="text-center space-y-2">
-        <h1 className="text-2xl font-display font-bold text-slate-100">Como você vai usar a plataforma?</h1>
+        <h1 className="text-2xl font-display font-bold text-slate-100">{t('pageTitle')}</h1>
         <p className="text-sm text-slate-400 max-w-md mx-auto">
-          Selecione o tipo que melhor descreve sua empresa. Seu cadastro será personalizado de acordo.
+          {t('pageDesc')}
         </p>
       </div>
 
@@ -48,9 +51,9 @@ export default function RegistroPage() {
       </div>
 
       <p className="text-center text-sm text-slate-500 pt-2">
-        Já tem conta?{' '}
+        {t('hasAccount')}{' '}
         <Link href="/entrar" className="text-brand-400 hover:text-brand-300 font-medium transition-colors">
-          Entrar
+          {t('signIn')}
         </Link>
       </p>
     </div>

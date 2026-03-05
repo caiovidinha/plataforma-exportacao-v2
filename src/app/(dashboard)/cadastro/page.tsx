@@ -86,11 +86,11 @@ export default function CadastroPage() {
       {isTrading && (
         <div className="rounded-lg bg-blue-500/10 border border-blue-500/20 p-4">
           <p className="text-xs text-blue-300 leading-relaxed">
-            <strong className="font-semibold">Looking for carriers, labs, certifiers or customs brokers?</strong>{' '}
-            Service providers register independently through the onboarding flow at{' '}
-            <Link href="/registro" className="underline hover:text-blue-200">/registro</Link>.
-            Find and hire them in the{' '}
-            <Link href="/servicos" className="underline hover:text-blue-200">Service Marketplace</Link>.
+            <strong className="font-semibold">{t('providerTipHeading')}</strong>{' '}
+            {t('providerTipBody1')}{' '}
+            <Link href="/registro" className="underline hover:text-blue-200">/registro</Link>.{' '}
+            {t('providerTipBody2')}{' '}
+            <Link href="/servicos" className="underline hover:text-blue-200">{t('providerTipMarketplace')}</Link>.
           </p>
         </div>
       )}

@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Star, MapPin, Ship, Calendar, MessageSquare, AlertTriangle } from 'lucide-react'
 import { formatNumber, incotermLabel } from '@/lib/utils'
+import { getTranslations } from 'next-intl/server'
 
 interface Props { params: { id: string } }
 
@@ -16,12 +17,13 @@ export default async function OfertaDetailPage({ params }: Props) {
   }
 
   const product = await getProduct(offer.product.id)
+  const t = await getTranslations('vitrine')
 
   return (
     <div className="p-6 space-y-6">
       {/* Back */}
       <Link href="/vitrine" className="btn-ghost text-sm">
-        <ArrowLeft className="w-4 h-4" /> Voltar à Vitrine
+        <ArrowLeft className="w-4 h-4" /> {t('backToShowcase')}
       </Link>
 
       {/* Header da oferta */}
@@ -51,7 +53,7 @@ export default async function OfertaDetailPage({ params }: Props) {
               {!offer.exporter.mapa_registered && (
                 <div className="ml-auto flex items-center gap-1.5 text-xs text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded-lg px-2.5 py-1.5">
                   <AlertTriangle className="w-3.5 h-3.5" />
-                  Exportador sem cadastro MAPA
+                  {t('exporterNoMapa')}
                 </div>
               )}
             </div>
@@ -59,7 +61,7 @@ export default async function OfertaDetailPage({ params }: Props) {
 
           {/* Ficha Técnica */}
           <div>
-            <h2 className="section-title mb-4">Ficha Técnica do Produto</h2>
+            <h2 className="section-title mb-4">{t('techSheet')}</h2>
             <FichaTecnica product={product} />
           </div>
         </div>
@@ -67,39 +69,39 @@ export default async function OfertaDetailPage({ params }: Props) {
         {/* Painel lateral de negociação */}
         <div className="space-y-4">
           <div className="card space-y-3 sticky top-6">
-            <h3 className="section-title">Detalhes da Oferta</h3>
+            <h3 className="section-title">{t('offerDetails')}</h3>
 
             <div className="space-y-2.5">
               <div className="flex justify-between items-center py-2 border-b border-slate-700/30">
-                <span className="text-xs text-slate-400">Preço / kg</span>
+                <span className="text-xs text-slate-400">{t('priceKgLabel')}</span>
                 <span className="text-lg font-display font-bold text-brand-300">USD {offer.price_per_kg_usd.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-xs">
-                <span className="text-slate-400">Quantidade disponível</span>
+                <span className="text-slate-400">{t('availableQtyLabel')}</span>
                 <span className="text-slate-200 font-medium">{formatNumber(offer.available_quantity_kg)} kg</span>
               </div>
               <div className="flex justify-between text-xs">
-                <span className="text-slate-400">Modalidade</span>
+                <span className="text-slate-400">{t('modalityLabel')}</span>
                 <span className="text-slate-200 font-medium">{incotermLabel(offer.incoterm)}</span>
               </div>
               <div className="flex justify-between text-xs">
-                <span className="text-slate-400">Porto de origem</span>
+                <span className="text-slate-400">{t('originPortLabel')}</span>
                 <span className="text-slate-200 font-medium flex items-center gap-1">
                   <Ship className="w-3 h-3 text-blue-400" /> {offer.origin_port}
                 </span>
               </div>
               <div className="flex justify-between text-xs">
-                <span className="text-slate-400">Prazo de entrega</span>
+                <span className="text-slate-400">{t('deliveryLabel')}</span>
                 <span className="text-slate-200 font-medium">{offer.delivery_days} dias</span>
               </div>
               <div className="flex justify-between text-xs">
-                <span className="text-slate-400">Safra</span>
+                <span className="text-slate-400">{t('harvestLabel')}</span>
                 <span className="text-slate-200 font-medium flex items-center gap-1">
                   <Calendar className="w-3 h-3 text-brand-400" /> {offer.harvest_year}
                 </span>
               </div>
               <div className="flex items-start justify-between text-xs">
-                <span className="text-slate-400">Portos destino</span>
+                <span className="text-slate-400">{t('destPortsLabel')}</span>
                 <div className="text-right space-y-0.5">
                   {offer.destination_ports.map((p) => (
                     <p key={p} className="text-slate-200">{p}</p>
@@ -110,7 +112,7 @@ export default async function OfertaDetailPage({ params }: Props) {
 
             {/* Total estimado */}
             <div className="bg-brand-500/10 border border-brand-500/20 rounded-lg px-3 py-2.5">
-              <p className="text-xs text-slate-400 mb-0.5">Valor total estimado (100%)</p>
+              <p className="text-xs text-slate-400 mb-0.5">{t('estimatedTotal')}</p>
               <p className="font-display font-bold text-white text-lg">
                 USD {formatNumber(offer.available_quantity_kg * offer.price_per_kg_usd)}
               </p>
@@ -120,10 +122,10 @@ export default async function OfertaDetailPage({ params }: Props) {
               href={`/negociacao/nova?offer=${offer.id}`}
               className="btn-primary w-full justify-center"
             >
-              <MessageSquare className="w-4 h-4" /> Iniciar Negociação
+              <MessageSquare className="w-4 h-4" /> {t('startNegotiation')}
             </Link>
             <p className="text-xs text-slate-500 text-center">
-              A negociação abre um chat direto com o exportador.
+              {t('negotiationNote')}
             </p>
           </div>
         </div>

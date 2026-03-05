@@ -10,6 +10,7 @@ import {
 } from 'lucide-react'
 import { getEntityConfig } from '@/lib/entity-config'
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 import type { ElementType } from 'react'
 
 const ICONS: Record<string, ElementType> = {
@@ -17,7 +18,7 @@ const ICONS: Record<string, ElementType> = {
   DollarSign, Warehouse, Shield, BadgeCheck, Microscope,
 }
 
-const STEPS = ['Empresa', 'Detalhes', 'Acesso', 'Confirmação']
+const STEP_COUNT = 4
 
 interface FormField {
   label: string
@@ -34,10 +35,11 @@ function FieldInput({ fieldKey, def, value, onChange }: {
   value: string
   onChange: (v: string) => void
 }) {
+  const t = useTranslations('registro')
   if (def.type === 'select') {
     return (
       <select className="input" value={value} onChange={(e) => onChange(e.target.value)}>
-        <option value="">Selecionar…</option>
+        <option value="">{t('selectOption')}</option>
         {def.options?.map((o) => <option key={o} value={o}>{o}</option>)}
       </select>
     )
@@ -59,6 +61,9 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
   const cfgOrNull = getEntityConfig(tipo)
   if (!cfgOrNull) notFound()
   const cfg = cfgOrNull  // non-null, safe for closure capture
+
+  const t = useTranslations('registro')
+  const STEPS = [t('stepCompany'), t('stepDetails'), t('stepAccess'), t('stepConfirm')]
 
   const router = useRouter()
   const Icon = ICONS[cfg.icon] ?? Globe
@@ -108,11 +113,11 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
     if (step === 2) {
       setAcessoError('')
       if (acesso.password !== acesso.confirm) {
-        setAcessoError('As senhas não coincidem.')
+        setAcessoError(t('errPasswordsMismatch'))
         return
       }
       if (acesso.password.length < 8) {
-        setAcessoError('A senha deve ter pelo menos 8 caracteres.')
+        setAcessoError(t('errPasswordTooShort'))
         return
       }
     }
@@ -134,12 +139,12 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
         <div className="card text-center space-y-4 py-10">
           <CheckCircle className="w-14 h-14 text-emerald-400 mx-auto" />
           <div>
-            <h2 className="text-lg font-semibold text-slate-100">Cadastro realizado!</h2>
+            <h2 className="text-lg font-semibold text-slate-100">{t('successTitle')}</h2>
             <p className="text-sm text-slate-400 mt-1">
-              Bem-vindo à plataforma, <strong className="text-slate-200">{empresa.company_name}</strong>.
+              {t('successWelcome', { company: empresa.company_name })}
             </p>
           </div>
-          <p className="text-xs text-slate-500">Redirecionando para o painel…</p>
+          <p className="text-xs text-slate-500">{t('successRedirecting')}</p>
         </div>
       </div>
     )
@@ -153,7 +158,7 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
           <Icon className={cn('w-5 h-5', cfg.color)} />
         </div>
         <div>
-          <p className="text-xs text-slate-500 uppercase tracking-wider">Cadastro como</p>
+          <p className="text-xs text-slate-500 uppercase tracking-wider">{t('registeredAs')}</p>
           <p className="text-base font-semibold text-slate-100">{cfg.label}</p>
         </div>
       </div>
@@ -183,25 +188,25 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
         {/* ---- Step 0: Empresa ---- */}
         {step === 0 && (
           <>
-            <h2 className="text-sm font-semibold text-slate-100 mb-2">Dados da Empresa</h2>
+            <h2 className="text-sm font-semibold text-slate-100 mb-2">{t('companyDataTitle')}</h2>
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2">
-                <label className="label">Razão Social / Nome da Empresa <span className="text-red-400">*</span></label>
+                <label className="label">{t('companyNameLabel')} <span className="text-red-400">*</span></label>
                 <input className="input" placeholder="Ex.: Cooperativa Amazônica Ltda."
                        value={empresa.company_name} onChange={(e) => updateEmpresa('company_name', e.target.value)} />
               </div>
               <div className="col-span-2">
-                <label className="label">{cfg.cnpjLabel ?? 'CNPJ'} <span className="text-red-400">*</span></label>
+                <label className="label">{cfg.cnpjLabel ?? t('cnpjLabel')} <span className="text-red-400">*</span></label>
                 <input className="input" placeholder={cfg.cnpjLabel ? 'VAT / Tax ID' : 'XX.XXX.XXX/XXXX-XX'}
                        value={empresa.cnpj} onChange={(e) => updateEmpresa('cnpj', e.target.value)} />
               </div>
               <div>
-                <label className="label">Telefone</label>
+                <label className="label">{t('phoneLabel')}</label>
                 <input className="input" type="tel" placeholder="(XX) X XXXX-XXXX"
                        value={empresa.contact_phone} onChange={(e) => updateEmpresa('contact_phone', e.target.value)} />
               </div>
               <div>
-                <label className="label">Website</label>
+                <label className="label">{t('websiteLabel')}</label>
                 <input className="input" placeholder="https://..."
                        value={empresa.website} onChange={(e) => updateEmpresa('website', e.target.value)} />
               </div>
@@ -212,7 +217,7 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
         {/* ---- Step 1: Detalhes específicos ---- */}
         {step === 1 && (
           <>
-            <h2 className="text-sm font-semibold text-slate-100 mb-2">Detalhes de {cfg.label}</h2>
+            <h2 className="text-sm font-semibold text-slate-100 mb-2">{t('detailsTitle', { type: cfg.label })}</h2>
             <div className="grid grid-cols-2 gap-4">
               {cfg.specificFields.map((f) => (
                 <div key={f.key} className="col-span-2 sm:col-span-1">
@@ -231,21 +236,21 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
         {/* ---- Step 2: Acesso ---- */}
         {step === 2 && (
           <>
-            <h2 className="text-sm font-semibold text-slate-100 mb-2">Acesso à Plataforma</h2>
+            <h2 className="text-sm font-semibold text-slate-100 mb-2">{t('accessTitle')}</h2>
             <div className="space-y-4">
               <div>
-                <label className="label">E-mail corporativo <span className="text-red-400">*</span></label>
+                <label className="label">{t('corporateEmailLabel')} <span className="text-red-400">*</span></label>
                 <input className="input" type="email" placeholder="voce@empresa.com.br"
                        value={acesso.email} onChange={(e) => updateAcesso('email', e.target.value)} />
               </div>
               <div>
-                <label className="label">Senha <span className="text-red-400">*</span></label>
-                <input className="input" type="password" placeholder="Mínimo 8 caracteres"
+                <label className="label">{t('passwordCreateLabel')} <span className="text-red-400">*</span></label>
+                <input className="input" type="password" placeholder={t('passwordMinHint')}
                        value={acesso.password} onChange={(e) => updateAcesso('password', e.target.value)} />
               </div>
               <div>
-                <label className="label">Confirmar Senha <span className="text-red-400">*</span></label>
-                <input className="input" type="password" placeholder="Repita a senha"
+                <label className="label">{t('confirmPasswordLabel')} <span className="text-red-400">*</span></label>
+                <input className="input" type="password" placeholder={t('repeatPasswordPlaceholder')}
                        value={acesso.confirm} onChange={(e) => updateAcesso('confirm', e.target.value)} />
               </div>
               {acessoError && <p className="text-xs text-red-400">{acessoError}</p>}
@@ -256,24 +261,24 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
         {/* ---- Step 3: Confirmação ---- */}
         {step === 3 && (
           <>
-            <h2 className="text-sm font-semibold text-slate-100 mb-4">Revise seus dados</h2>
+            <h2 className="text-sm font-semibold text-slate-100 mb-4">{t('reviewTitle')}</h2>
             <div className="space-y-4 text-xs">
-              <Section title="Empresa">
-                <Row label="Razão Social" value={empresa.company_name} />
-                <Row label={cfg.cnpjLabel ?? 'CNPJ'} value={empresa.cnpj} />
-                {empresa.contact_phone && <Row label="Telefone" value={empresa.contact_phone} />}
-                {empresa.website && <Row label="Website" value={empresa.website} />}
+              <Section title={t('sectionCompany')}>
+                <Row label={t('razaoSocialLabel')} value={empresa.company_name} />
+                <Row label={cfg.cnpjLabel ?? t('cnpjLabel')} value={empresa.cnpj} />
+                {empresa.contact_phone && <Row label={t('phoneLabel')} value={empresa.contact_phone} />}
+                {empresa.website && <Row label={t('websiteLabel')} value={empresa.website} />}
               </Section>
               {Object.keys(specifics).length > 0 && (
-                <Section title="Detalhes">
+                <Section title={t('sectionDetails')}>
                   {cfg.specificFields.filter((f) => specifics[f.key]).map((f) => (
                     <Row key={f.key} label={f.label} value={specifics[f.key]} />
                   ))}
                 </Section>
               )}
-              <Section title="Acesso">
-                <Row label="E-mail" value={acesso.email} />
-                <Row label="Senha" value="••••••••" />
+              <Section title={t('sectionAccess')}>
+                <Row label={t('emailReviewLabel')} value={acesso.email} />
+                <Row label={t('passwordReviewLabel')} value={t('passwordMasked')} />
               </Section>
             </div>
           </>
@@ -284,25 +289,25 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
       <div className="flex items-center justify-between gap-4">
         {step > 0 ? (
           <button className="btn-ghost flex items-center gap-1" onClick={() => setStep((s) => s - 1)}>
-            <ChevronLeft className="w-4 h-4" /> Voltar
+            <ChevronLeft className="w-4 h-4" /> {t('btnBack')}
           </button>
         ) : (
           <a href="/registro" className="btn-ghost flex items-center gap-1 text-sm text-slate-500 hover:text-slate-300">
-            <ChevronLeft className="w-4 h-4" /> Mudar tipo
+            <ChevronLeft className="w-4 h-4" /> {t('btnChangeType')}
           </a>
         )}
 
-        {step < STEPS.length - 1 ? (
+        {step < STEP_COUNT - 1 ? (
           <button className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={!canAdvance()} onClick={handleNext}>
-            Próximo <ChevronRight className="w-4 h-4 ml-1" />
+            {t('btnNext')} <ChevronRight className="w-4 h-4 ml-1" />
           </button>
         ) : (
           <button className="btn-primary disabled:opacity-60 disabled:cursor-not-allowed"
                   disabled={submitting} onClick={handleSubmit}>
             {submitting
-              ? <><Loader2 className="w-4 h-4 animate-spin mr-1" /> Cadastrando…</>
-              : <><CheckCircle className="w-4 h-4 mr-1" /> Finalizar Cadastro</>
+              ? <><Loader2 className="w-4 h-4 animate-spin mr-1" /> {t('btnRegistering')}</>
+              : <><CheckCircle className="w-4 h-4 mr-1" /> {t('btnFinalize')}</>
             }
           </button>
         )}

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Send, FileText, Package, Ship, DollarSign, CheckCircle2 } from 'lucide-react'
 import { cn, formatNumber, incotermLabel } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 import type { Negotiation } from '@/types'
 
 interface Props {
@@ -29,6 +30,7 @@ function Message({ msg, isOwn }: { msg: Negotiation['messages'][0]; isOwn: boole
 }
 
 export function NegotiationChat({ negotiation, currentUserId }: Props) {
+  const t = useTranslations('chat')
   const [messages, setMessages] = useState(negotiation.messages)
   const [input, setInput] = useState('')
   const bottomRef = useRef<HTMLDivElement>(null)
@@ -43,7 +45,7 @@ export function NegotiationChat({ negotiation, currentUserId }: Props) {
       id: `msg_${Date.now()}`,
       negotiation_id: negotiation.id,
       sender_id: currentUserId,
-      sender_name: 'Você',
+      sender_name: t('senderYou'),
       content: input.trim(),
       created_at: new Date().toISOString(),
     }
@@ -71,8 +73,8 @@ export function NegotiationChat({ negotiation, currentUserId }: Props) {
               : 'text-brand-400 border-brand-400/30 bg-brand-400/10'
           )}>
             {negotiation.status === 'ACORDO_FECHADO' ? (
-              <><CheckCircle2 className="w-3 h-3" /> Acordo Fechado</>
-            ) : 'Em Negociação'}
+              <><CheckCircle2 className="w-3 h-3" /> {t('statusAgreementClosed')}</>
+            ) : t('statusNegotiating')}
           </span>
         </div>
 
@@ -90,7 +92,7 @@ export function NegotiationChat({ negotiation, currentUserId }: Props) {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-            placeholder="Digite uma mensagem..."
+            placeholder={t('inputPlaceholder')}
             className="input flex-1"
             disabled={negotiation.status === 'ACORDO_FECHADO'}
           />
@@ -107,53 +109,53 @@ export function NegotiationChat({ negotiation, currentUserId }: Props) {
       {/* Painel de Fechamento */}
       <div className="card space-y-4 overflow-y-auto">
         <h3 className="section-title flex items-center gap-2">
-          <FileText className="w-4 h-4 text-brand-400" /> Painel de Fechamento
+          <FileText className="w-4 h-4 text-brand-400" /> {t('closingPanelTitle')}
         </h3>
 
         <div className="space-y-2.5">
           <div className="flex items-center gap-2 text-xs text-slate-400">
             <Package className="w-3.5 h-3.5 text-brand-400" />
-            <span className="flex-1">Produto</span>
+            <span className="flex-1">{t('rowProduct')}</span>
             <span className="text-slate-200 font-medium">{deal.product_name}</span>
           </div>
           <div className="flex items-center gap-2 text-xs text-slate-400">
-            <span className="flex-1 pl-5">Quantidade</span>
+            <span className="flex-1 pl-5">{t('rowQuantity')}</span>
             <span className="text-slate-200 font-medium">{formatNumber(deal.quantity_kg)} kg</span>
           </div>
           <div className="flex items-center gap-2 text-xs text-slate-400">
             <DollarSign className="w-3.5 h-3.5 text-brand-400" />
-            <span className="flex-1">Preço / kg</span>
+            <span className="flex-1">{t('rowPrice')}</span>
             <span className="text-brand-300 font-semibold">USD {deal.price_per_kg_usd.toFixed(2)}</span>
           </div>
           <div className="bg-brand-500/10 border border-brand-500/20 rounded-lg px-3 py-2.5 flex items-center justify-between">
-            <span className="text-xs text-slate-400">Total</span>
+            <span className="text-xs text-slate-400">{t('rowTotal')}</span>
             <span className="text-sm font-display font-bold text-white">
               USD {formatNumber(deal.total_usd)}
             </span>
           </div>
           <div className="flex items-start gap-2 text-xs text-slate-400 pt-1">
-            <span className="flex-1">Pagamento</span>
+            <span className="flex-1">{t('rowPayment')}</span>
             <span className="text-slate-200 text-right">{deal.payment_conditions}</span>
           </div>
           <div className="flex items-center gap-2 text-xs text-slate-400">
-            <span className="flex-1">Entrega</span>
+            <span className="flex-1">{t('rowDelivery')}</span>
             <span className="text-slate-200">{deal.delivery_days} dias</span>
           </div>
           <div className="flex items-center gap-2 text-xs text-slate-400">
-            <span className="flex-1">Prazo limite</span>
+            <span className="flex-1">{t('rowDeadline')}</span>
             <span className="text-slate-200">{deal.delivery_deadline}</span>
           </div>
           <div className="flex items-center gap-2 text-xs text-slate-400">
             <Ship className="w-3.5 h-3.5 text-blue-400" />
-            <span className="flex-1">Transporte</span>
+            <span className="flex-1">{t('rowTransport')}</span>
             <span className="text-slate-200">{deal.transport_mode}</span>
           </div>
           <div className="flex items-center gap-2 text-xs text-slate-400">
-            <span className="flex-1">Incoterm</span>
+            <span className="flex-1">{t('rowIncoterm')}</span>
             <span className="font-semibold text-brand-300">{deal.incoterm}</span>
           </div>
           <div className="flex items-start gap-2 text-xs text-slate-400">
-            <span className="flex-1">Origem → Destino</span>
+            <span className="flex-1">{t('rowRoute')}</span>
             <span className="text-slate-200 text-right">
               {deal.origin_port}
               <br />→ {deal.destination_port}
@@ -163,15 +165,15 @@ export function NegotiationChat({ negotiation, currentUserId }: Props) {
 
         {negotiation.status !== 'ACORDO_FECHADO' && (
           <button className="btn-primary w-full justify-center bg-emerald-600 hover:bg-emerald-700">
-            <CheckCircle2 className="w-4 h-4" /> Fechar Acordo & Gerar Contrato
+            <CheckCircle2 className="w-4 h-4" /> {t('btnCloseAgreement')}
           </button>
         )}
 
         {negotiation.status === 'ACORDO_FECHADO' && (
           <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 text-center">
             <CheckCircle2 className="w-6 h-6 text-emerald-400 mx-auto mb-1.5" />
-            <p className="text-xs font-semibold text-emerald-300">Acordo Fechado!</p>
-            <p className="text-xs text-emerald-400/70 mt-0.5">Contrato gerado e aguardando assinatura.</p>
+            <p className="text-xs font-semibold text-emerald-300">{t('agreementClosedTitle')}</p>
+            <p className="text-xs text-emerald-400/70 mt-0.5">{t('agreementClosedDesc')}</p>
           </div>
         )}
       </div>

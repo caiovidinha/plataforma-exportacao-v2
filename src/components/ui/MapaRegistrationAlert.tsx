@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { AlertTriangle, X, ExternalLink } from 'lucide-react'
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 
 interface MapaRegistrationAlertProps {
   /** Se true, mostra o banner. False esconde tudo. */
@@ -12,6 +13,7 @@ interface MapaRegistrationAlertProps {
 }
 
 export function MapaRegistrationAlert({ show = true, variant = 'banner' }: MapaRegistrationAlertProps) {
+  const t = useTranslations('mapa')
   const [dismissed, setDismissed] = useState(false)
 
   if (!show || dismissed) return null
@@ -25,21 +27,17 @@ export function MapaRegistrationAlert({ show = true, variant = 'banner' }: MapaR
           </div>
           <div className="flex-1">
             <h3 className="font-semibold text-amber-300 text-sm mb-1">
-              Cadastro no MAPA Obrigatório
+              {t('alertCardTitle')}
             </h3>
             <p className="text-xs text-amber-400/90 leading-relaxed mb-3">
-              Para exportar legalmente, sua empresa precisa estar registrada no{' '}
-              <strong>Ministério da Agricultura, Pecuária e Abastecimento (MAPA)</strong>.
-              Sem esse cadastro, não é possível obter o{' '}
-              <strong>Certificado Fitossanitário</strong>, documento indispensável para
-              a liberação da carga no porto de destino.
+              {t('alertCardBody')}
             </p>
             <div className="flex flex-wrap gap-2">
               <Link
                 href="/cadastro/mapa"
                 className="btn-primary bg-amber-500 hover:bg-amber-600 text-xs py-1.5"
               >
-                Iniciar Cadastro MAPA
+                {t('alertCardCta')}
               </Link>
               <a
                 href="https://sistemasweb.agricultura.gov.br"
@@ -47,7 +45,7 @@ export function MapaRegistrationAlert({ show = true, variant = 'banner' }: MapaR
                 rel="noopener noreferrer"
                 className="btn-secondary text-xs py-1.5 gap-1.5"
               >
-                Portal MAPA <ExternalLink className="w-3 h-3" />
+                {t('alertCardPortal')} <ExternalLink className="w-3 h-3" />
               </a>
             </div>
           </div>
@@ -67,11 +65,9 @@ export function MapaRegistrationAlert({ show = true, variant = 'banner' }: MapaR
     <div className="bg-amber-500/10 border-b border-amber-500/30 px-6 py-3 flex items-center gap-3">
       <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0" />
       <p className="text-sm text-amber-300 flex-1">
-        <strong>Ação necessária:</strong> Sua empresa ainda não está cadastrada no{' '}
-        <strong>MAPA</strong>. Regularize para habilitar a emissão do Certificado
-        Fitossanitário.{' '}
+        <strong>{t('alertBannerActionRequired')}</strong> {t('alertBannerBody')}{' '}
         <Link href="/cadastro/mapa" className="underline hover:no-underline font-medium">
-          Cadastrar agora →
+          {t('alertBannerLink')}
         </Link>
       </p>
       <button

@@ -1,46 +1,47 @@
 import { getMapaNotices } from '@/lib/api'
 import { BarChart2, ExternalLink, Bell, Globe, TrendingUp, BookOpen } from 'lucide-react'
 import { cn, formatDate } from '@/lib/utils'
+import { getTranslations } from 'next-intl/server'
 
 export const metadata = { title: 'Inteligência de Mercado' }
 
-const externalLinks = [
-  {
-    title: 'Estudo de Mercado — Apex-Brasil',
-    desc: 'Análises e inteligência comercial para exportadores brasileiros.',
-    url: 'https://www.apexbrasil.com.br',
-    icon: TrendingUp,
-    color: 'text-green-400',
-    bg: 'bg-green-400/10',
-  },
-  {
-    title: 'Mercado Agropecuário — CNA',
-    desc: 'Conjuntura econômica e de mercado da Confederação da Agricultura.',
-    url: 'https://www.cnabrasil.org.br',
-    icon: Globe,
-    color: 'text-blue-400',
-    bg: 'bg-blue-400/10',
-  },
-  {
-    title: 'Programa Proex — BNDES',
-    desc: 'Financiamento às exportações brasileiras de bens e serviços.',
-    url: 'https://www.bndes.gov.br/wps/portal/site/home/financiamento/produto/proex',
-    icon: BookOpen,
-    color: 'text-violet-400',
-    bg: 'bg-violet-400/10',
-  },
-  {
-    title: 'Portal MAPA — Exportações',
-    desc: 'Informativos, normativas e requisitos do Ministério da Agricultura.',
-    url: 'https://www.gov.br/agricultura/pt-br/assuntos/internacional',
-    icon: Bell,
-    color: 'text-brand-400',
-    bg: 'bg-brand-400/10',
-  },
-]
-
 export default async function MercadoPage() {
-  const notices = await getMapaNotices()
+  const [notices, t] = await Promise.all([getMapaNotices(), getTranslations('mercado')])
+
+  const externalLinks = [
+    {
+      title: t('apexTitle'),
+      desc: t('apexDesc'),
+      url: 'https://www.apexbrasil.com.br',
+      icon: TrendingUp,
+      color: 'text-green-400',
+      bg: 'bg-green-400/10',
+    },
+    {
+      title: t('cnaTitle'),
+      desc: t('cnaDesc'),
+      url: 'https://www.cnabrasil.org.br',
+      icon: Globe,
+      color: 'text-blue-400',
+      bg: 'bg-blue-400/10',
+    },
+    {
+      title: t('proexTitle'),
+      desc: t('proexDesc'),
+      url: 'https://www.bndes.gov.br/wps/portal/site/home/financiamento/produto/proex',
+      icon: BookOpen,
+      color: 'text-violet-400',
+      bg: 'bg-violet-400/10',
+    },
+    {
+      title: t('mapaPortalTitle'),
+      desc: t('mapaPortalDesc'),
+      url: 'https://www.gov.br/agricultura/pt-br/assuntos/internacional',
+      icon: Bell,
+      color: 'text-brand-400',
+      bg: 'bg-brand-400/10',
+    },
+  ]
 
   const categoryColor = {
     ALERTA: 'text-red-400 bg-red-400/10 border-red-400/30',
@@ -52,11 +53,9 @@ export default async function MercadoPage() {
     <div className="p-6 space-y-6">
       <div>
         <h1 className="page-title flex items-center gap-2">
-          <BarChart2 className="w-6 h-6 text-brand-400" /> Inteligência de Mercado
+          <BarChart2 className="w-6 h-6 text-brand-400" /> {t('pageTitle')}
         </h1>
-        <p className="text-sm text-slate-400 mt-1">
-          Acesse estudos, normativas e dados governamentais para embasar sua estratégia de exportação.
-        </p>
+        <p className="text-sm text-slate-400 mt-1">{t('subtitle')}</p>
       </div>
 
       {/* Links externos */}
@@ -86,7 +85,7 @@ export default async function MercadoPage() {
       {/* Informativos MAPA */}
       <div>
         <h2 className="section-title mb-4 flex items-center gap-2">
-          <Bell className="w-4 h-4 text-brand-400" /> Últimos Informativos do MAPA
+          <Bell className="w-4 h-4 text-brand-400" /> {t('mapaNoticesTitle')}
         </h2>
         <div className="space-y-2.5">
           {notices.map((n) => (

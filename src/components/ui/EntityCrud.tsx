@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Plus, Search, X, ChevronDown, ChevronUp } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 export interface EntityField {
   key: string
@@ -24,6 +25,7 @@ export interface EntityCrudProps<T extends Record<string, unknown>> {
 export function EntityCrud<T extends Record<string, unknown>>({
   title, plural, items: initial, fields, displayKey, secondaryKey,
 }: EntityCrudProps<T>) {
+  const t = useTranslations('crud')
   const [items, setItems] = useState(initial)
   const [search, setSearch] = useState('')
   const [open, setOpen] = useState(false)
@@ -65,22 +67,22 @@ export function EntityCrud<T extends Record<string, unknown>>({
       <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="page-title">{plural}</h1>
-          <p className="text-sm text-slate-400 mt-1">{filtered.length} registro(s)</p>
+          <p className="text-sm text-slate-400 mt-1">{t('recordCount', { count: filtered.length })}</p>
         </div>
         <button className="btn-primary" onClick={startNew}>
-          <Plus className="w-4 h-4 mr-1" /> Novo {title}
+          <Plus className="w-4 h-4 mr-1" /> {t('newBtn', { title })}
         </button>
       </div>
 
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-        <input className="input pl-9 w-full max-w-xs" placeholder={`Buscar ${plural.toLowerCase()}…`}
+        <input className="input pl-9 w-full max-w-xs" placeholder={t('searchPlaceholder', { plural })}
                value={search} onChange={(e) => setSearch(e.target.value)} />
       </div>
 
       <div className="space-y-2">
         {filtered.length === 0 && (
-          <p className="text-sm text-slate-500 text-center py-8">Nenhum registro encontrado.</p>
+          <p className="text-sm text-slate-500 text-center py-8">{t('noRecords')}</p>
         )}
         {filtered.map((it) => {
           const id = String(it.id ?? '')
@@ -107,10 +109,10 @@ export function EntityCrud<T extends Record<string, unknown>>({
                     ))}
                   </dl>
                   <div className="flex gap-2 pt-2">
-                    <button className="btn-secondary text-xs" onClick={() => startEdit(it)}>Editar</button>
+                    <button className="btn-secondary text-xs" onClick={() => startEdit(it)}>{t('editBtn')}</button>
                     <button className="btn-ghost text-xs text-red-400 hover:text-red-300 hover:bg-red-900/20"
                             onClick={() => handleDelete(id)}>
-                      Excluir
+                      {t('deleteBtn')}
                     </button>
                   </div>
                 </div>
@@ -124,7 +126,7 @@ export function EntityCrud<T extends Record<string, unknown>>({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60">
           <div className="card w-full max-w-lg max-h-[90vh] overflow-y-auto space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-base font-semibold text-slate-100">{editId ? `Editar ${title}` : `Novo ${title}`}</h2>
+              <h2 className="text-base font-semibold text-slate-100">{editId ? t('editModal', { title }) : t('newModal', { title })}</h2>
               <button onClick={() => setOpen(false)}><X className="w-5 h-5 text-slate-400 hover:text-slate-200" /></button>
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -137,7 +139,7 @@ export function EntityCrud<T extends Record<string, unknown>>({
                   ) : f.type === 'select' ? (
                     <select className="input" value={form[f.key] ?? ''}
                             onChange={(e) => setForm((p) => ({ ...p, [f.key]: e.target.value }))}>
-                      <option value="">Selecionar…</option>
+                      <option value="">{t('selectOption')}</option>
                       {f.options?.map((o) => <option key={o} value={o}>{o}</option>)}
                     </select>
                   ) : (
@@ -148,8 +150,8 @@ export function EntityCrud<T extends Record<string, unknown>>({
               ))}
             </div>
             <div className="flex justify-end gap-2 pt-2">
-              <button className="btn-ghost" onClick={() => setOpen(false)}>Cancelar</button>
-              <button className="btn-primary" onClick={handleSave}>Salvar</button>
+              <button className="btn-ghost" onClick={() => setOpen(false)}>{t('cancelBtn')}</button>
+              <button className="btn-primary" onClick={handleSave}>{t('saveBtn')}</button>
             </div>
           </div>
         </div>

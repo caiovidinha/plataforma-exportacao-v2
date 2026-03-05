@@ -93,7 +93,7 @@ function ContractsMiniList({ contracts }: { contracts: MockServiceContract[] }) 
           <FileText className="w-4 h-4 text-brand-400" /> {t('recentContracts')}
         </h3>
         <Link href="/contratos-servico" className="text-xs text-brand-400 hover:text-brand-300">
-          Ver todos →
+          {t('viewContracts')}
         </Link>
       </div>
       <div className="space-y-2">
@@ -108,7 +108,7 @@ function ContractsMiniList({ contracts }: { contracts: MockServiceContract[] }) 
                 R$&nbsp;{c.value_brl.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </span>
               <span className={cn('border text-xs px-2 py-0.5 rounded-full', STATUS_COLOR[c.status])}>
-                {c.status === 'PENDENTE' ? 'Pendente' : c.status === 'CONTRATADO' ? 'Ativo' : c.status === 'CONCLUIDO' ? 'Concluído' : 'Cancelado'}
+                {c.status === 'PENDENTE' ? t('statusPendente') : c.status === 'CONTRATADO' ? t('statusContratado') : c.status === 'CONCLUIDO' ? t('statusConcluido') : t('statusCancelado')}
               </span>
             </div>
           </div>
@@ -162,7 +162,7 @@ export default function DashboardPage() {
             return (
               <StatCard
                 key={stat.label}
-                label={stat.label}
+                label={t(`stats.${stat.label}` as any)}
                 value={stat.value}
                 unit={stat.unit}
                 icon={stat.icon}
@@ -182,13 +182,13 @@ export default function DashboardPage() {
                   <h3 className="section-title flex items-center gap-2">
                     <GitBranch className="w-4 h-4 text-brand-400" /> {t('recentWorkflows')}
                   </h3>
-                  <Link href="/workflow" className="text-xs text-brand-400 hover:text-brand-300">Ver todos →</Link>
+                  <Link href="/workflow" className="text-xs text-brand-400 hover:text-brand-300">{t('viewWorkflows')}</Link>
                 </div>
                 <div className="space-y-1">
                   {[
-                    { id: '1', primary: 'Castanha Natural 20t', secondary: 'Belém → Rotterdam · FOB', badge: 'EM ANDAMENTO' },
-                    { id: '2', primary: 'Castanha Processada 5t', secondary: 'Santos → Hamburg · CIF', badge: 'CONCLUÍDO' },
-                    { id: '3', primary: 'Óleo de Castanha 2t', secondary: 'Santos → Miami · EXW', badge: 'EM ANDAMENTO' },
+                  { id: '1', primary: 'Castanha Natural 20t', secondary: 'Belém → Rotterdam · FOB', badge: t('inProgress') },
+                    { id: '2', primary: 'Castanha Processada 5t', secondary: 'Santos → Hamburg · CIF', badge: t('completed') },
+                    { id: '3', primary: 'Óleo de Castanha 2t', secondary: 'Santos → Miami · EXW', badge: t('inProgress') },
                   ].map((item) => (
                     <Link key={item.id} href={`/workflow/${item.id}`}
                       className="flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-dark-100 transition-colors group">
@@ -207,7 +207,7 @@ export default function DashboardPage() {
                   <h3 className="section-title flex items-center gap-2">
                     <Bell className="w-4 h-4 text-brand-400" /> {t('mapaNotices')}
                   </h3>
-                  <Link href="/mercado" className="text-xs text-brand-400 hover:text-brand-300">Ver todos →</Link>
+                  <Link href="/mercado" className="text-xs text-brand-400 hover:text-brand-300">{t('viewMarket')}</Link>
                 </div>
                 <div className="space-y-2.5">
                   {mapaNotices.map((n) => (
@@ -249,7 +249,7 @@ export default function DashboardPage() {
                       <div className="flex flex-col gap-1 flex-shrink-0 items-end">
                         <span className="badge border border-brand-500/30 text-brand-400 bg-brand-400/10">{item.type}</span>
                         {item.urgency === 'URGENTE' && (
-                          <span className="badge border border-red-400/30 text-red-400 bg-red-400/10">URGENTE</span>
+                          <span className="badge border border-red-400/30 text-red-400 bg-red-400/10">{t('urgentBadge')}</span>
                         )}
                       </div>
                     </Link>

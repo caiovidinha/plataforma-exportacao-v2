@@ -5,39 +5,42 @@ import {
   Truck, Ship, Microscope, Building2, DollarSign, Warehouse,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { getTranslations } from 'next-intl/server'
 
-const FEATURES = [
-  { icon: Globe,      title: 'Matchmaking B2B',        desc: 'Conectamos exportadores brasileiros a importadores em mais de 40 países com sistema inteligente de match por produto, volume e certificação.' },
-  { icon: FileText,   title: 'Ficha Técnica Completa',  desc: 'Organoléptico, físico-químico, tolerância de aflatoxina por país, requisitos legais de importação — tudo em um só lugar.' },
-  { icon: GitBranch,  title: 'Workflow Transparente',   desc: 'Acompanhe cada etapa da exportação em tempo real: do contrato à chegada no porto de destino, com datas previstas e realizadas.' },
-  { icon: Package,    title: 'Marketplace de Serviços', desc: 'Contrate despachantes, transportadoras, laboratórios, seguradoras e corretoras de câmbio diretamente pela plataforma.' },
-  { icon: Shield,     title: 'Segurança Comercial',     desc: 'Seguro de carga, seguro safra, seguro de pagamento e auditoria de produto com emissão de contratos e assinatura Gov.br.' },
-  { icon: TrendingUp, title: 'Inteligência de Mercado', desc: 'Acesso a estudos Apex-Brasil, CNA, Proex e informativos MAPA diretamente no painel — sem sair da plataforma.' },
-]
+export default async function LandingPage() {
+  const t = await getTranslations('landing')
 
-const ENTITIES = [
-  { icon: Globe,      label: 'Exportadores',             color: 'text-brand-400',   bg: 'bg-brand-400/10',   slug: 'exportador' },
-  { icon: Building2,  label: 'Importadores',             color: 'text-blue-400',    bg: 'bg-blue-400/10',    slug: 'importador' },
-  { icon: Truck,      label: 'Transportadoras',          color: 'text-orange-400',  bg: 'bg-orange-400/10',  slug: 'transportadora' },
-  { icon: Ship,       label: 'Cias. de Navegação',       color: 'text-cyan-400',    bg: 'bg-cyan-400/10',    slug: 'companhia-navegacao' },
-  { icon: FileText,   label: 'Despachantes Aduaneiros',  color: 'text-green-400',   bg: 'bg-green-400/10',   slug: 'despachante' },
-  { icon: DollarSign, label: 'Corretoras de Câmbio',     color: 'text-emerald-400', bg: 'bg-emerald-400/10', slug: 'corretora' },
-  { icon: Warehouse,  label: 'Terminais Alfandegários',  color: 'text-amber-400',   bg: 'bg-amber-400/10',   slug: 'terminal' },
-  { icon: Shield,     label: 'Seguradoras',              color: 'text-violet-400',  bg: 'bg-violet-400/10',  slug: 'seguradora' },
-  { icon: Star,       label: 'Certificadoras',           color: 'text-rose-400',    bg: 'bg-rose-400/10',    slug: 'certificadora' },
-  { icon: Microscope, label: 'Laboratórios MAPA',        color: 'text-red-400',     bg: 'bg-red-400/10',     slug: 'laboratorio' },
-]
+  const FEATURES = [
+    { icon: Globe,      title: t('matchmakingTitle'),  desc: t('matchmakingDesc') },
+    { icon: FileText,   title: t('techSheetTitle'),    desc: t('techSheetDesc') },
+    { icon: GitBranch,  title: t('wfTitle'),           desc: t('wfDesc') },
+    { icon: Package,    title: t('marketplaceTitle'),  desc: t('marketplaceDesc') },
+    { icon: Shield,     title: t('securityTitle'),     desc: t('securityDesc') },
+    { icon: TrendingUp, title: t('marketIntelTitle'),  desc: t('marketIntelDesc') },
+  ]
 
-const STEPS = [
-  { n: '01', title: 'Match',            desc: 'Exportador publica oferta; importador manifesta interesse.' },
-  { n: '02', title: 'Negociação',       desc: 'Chat estruturado, fechamento de acordo e geração de contrato.' },
-  { n: '03', title: 'Contratação',      desc: 'Despachante, câmbio, transporte e terminal contratados em bloco.' },
-  { n: '04', title: 'Liberação MAPA',   desc: 'Auditoria, análise de aflatoxina em lab credenciado e Certificado Fitossanitário.' },
-  { n: '05', title: 'Embarque',         desc: 'Siscomex, DU-E, estufagem e embarque no navio.' },
-  { n: '06', title: 'Pagamento',        desc: 'Swift, corretora de câmbio e liberação do BL original.' },
-]
+  const ENTITIES = [
+    { icon: Globe,      label: t('entityExporters'),    color: 'text-brand-400',   bg: 'bg-brand-400/10',   slug: 'exportador' },
+    { icon: Building2,  label: t('entityImporters'),    color: 'text-blue-400',    bg: 'bg-blue-400/10',    slug: 'importador' },
+    { icon: Truck,      label: t('entityCarriers'),     color: 'text-orange-400',  bg: 'bg-orange-400/10',  slug: 'transportadora' },
+    { icon: Ship,       label: t('entityShippingLines'),color: 'text-cyan-400',    bg: 'bg-cyan-400/10',    slug: 'companhia-navegacao' },
+    { icon: FileText,   label: t('entityBrokers'),      color: 'text-green-400',   bg: 'bg-green-400/10',   slug: 'despachante' },
+    { icon: DollarSign, label: t('entityExchangeHouses'),color:'text-emerald-400', bg: 'bg-emerald-400/10', slug: 'corretora' },
+    { icon: Warehouse,  label: t('entityTerminals'),    color: 'text-amber-400',   bg: 'bg-amber-400/10',   slug: 'terminal' },
+    { icon: Shield,     label: t('entityInsurers'),     color: 'text-violet-400',  bg: 'bg-violet-400/10',  slug: 'seguradora' },
+    { icon: Star,       label: t('entityCertifiers'),   color: 'text-rose-400',    bg: 'bg-rose-400/10',    slug: 'certificadora' },
+    { icon: Microscope, label: t('entityLabs'),         color: 'text-red-400',     bg: 'bg-red-400/10',     slug: 'laboratorio' },
+  ]
 
-export default function LandingPage() {
+  const STEPS = [
+    { n: '01', title: t('step01Title'), desc: t('step01Desc') },
+    { n: '02', title: t('step02Title'), desc: t('step02Desc') },
+    { n: '03', title: t('step03Title'), desc: t('step03Desc') },
+    { n: '04', title: t('step04Title'), desc: t('step04Desc') },
+    { n: '05', title: t('step05Title'), desc: t('step05Desc') },
+    { n: '06', title: t('step06Title'), desc: t('step06Desc') },
+  ]
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
       {/* ── NAVBAR ── */}
@@ -49,13 +52,13 @@ export default function LandingPage() {
           <span className="font-display font-semibold tracking-wide">CastanhaExport</span>
         </Link>
         <nav className="flex items-center gap-6 text-sm text-slate-400">
-          <a href="#funcionalidades" className="hidden sm:block hover:text-slate-200 transition-colors">Funcionalidades</a>
-          <a href="#como-funciona" className="hidden sm:block hover:text-slate-200 transition-colors">Como Funciona</a>
-          <a href="#quem-usa" className="hidden sm:block hover:text-slate-200 transition-colors">Quem Usa</a>
+          <a href="#funcionalidades" className="hidden sm:block hover:text-slate-200 transition-colors">{t('nav.features')}</a>
+          <a href="#como-funciona" className="hidden sm:block hover:text-slate-200 transition-colors">{t('nav.howItWorks')}</a>
+          <a href="#quem-usa" className="hidden sm:block hover:text-slate-200 transition-colors">{t('nav.whoUses')}</a>
         </nav>
         <div className="flex items-center gap-3">
-          <Link href="/entrar" className="btn-ghost text-sm">Entrar</Link>
-          <Link href="/registro" className="btn-primary text-sm">Cadastrar</Link>
+          <Link href="/entrar" className="btn-ghost text-sm">{t('nav.signIn')}</Link>
+          <Link href="/registro" className="btn-primary text-sm">{t('nav.register')}</Link>
         </div>
       </header>
 
@@ -68,23 +71,22 @@ export default function LandingPage() {
         <div className="max-w-3xl mx-auto space-y-6">
           <div className="inline-flex items-center gap-2 text-xs font-medium text-brand-400 bg-brand-400/10 border border-brand-400/20 rounded-full px-4 py-1.5">
             <Leaf className="w-3.5 h-3.5" />
-            Plataforma B2B de Exportação · Castanha-do-Brasil
+            {t('hero.badge')}
           </div>
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-            Exporte castanha{' '}
-            <span className="text-brand-400">com segurança</span>{' '}
-            do Brasil para o mundo
+            {t('hero.h1Part1')}{' '}
+            <span className="text-brand-400">{t('hero.h1Strong')}</span>{' '}
+            {t('hero.h1Part2')}
           </h1>
           <p className="text-lg text-slate-400 max-w-xl mx-auto leading-relaxed">
-            Conectamos exportadores, importadores e toda a cadeia logística em uma plataforma integrada.
-            Do match ao pagamento, com rastreabilidade total.
+            {t('hero.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
             <Link href="/registro" className="btn-primary text-base px-8 py-3 rounded-xl">
-              Começar gratuitamente <ArrowRight className="w-4 h-4 ml-2" />
+              {t('hero.ctaFree')} <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
             <Link href="/entrar" className="btn-ghost text-base px-8 py-3 rounded-xl">
-              Já tenho conta
+              {t('hero.alreadyHaveAccount')}
             </Link>
           </div>
         </div>
@@ -94,10 +96,10 @@ export default function LandingPage() {
       <section className="border-y border-slate-800/60 bg-slate-900/40">
         <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-4 divide-x divide-slate-800/60">
           {[
-            { v: '120+', l: 'Exportadores' },
-            { v: '300+', l: 'Importadores' },
-            { v: '42',   l: 'Países atendidos' },
-            { v: '98%',  l: 'Conformidade MAPA' },
+            { v: '120+', l: t('statsExporters') },
+            { v: '300+', l: t('statsImporters') },
+            { v: '42',   l: t('statsCountries') },
+            { v: '98%',  l: t('statsMapa') },
           ].map((s) => (
             <div key={s.l} className="py-8 text-center">
               <p className="text-3xl font-display font-bold text-brand-300">{s.v}</p>
@@ -110,10 +112,8 @@ export default function LandingPage() {
       {/* ── FEATURES ── */}
       <section id="funcionalidades" className="max-w-5xl mx-auto px-6 py-24 space-y-12">
         <div className="text-center space-y-2">
-          <h2 className="font-display text-3xl font-bold text-white">Tudo que sua exportação precisa</h2>
-          <p className="text-slate-400 max-w-md mx-auto text-sm">
-            Cada etapa da cadeia exportadora integrada em um único painel.
-          </p>
+          <h2 className="font-display text-3xl font-bold text-white">{t('featuresSectionTitle')}</h2>
+          <p className="text-slate-400 max-w-md mx-auto text-sm">{t('featuresSectionSubtitle')}</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {FEATURES.map(({ icon: Icon, title, desc }) => (
@@ -132,10 +132,8 @@ export default function LandingPage() {
       <section id="como-funciona" className="bg-slate-900/40 border-y border-slate-800/60">
         <div className="max-w-5xl mx-auto px-6 py-24 space-y-12">
           <div className="text-center space-y-2">
-            <h2 className="font-display text-3xl font-bold text-white">Como funciona a exportação?</h2>
-            <p className="text-slate-400 text-sm max-w-md mx-auto">
-              A plataforma guia cada etapa do processo do contrato ao pagamento.
-            </p>
+            <h2 className="font-display text-3xl font-bold text-white">{t('howWorksSectionTitle')}</h2>
+            <p className="text-slate-400 text-sm max-w-md mx-auto">{t('howWorksSectionSubtitle')}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {STEPS.map((s) => (
@@ -156,8 +154,8 @@ export default function LandingPage() {
       {/* ── WHO USES IT ── */}
       <section id="quem-usa" className="max-w-5xl mx-auto px-6 py-24 space-y-12">
         <div className="text-center space-y-2">
-          <h2 className="font-display text-3xl font-bold text-white">Quem pode usar?</h2>
-          <p className="text-slate-400 text-sm">Cadastre sua empresa em menos de 5 minutos.</p>
+          <h2 className="font-display text-3xl font-bold text-white">{t('whoUsesSectionTitle')}</h2>
+          <p className="text-slate-400 text-sm">{t('whoUsesSectionSubtitle')}</p>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
           {ENTITIES.map(({ icon: Icon, label, color, bg, slug }) => (
@@ -176,7 +174,7 @@ export default function LandingPage() {
         </div>
         <div className="text-center">
           <Link href="/registro" className="btn-primary text-sm px-8">
-            Escolher meu tipo de cadastro <ChevronRight className="w-4 h-4 ml-1" />
+            {t('whoUsesCta')} <ChevronRight className="w-4 h-4 ml-1" />
           </Link>
         </div>
       </section>
@@ -186,17 +184,17 @@ export default function LandingPage() {
         <div className="rounded-2xl bg-gradient-to-br from-brand-900/40 via-slate-900 to-slate-900 border border-brand-400/20 p-10 text-center space-y-5">
           <Leaf className="w-10 h-10 text-brand-400 mx-auto" />
           <h2 className="font-display text-2xl md:text-3xl font-bold text-white">
-            Pronto para exportar com mais segurança?
+            {t('ctaTitle')}
           </h2>
           <p className="text-slate-400 text-sm max-w-sm mx-auto">
-            Crie sua conta gratuitamente e comece a conectar sua empresa ao mercado internacional.
+            {t('ctaSubtitle')}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link href="/registro" className="btn-primary text-sm px-8 py-3 rounded-xl">
-              Criar conta gratuita <ArrowRight className="w-4 h-4 ml-1" />
+              {t('ctaCreateAccount')} <ArrowRight className="w-4 h-4 ml-1" />
             </Link>
             <Link href="/entrar" className="btn-ghost text-sm">
-              Já tenho conta
+              {t('ctaAlreadyHaveAccount')}
             </Link>
           </div>
         </div>
@@ -204,8 +202,8 @@ export default function LandingPage() {
 
       {/* ── FOOTER ── */}
       <footer className="border-t border-slate-800/60 px-6 py-8 text-center text-xs text-slate-600">
-        <p>© {new Date().getFullYear()} CastanhaExport · Plataforma B2B de Exportação de Castanha-do-Brasil</p>
-        <p className="mt-1">Integrado com SISCOMEX · MAPA · Gov.br · SIGVIG · SWIFT</p>
+        <p>{t('footerCopyright', { year: new Date().getFullYear() })}</p>
+        <p className="mt-1">{t('footerIntegrations')}</p>
       </footer>
     </div>
   )

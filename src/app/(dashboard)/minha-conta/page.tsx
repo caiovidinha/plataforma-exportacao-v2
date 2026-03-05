@@ -229,7 +229,7 @@ export default function MinhaContaPage() {
                     <div>
                       <p className="text-sm font-medium text-slate-200">
                         {member.name}
-                        {!member.active && <span className="ml-2 text-xs text-slate-500">(pending)</span>}
+                        {!member.active && <span className="ml-2 text-xs text-slate-500">{t('pendingBadge')}</span>}
                       </p>
                       <p className="text-xs text-slate-500">{member.email}</p>
                     </div>
@@ -250,7 +250,7 @@ export default function MinhaContaPage() {
           <div className="bg-dark-200 border border-dark-50 rounded-xl shadow-2xl w-full max-w-md p-6 space-y-5">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-semibold text-white flex items-center gap-2">
-                <UserPlus className="w-4 h-4 text-brand-400" /> Invite Team Member
+                <UserPlus className="w-4 h-4 text-brand-400" /> {t('inviteTitle')}
               </h3>
               <button
                 onClick={() => { setInviteOpen(false); setInviteSent(false) }}
@@ -261,37 +261,37 @@ export default function MinhaContaPage() {
             {inviteSent ? (
               <div className="flex items-center gap-3 py-6 justify-center">
                 <CheckCircle2 className="w-6 h-6 text-emerald-400" />
-                <p className="text-sm text-emerald-300 font-medium">Invite sent to {inviteEmail}</p>
+                <p className="text-sm text-emerald-300 font-medium">{t('inviteSent', { email: inviteEmail })}</p>
               </div>
             ) : (
               <form onSubmit={handleInvite} className="space-y-4">
                 <div>
-                  <label className="block text-xs text-slate-400 mb-1.5">Email address</label>
+                  <label className="block text-xs text-slate-400 mb-1.5">{t('inviteEmailLabel')}</label>
                   <input
                     type="email"
                     required
                     autoFocus
-                    placeholder="colleague@company.com"
+                    placeholder={t('inviteEmailPlaceholder')}
                     value={inviteEmail}
                     onChange={(e) => setInviteEmail(e.target.value)}
                     className="input w-full"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-400 mb-1.5">Role</label>
+                  <label className="block text-xs text-slate-400 mb-1.5">{t('inviteRoleLabel')}</label>
                   <select
                     value={inviteRole}
                     onChange={(e) => setInviteRole(e.target.value as EntityMemberRole)}
                     className="input w-full"
                   >
-                    <option value="ADMIN">Admin � full control</option>
-                    <option value="OPERATOR">Operator � day-to-day operations</option>
-                    <option value="VIEWER">Viewer � read only</option>
+                    <option value="ADMIN">{t('roleDescAdmin')}</option>
+                    <option value="OPERATOR">{t('roleDescOperator')}</option>
+                    <option value="VIEWER">{t('roleDescViewer')}</option>
                   </select>
                 </div>
                 <div className="flex gap-3 pt-1">
                   <button type="submit" className="btn-primary flex-1">
-                    Send Invite
+                    {t('inviteSendBtn')}
                   </button>
                   <button
                     type="button"

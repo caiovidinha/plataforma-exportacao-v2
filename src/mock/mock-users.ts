@@ -57,10 +57,10 @@ export const MOCK_USERS: Record<EntitySlug, MockUser> = {
     entity_type: 'exportador',
     role_label: 'Exporter',
     stats: [
-      { label: 'Active Workflows',  value: 2, trend: '+1 this month' },
-      { label: 'Listed Offers',     value: 4 },
-      { label: 'Open Negotiations', value: 3 },
-      { label: 'Projected Revenue', value: 'USD 280k' },
+      { label: 'activeWorkflows',   value: 2, trend: '+1 this month' },
+      { label: 'listedOffers',      value: 4 },
+      { label: 'openNegotiations',  value: 3 },
+      { label: 'projectedRevenue',  value: 'USD 280k' },
     ],
     team_members: [
       { id: 'tm_exp_01', name: 'Mariana Souza',     email: 'mariana@castanheiraexport.com.br', entity_role: 'OPERATOR', joined_at: '2025-09-01', active: true },
@@ -80,10 +80,10 @@ export const MOCK_USERS: Record<EntitySlug, MockUser> = {
     entity_type: 'importador',
     role_label: 'Importer',
     stats: [
-      { label: 'Active Interests', value: 3 },
-      { label: 'Open Negotiations', value: 2 },
-      { label: 'Purchases Closed', value: 7, trend: 'this year' },
-      { label: 'Volume Purchased', value: '42 ton' },
+      { label: 'activeInterests',   value: 3 },
+      { label: 'openNegotiations',  value: 2 },
+      { label: 'purchasesClosed',   value: 7, trend: 'this year' },
+      { label: 'volumePurchased',   value: '42 ton' },
     ],
     team_members: [
       { id: 'tm_imp_01', name: 'Ingrid Müller', email: 'ingrid@naturalkern.de', entity_role: 'OPERATOR', joined_at: '2025-08-10', active: true },
@@ -101,10 +101,10 @@ export const MOCK_USERS: Record<EntitySlug, MockUser> = {
     entity_type: 'transportadora',
     role_label: 'Transportadora',
     stats: [
-      { label: 'Contratos Ativos', value: 3 },
-      { label: 'Entregas Concluídas', value: 18 },
-      { label: 'Receita do Mês', value: 'R$ 34k' },
-      { label: 'Avaliação Média', value: '4.7 ★' },
+      { label: 'activeContracts',      value: 3 },
+      { label: 'completedDeliveries',  value: 18 },
+      { label: 'monthlyRevenue',       value: 'R$ 34k' },
+      { label: 'avgRating',            value: '4.7 ★' },
     ],
     service_contracts: [
       { id: 'sc_t1', workflow_id: 'wf_001', exporter: 'Castanheira Export Ltda.', importer: 'NaturalKern GmbH', description: 'Transporte rodoviário Manaus → Santos (12 ton)', value_brl: 8400, status: 'EM_ANDAMENTO', requested_at: '2025-11-01', deadline: '2025-11-18' },
@@ -124,10 +124,10 @@ export const MOCK_USERS: Record<EntitySlug, MockUser> = {
     entity_type: 'companhia-navegacao',
     role_label: 'Companhia de Navegação',
     stats: [
-      { label: 'BLs Emitidos (mês)', value: 12 },
-      { label: 'Contratos Ativos', value: 5 },
-      { label: 'Containers em Rota', value: 8 },
-      { label: 'Avaliação Média', value: '4.8 ★' },
+      { label: 'blsIssuedMonth',    value: 12 },
+      { label: 'activeContracts',   value: 5 },
+      { label: 'containersInRoute', value: 8 },
+      { label: 'avgRating',         value: '4.8 ★' },
     ],
     service_contracts: [
       { id: 'sc_n1', workflow_id: 'wf_001', exporter: 'Castanheira Export Ltda.', importer: 'NaturalKern GmbH', description: 'Frete Santos → Rotterdam (1 × 20\' Dry)', value_brl: 12800, status: 'EM_ANDAMENTO', requested_at: '2025-11-05', deadline: '2025-12-10' },
@@ -146,10 +146,10 @@ export const MOCK_USERS: Record<EntitySlug, MockUser> = {
     entity_type: 'despachante',
     role_label: 'Despachante Aduaneiro',
     stats: [
-      { label: 'Processos Ativos', value: 7 },
-      { label: 'DU-Es Emitidas (mês)', value: 4 },
-      { label: 'Taxa de Sucesso', value: '99.1%' },
-      { label: 'Receita do Mês', value: 'R$ 21k' },
+      { label: 'activeProcesses',  value: 7 },
+      { label: 'duesIssuedMonth',  value: 4 },
+      { label: 'successRate',      value: '99.1%' },
+      { label: 'monthlyRevenue',   value: 'R$ 21k' },
     ],
     service_contracts: [
       { id: 'sc_d1', workflow_id: 'wf_001', exporter: 'Castanheira Export Ltda.', importer: 'NaturalKern GmbH', description: 'Despacho aduaneiro Santos — REDEX + SISCOMEX', value_brl: 3200, status: 'EM_ANDAMENTO', requested_at: '2025-11-08', deadline: '2025-11-28' },
@@ -169,10 +169,10 @@ export const MOCK_USERS: Record<EntitySlug, MockUser> = {
     entity_type: 'corretora',
     role_label: 'Corretora de Câmbio',
     stats: [
-      { label: 'Swifts Recebidos (mês)', value: 9 },
-      { label: 'Volume Liquidado', value: 'USD 1.2M' },
-      { label: 'Contratos Ativos', value: 4 },
-      { label: 'Spread Médio', value: '0.85%' },
+      { label: 'swiftsReceivedMonth', value: 9 },
+      { label: 'volumeSettled',       value: 'USD 1.2M' },
+      { label: 'activeContracts',     value: 4 },
+      { label: 'avgSpread',           value: '0.85%' },
     ],
     service_contracts: [
       { id: 'sc_c1', workflow_id: 'wf_001', exporter: 'Castanheira Export Ltda.', importer: 'NaturalKern GmbH', description: 'Contrato de câmbio USD → BRL (USD 42.000)', value_brl: 2100, status: 'EM_ANDAMENTO', requested_at: '2025-11-02', deadline: '2025-12-15' },
@@ -191,10 +191,10 @@ export const MOCK_USERS: Record<EntitySlug, MockUser> = {
     entity_type: 'terminal',
     role_label: 'Terminal Alfandegário',
     stats: [
-      { label: 'Containers Ativos', value: 14 },
-      { label: 'Estufagens (mês)', value: 6 },
-      { label: 'Fiscalizações MAPA', value: 3 },
-      { label: 'Receita do Mês', value: 'USD 7.2k' },
+      { label: 'activeContainers',  value: 14 },
+      { label: 'stuffingsMonth',    value: 6 },
+      { label: 'mapaInspections',   value: 3 },
+      { label: 'monthlyRevenue',    value: 'USD 7.2k' },
     ],
     service_contracts: [
       { id: 'sc_tm1', workflow_id: 'wf_001', exporter: 'Castanheira Export Ltda.', importer: 'NaturalKern GmbH', description: 'Armazenagem + estufagem 12 ton (REDEX Santos)', value_brl: 4400, status: 'EM_ANDAMENTO', requested_at: '2025-11-06', deadline: '2025-11-22' },
@@ -213,10 +213,10 @@ export const MOCK_USERS: Record<EntitySlug, MockUser> = {
     entity_type: 'seguradora',
     role_label: 'Seguradora',
     stats: [
-      { label: 'Apólices Ativas', value: 11 },
-      { label: 'Sinistros Abertos', value: 1 },
-      { label: 'Prêmio Emitido (mês)', value: 'R$ 48k' },
-      { label: 'Contratos Ativos', value: 5 },
+      { label: 'activePolicies',      value: 11 },
+      { label: 'openClaims',          value: 1 },
+      { label: 'premiumIssuedMonth',  value: 'R$ 48k' },
+      { label: 'activeContracts',     value: 5 },
     ],
     service_contracts: [
       { id: 'sc_sg1', workflow_id: 'wf_001', exporter: 'Castanheira Export Ltda.', importer: 'NaturalKern GmbH', description: 'Seguro de Carga Marítima (USD 42.000)', value_brl: 3360, status: 'CONTRATADO', requested_at: '2025-11-03', deadline: '2025-12-15' },
@@ -235,10 +235,10 @@ export const MOCK_USERS: Record<EntitySlug, MockUser> = {
     entity_type: 'certificadora',
     role_label: 'Certificadora / Auditoria',
     stats: [
-      { label: 'Certificados Emitidos', value: 8 },
-      { label: 'Auditorias em Andamento', value: 3 },
-      { label: 'Contratos Ativos', value: 4 },
-      { label: 'Prazo Médio Emissão', value: '4 dias' },
+      { label: 'certsIssued',      value: 8 },
+      { label: 'auditsInProgress', value: 3 },
+      { label: 'activeContracts',  value: 4 },
+      { label: 'avgIssuanceTime',  value: '4 dias' },
     ],
     service_contracts: [
       { id: 'sc_ce1', workflow_id: 'wf_001', exporter: 'Castanheira Export Ltda.', importer: 'NaturalKern GmbH', description: 'Certificado de Origem + Auditoria de Produto', value_brl: 2800, status: 'EM_ANDAMENTO', requested_at: '2025-11-07', deadline: '2025-11-18' },
@@ -257,10 +257,10 @@ export const MOCK_USERS: Record<EntitySlug, MockUser> = {
     entity_type: 'laboratorio',
     role_label: 'Laboratório Credenciado MAPA',
     stats: [
-      { label: 'Laudos Emitidos (mês)', value: 23 },
-      { label: 'Análises em Andamento', value: 5 },
-      { label: 'Tempo Médio (horas)', value: 36 },
-      { label: 'Contratos Ativos', value: 3 },
+      { label: 'reportsIssuedMonth',  value: 23 },
+      { label: 'analysesInProgress',  value: 5 },
+      { label: 'avgTimeHours',        value: 36 },
+      { label: 'activeContracts',     value: 3 },
     ],
     service_contracts: [
       { id: 'sc_lb1', workflow_id: 'wf_001', exporter: 'Castanheira Export Ltda.', importer: 'NaturalKern GmbH', description: 'Análise de Aflatoxina Total (B1+B2+G1+G2)', value_brl: 420, status: 'EM_ANDAMENTO', requested_at: '2025-11-09', deadline: '2025-11-13' },

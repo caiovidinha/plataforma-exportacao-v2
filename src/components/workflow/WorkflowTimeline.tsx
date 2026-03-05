@@ -16,6 +16,7 @@ import {
   AlertTriangle,
 } from 'lucide-react'
 import { cn, formatDate, stepStatusColors, stepStatusLabel, documentTypeLabel } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 import type { ExportWorkflow, WorkflowStep, WorkflowStepStatus } from '@/types'
 
 // ---- Ícone por status ------------------------------------------
@@ -40,6 +41,7 @@ function StatusBadge({ status }: { status: WorkflowStepStatus }) {
 
 // ---- Linha de data prevista vs realizada -----------------------
 function DateRow({ label, planned, actual, late }: { label: string; planned: string; actual?: string; late?: boolean }) {
+  const t = useTranslations('workflow')
   return (
     <div className="flex items-center justify-between text-xs">
       <span className="text-slate-500">{label}</span>
@@ -47,7 +49,7 @@ function DateRow({ label, planned, actual, late }: { label: string; planned: str
         <span className="text-slate-400">{formatDate(planned)}</span>
         {actual ? (
           <span className={cn('font-medium', late ? 'text-red-400' : 'text-emerald-400')}>
-            {formatDate(actual)} {late && '(atraso)'}
+            {formatDate(actual)} {late && t('lateLabel')}
           </span>
         ) : (
           <span className="text-slate-600 italic">—</span>
@@ -103,6 +105,7 @@ function WorkflowStepCard({
   )
 
   const late = !!(step.actual_date && step.planned_date && step.actual_date > step.planned_date)
+  const t = useTranslations('workflow')
 
   return (
     <div className="flex gap-4">
@@ -169,20 +172,20 @@ function WorkflowStepCard({
             {/* Datas */}
             <div className="bg-dark-100 rounded-lg px-3 py-2.5 space-y-1.5">
               <div className="flex items-center justify-between text-xs font-medium text-slate-400 mb-1">
-                <span className="flex items-center gap-1"><CalendarDays className="w-3 h-3" /> Datas</span>
+                <span className="flex items-center gap-1"><CalendarDays className="w-3 h-3" /> {t('datesSection')}</span>
                 <div className="flex gap-6">
-                  <span>Previsto</span>
-                  <span>Realizado</span>
+                  <span>{t('planned')}</span>
+                  <span>{t('actual')}</span>
                 </div>
               </div>
-              <DateRow label="Início" planned={step.planned_date} actual={step.actual_date} late={late} />
+              <DateRow label={t('startLabel')} planned={step.planned_date} actual={step.actual_date} late={late} />
             </div>
 
             {/* Documentos */}
             {step.documents.length > 0 && (
               <div>
                 <p className="text-xs font-medium text-slate-400 mb-1.5 flex items-center gap-1">
-                  <FileText className="w-3 h-3" /> Documentos
+                  <FileText className="w-3 h-3" /> {t('documentsSection')}
                 </p>
                 <div className="rounded-lg border border-slate-700/40 overflow-hidden">
                   {step.documents.map((doc) => (
@@ -196,7 +199,7 @@ function WorkflowStepCard({
             {step.external_ref && (
               <div className="flex items-center gap-2 text-xs text-slate-400 bg-dark-100 rounded-lg px-3 py-2">
                 <ExternalLink className="w-3 h-3 text-brand-400" />
-                <span>Referência: <strong className="text-brand-300">{step.external_ref}</strong></span>
+                <span>{t('reference')} <strong className="text-brand-300">{step.external_ref}</strong></span>
               </div>
             )}
 
@@ -204,7 +207,7 @@ function WorkflowStepCard({
             {step.blockers && step.blockers.length > 0 && (
               <div className="rounded-lg border border-orange-500/30 bg-orange-500/5 px-3 py-2.5">
                 <p className="text-xs font-medium text-orange-400 flex items-center gap-1.5 mb-1.5">
-                  <AlertTriangle className="w-3.5 h-3.5" /> Pendências / Bloqueadores
+                  <AlertTriangle className="w-3.5 h-3.5" /> {t('pendingBlockers')}
                 </p>
                 <ul className="space-y-1">
                   {step.blockers.map((b, i) => (
@@ -232,6 +235,7 @@ function WorkflowStepCard({
 
 // ---- Barra de progresso geral ----------------------------------
 function ProgressBar({ steps }: { steps: WorkflowStep[] }) {
+  const t = useTranslations('workflow')
   const concluded = steps.filter((s) => s.status === 'CONCLUIDO').length
   const total = steps.length
   const pct = Math.round((concluded / total) * 100)
@@ -239,7 +243,7 @@ function ProgressBar({ steps }: { steps: WorkflowStep[] }) {
   return (
     <div className="space-y-1.5">
       <div className="flex justify-between text-xs text-slate-400">
-        <span>{concluded} de {total} etapas concluídas</span>
+        <span>{t('stepsProgress', { done: concluded, total })}</span>
         <span className="font-semibold text-slate-200">{pct}%</span>
       </div>
       <div className="h-2 bg-dark-100 rounded-full overflow-hidden">
@@ -254,6 +258,7 @@ function ProgressBar({ steps }: { steps: WorkflowStep[] }) {
 
 // ---- Componente principal --------------------------------------
 export function WorkflowTimeline({ workflow }: { workflow: ExportWorkflow }) {
+  const t = useTranslations('workflow')
   const overallColor = {
     EM_ANDAMENTO: 'text-brand-400',
     CONCLUIDO: 'text-emerald-400',
@@ -262,10 +267,10 @@ export function WorkflowTimeline({ workflow }: { workflow: ExportWorkflow }) {
   }[workflow.overall_status]
 
   const overallLabel = {
-    EM_ANDAMENTO: 'Em Andamento',
-    CONCLUIDO: 'Concluído',
-    ATRASADO: 'Atrasado',
-    CANCELADO: 'Cancelado',
+    EM_ANDAMENTO: t('statusInProgress'),
+    CONCLUIDO: t('statusCompleted'),
+    ATRASADO: t('statusDelayed'),
+    CANCELADO: t('statusCancelled'),
   }[workflow.overall_status]
 
   return (
@@ -286,7 +291,7 @@ export function WorkflowTimeline({ workflow }: { workflow: ExportWorkflow }) {
           <div className="text-right">
             <span className={cn('text-sm font-semibold', overallColor)}>{overallLabel}</span>
             <p className="text-xs text-slate-500 mt-0.5">
-              Previsão: {formatDate(workflow.estimated_completion)}
+              {t('estCompletion')} {formatDate(workflow.estimated_completion)}
             </p>
           </div>
         </div>
@@ -296,12 +301,12 @@ export function WorkflowTimeline({ workflow }: { workflow: ExportWorkflow }) {
         {/* Partes */}
         <div className="grid grid-cols-2 gap-3 pt-1">
           <div className="bg-dark-100 rounded-lg px-3 py-2">
-            <p className="text-xs text-slate-500 mb-0.5">Exportador</p>
+            <p className="text-xs text-slate-500 mb-0.5">{t('exporter')}</p>
             <p className="text-sm font-medium text-slate-200">{workflow.exporter.company_name}</p>
             <p className="text-xs text-slate-500">{workflow.exporter.country}</p>
           </div>
           <div className="bg-dark-100 rounded-lg px-3 py-2">
-            <p className="text-xs text-slate-500 mb-0.5">Importador</p>
+            <p className="text-xs text-slate-500 mb-0.5">{t('importer')}</p>
             <p className="text-sm font-medium text-slate-200">{workflow.importer.company_name}</p>
             <p className="text-xs text-slate-500">{workflow.importer.country}</p>
           </div>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { X, Shield, CheckCircle, Loader2, AlertCircle } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 type Stage = 'idle' | 'cpf' | 'otp' | 'signing' | 'success' | 'error'
 
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export function GovBrSignatureModal({ documentLabel, onClose, onSuccess }: Props) {
+  const t = useTranslations('govbr')
   const [stage, setStage] = useState<Stage>('cpf')
   const [cpf, setCpf] = useState('')
   const [otp, setOtp] = useState('')
@@ -19,14 +21,14 @@ export function GovBrSignatureModal({ documentLabel, onClose, onSuccess }: Props
 
   async function handleCpf(e: React.FormEvent) {
     e.preventDefault()
-    if (cpf.replace(/\D/g, '').length !== 11) { setError('CPF inválido'); return }
+    if (cpf.replace(/\D/g, '').length !== 11) { setError(t('errCpfInvalid')); return }
     setError('')
     setStage('otp')
   }
 
   async function handleOtp(e: React.FormEvent) {
     e.preventDefault()
-    if (otp.length !== 6) { setError('Código deve ter 6 dígitos'); return }
+    if (otp.length !== 6) { setError(t('errOtpLength')); return }
     setError('')
     setStage('signing')
     // Simulate Gov.br API call
@@ -50,27 +52,27 @@ export function GovBrSignatureModal({ documentLabel, onClose, onSuccess }: Props
             <div className="w-8 h-8 rounded bg-[#1351b4] flex items-center justify-center">
               <span className="text-white text-xs font-bold leading-none">gov</span>
             </div>
-            <span className="text-sm font-semibold text-slate-100">Assinatura Gov.br</span>
+            <span className="text-sm font-semibold text-slate-100">{t('modalTitle')}</span>
           </div>
           <button onClick={onClose}><X className="w-5 h-5 text-slate-400 hover:text-slate-200" /></button>
         </div>
 
         <p className="text-xs text-slate-400 bg-slate-800 rounded-lg px-3 py-2 border border-slate-700">
           <Shield className="w-3 h-3 inline mr-1 text-[#1351b4]" />
-          Documento: <span className="text-slate-200 font-medium">{documentLabel}</span>
+          {t('documentLabel')} <span className="text-slate-200 font-medium">{documentLabel}</span>
         </p>
 
         {/* CPF stage */}
         {stage === 'cpf' && (
           <form onSubmit={handleCpf} className="space-y-4">
             <div>
-              <label className="label">CPF</label>
-              <input className="input" placeholder="000.000.000-00" value={cpf}
+              <label className="label">{t('cpfLabel')}</label>
+              <input className="input" placeholder={t('cpfPlaceholder')} value={cpf}
                      onChange={(e) => setCpf(e.target.value)} />
             </div>
             {error && <p className="text-xs text-red-400">{error}</p>}
             <button type="submit" className="btn-primary w-full justify-center">
-              Continuar com Gov.br
+              {t('btnContinue')}
             </button>
           </form>
         )}
@@ -79,17 +81,17 @@ export function GovBrSignatureModal({ documentLabel, onClose, onSuccess }: Props
         {stage === 'otp' && (
           <form onSubmit={handleOtp} className="space-y-4">
             <p className="text-xs text-slate-400">
-              Enviamos um código de 6 dígitos para o seu celular cadastrado no Gov.br.
+              {t('otpDescription')}
             </p>
             <div>
-              <label className="label">Código de verificação</label>
+              <label className="label">{t('otpLabel')}</label>
               <input className="input text-center tracking-widest text-lg font-mono"
                      maxLength={6} placeholder="––––––"
                      value={otp} onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))} />
             </div>
             {error && <p className="text-xs text-red-400">{error}</p>}
             <button type="submit" className="btn-primary w-full justify-center">
-              Verificar e Assinar
+              {t('btnVerify')}
             </button>
           </form>
         )}
@@ -98,8 +100,8 @@ export function GovBrSignatureModal({ documentLabel, onClose, onSuccess }: Props
         {stage === 'signing' && (
           <div className="flex flex-col items-center gap-3 py-4">
             <Loader2 className="w-8 h-8 text-[#1351b4] animate-spin" />
-            <p className="text-sm text-slate-300 font-medium">Processando assinatura…</p>
-            <p className="text-xs text-slate-500">Aguarde enquanto comunicamos com o Gov.br</p>
+            <p className="text-sm text-slate-300 font-medium">{t('signingMessage')}</p>
+            <p className="text-xs text-slate-500">{t('signingSubtext')}</p>
           </div>
         )}
 
@@ -107,11 +109,11 @@ export function GovBrSignatureModal({ documentLabel, onClose, onSuccess }: Props
         {stage === 'success' && (
           <div className="flex flex-col items-center gap-3 py-4">
             <CheckCircle className="w-10 h-10 text-emerald-400" />
-            <p className="text-sm text-slate-100 font-semibold">Documento assinado com sucesso</p>
+            <p className="text-sm text-slate-100 font-semibold">{t('successTitle')}</p>
             <p className="text-xs text-slate-400 text-center">
-              A assinatura digital foi aplicada e o documento foi enviado à contraparte.
+              {t('successDescription')}
             </p>
-            <button className="btn-primary w-full justify-center mt-2" onClick={onClose}>Fechar</button>
+            <button className="btn-primary w-full justify-center mt-2" onClick={onClose}>{t('btnClose')}</button>
           </div>
         )}
 
@@ -119,18 +121,18 @@ export function GovBrSignatureModal({ documentLabel, onClose, onSuccess }: Props
         {stage === 'error' && (
           <div className="flex flex-col items-center gap-3 py-4">
             <AlertCircle className="w-10 h-10 text-red-400" />
-            <p className="text-sm text-slate-100 font-semibold">Falha na autenticação</p>
+            <p className="text-sm text-slate-100 font-semibold">{t('errorTitle')}</p>
             <p className="text-xs text-slate-400 text-center">
-              Código inválido ou expirado. Por favor, tente novamente.
+              {t('errorDescription')}
             </p>
             <button className="btn-secondary w-full justify-center mt-2" onClick={() => setStage('otp')}>
-              Tentar novamente
+              {t('btnRetry')}
             </button>
           </div>
         )}
 
         <p className="text-[10px] text-slate-600 text-center border-t border-slate-700 pt-3">
-          Autenticação via Gov.br — Portal de Serviços Digitais do Governo Federal
+          {t('footer')}
         </p>
       </div>
     </div>
