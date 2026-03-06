@@ -18,7 +18,7 @@ import {
   Edit,
 } from 'lucide-react'
 import { useState } from 'react'
-import { cn } from '@/lib/utils'
+import { cn, formatCNPJ } from '@/lib/utils'
 import type { EntityMember, EntityMemberRole } from '@/types'
 
 const ROLE_ICONS: Record<EntityMemberRole, React.ElementType> = {
@@ -38,6 +38,7 @@ export default function MinhaContaPage() {
   const config = ENTITY_CONFIG[entityType]
   const t = useTranslations('account')
   const [saved, setSaved] = useState(false)
+  const [cnpjValue, setCnpjValue] = useState(user.cnpj ?? '')
   const [inviteOpen, setInviteOpen] = useState(false)
   const [inviteEmail, setInviteEmail] = useState('')
   const [inviteRole, setInviteRole] = useState<EntityMemberRole>('OPERATOR')
@@ -124,7 +125,7 @@ export default function MinhaContaPage() {
               <label className="block text-xs text-slate-400 mb-1.5 flex items-center gap-1">
                 <FileText className="w-3 h-3" /> {t('cnpj')}
               </label>
-              <input type="text" defaultValue={user.cnpj} className="input w-full" placeholder={t('cnpjPlaceholder')} />
+              <input type="text" value={cnpjValue} onChange={(e) => setCnpjValue(formatCNPJ(e.target.value))} className="input w-full" placeholder={t('cnpjPlaceholder')} />
             </div>
             <div>
               <label className="block text-xs text-slate-400 mb-1.5 flex items-center gap-1">

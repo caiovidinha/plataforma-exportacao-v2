@@ -7,9 +7,10 @@ import {
   Globe, Building2, Truck, Ship, FileCheck,
   DollarSign, Warehouse, Shield, BadgeCheck, Microscope,
   ChevronRight, ChevronLeft, CheckCircle, Loader2,
+  Eye, EyeOff, X,
 } from 'lucide-react'
 import { getEntityConfig } from '@/lib/entity-config'
-import { cn } from '@/lib/utils'
+import { cn, formatCNPJ } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import type { ElementType } from 'react'
 
@@ -19,6 +20,17 @@ const ICONS: Record<string, ElementType> = {
 }
 
 const STEP_COUNT = 4
+
+function getPasswordStrength(pw: string) {
+  const reqs = {
+    length: pw.length >= 8,
+    upper:  /[A-Z]/.test(pw),
+    lower:  /[a-z]/.test(pw),
+    number: /[0-9]/.test(pw),
+  }
+  const score = Object.values(reqs).filter(Boolean).length
+  return { score, reqs }
+}
 
 interface FormField {
   label: string
@@ -86,6 +98,8 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
   // Step 2 — Acesso
   const [acesso, setAcesso] = useState({ email: '', password: '', confirm: '' })
   const [acessoError, setAcessoError] = useState('')
+  const [showPwd, setShowPwd] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
 
   function updateEmpresa(key: string, val: string) {
     setEmpresa((p) => ({ ...p, [key]: val }))
@@ -104,7 +118,8 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
       return cfg.specificFields.filter((f) => f.required).every((f) => !!specifics[f.key])
     }
     if (step === 2) {
-      return !!acesso.email && acesso.password.length >= 8 && acesso.password === acesso.confirm
+      const { score, reqs } = getPasswordStrength(acesso.password)
+      return !!acesso.email && reqs.length && score >= 3 && acesso.password === acesso.confirm
     }
     return true
   }
@@ -149,6 +164,8 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
       </div>
     )
   }
+
+  const pwdStrength = getPasswordStrength(acesso.password)
 
   return (
     <div className="w-full max-w-lg space-y-6">
@@ -198,7 +215,8 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
               <div className="col-span-2">
                 <label className="label">{cfg.cnpjLabel ?? t('cnpjLabel')} <span className="text-red-400">*</span></label>
                 <input className="input" placeholder={cfg.cnpjLabel ? 'VAT / Tax ID' : 'XX.XXX.XXX/XXXX-XX'}
-                       value={empresa.cnpj} onChange={(e) => updateEmpresa('cnpj', e.target.value)} />
+                       value={empresa.cnpj}
+                       onChange={(e) => updateEmpresa('cnpj', cfg.cnpjLabel ? e.target.value : formatCNPJ(e.target.value))} />
               </div>
               <div>
                 <label className="label">{t('phoneLabel')}</label>
@@ -243,16 +261,88 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
                 <input className="input" type="email" placeholder="voce@empresa.com.br"
                        value={acesso.email} onChange={(e) => updateAcesso('email', e.target.value)} />
               </div>
+
+              {/* Password with strength meter */}
               <div>
                 <label className="label">{t('passwordCreateLabel')} <span className="text-red-400">*</span></label>
-                <input className="input" type="password" placeholder={t('passwordMinHint')}
-                       value={acesso.password} onChange={(e) => updateAcesso('password', e.target.value)} />
+                <div className="relative">
+                  <input className="input pr-10" type={showPwd ? 'text' : 'password'}
+                         placeholder={t('passwordMinHint')}
+                         value={acesso.password} onChange={(e) => updateAcesso('password', e.target.value)} />
+                  <button type="button" onClick={() => setShowPwd((v) => !v)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300">
+                    {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                {acesso.password.length > 0 && (
+                  <div className="mt-2 space-y-1.5">
+                    {/* Strength bar */}
+                    <div className="flex items-center gap-3">
+                      <div className="h-1.5 flex-1 rounded-full bg-slate-700 overflow-hidden">
+                        <div
+                          className={cn('h-1.5 rounded-full transition-all duration-300',
+                            pwdStrength.score >= 4 ? 'bg-emerald-400'
+                            : pwdStrength.score === 3 ? 'bg-amber-400'
+                            : 'bg-red-500')}
+                          style={{ width: `${pwdStrength.score * 20}%` }}
+                        />
+                      </div>
+                      <span className={cn('text-xs font-medium whitespace-nowrap',
+                        pwdStrength.score >= 4 ? 'text-emerald-400'
+                        : pwdStrength.score === 3 ? 'text-amber-400'
+                        : 'text-red-400')}>
+                        {pwdStrength.score >= 4 ? t('pwdStrengthStrong')
+                          : pwdStrength.score === 3 ? t('pwdStrengthFair')
+                          : t('pwdStrengthWeak')}
+                      </span>
+                    </div>
+                    {/* Requirements checklist */}
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
+                      {(['length', 'upper', 'lower', 'number'] as const).map((key) => {
+                        const labels = {
+                          length: t('pwdReqLength'),
+                          upper:  t('pwdReqUpper'),
+                          lower:  t('pwdReqLower'),
+                          number: t('pwdReqNumber'),
+                        }
+                        const met = pwdStrength.reqs[key]
+                        return (
+                          <div key={key} className={cn('flex items-center gap-1 text-[11px]',
+                            met ? 'text-emerald-400' : 'text-slate-500')}>
+                            {met
+                              ? <CheckCircle className="w-3 h-3 flex-shrink-0" />
+                              : <X className="w-3 h-3 flex-shrink-0" />}
+                            {labels[key]}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
+
+              {/* Confirm password with match indicator */}
               <div>
                 <label className="label">{t('confirmPasswordLabel')} <span className="text-red-400">*</span></label>
-                <input className="input" type="password" placeholder={t('repeatPasswordPlaceholder')}
-                       value={acesso.confirm} onChange={(e) => updateAcesso('confirm', e.target.value)} />
+                <div className="relative">
+                  <input className="input pr-10" type={showConfirm ? 'text' : 'password'}
+                         placeholder={t('repeatPasswordPlaceholder')}
+                         value={acesso.confirm} onChange={(e) => updateAcesso('confirm', e.target.value)} />
+                  <button type="button" onClick={() => setShowConfirm((v) => !v)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300">
+                    {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                {acesso.confirm.length > 0 && (
+                  <p className={cn('mt-1.5 text-xs flex items-center gap-1',
+                    acesso.password === acesso.confirm ? 'text-emerald-400' : 'text-red-400')}>
+                    {acesso.password === acesso.confirm
+                      ? <><CheckCircle className="w-3 h-3" /> {t('pwdMatch')}</>
+                      : <><X className="w-3 h-3" /> {t('pwdNoMatch')}</>}
+                  </p>
+                )}
               </div>
+
               {acessoError && <p className="text-xs text-red-400">{acessoError}</p>}
             </div>
           </>

@@ -28,7 +28,7 @@ function USFlag() {
   )
 }
 
-export function LanguageSwitcher() {
+export function LanguageSwitcher({ className }: { className?: string }) {
   const router = useRouter()
   const locale = useLocale()
 
@@ -42,7 +42,7 @@ export function LanguageSwitcher() {
     <button
       onClick={toggle}
       title={locale === 'pt' ? 'Switch to English' : 'Mudar para Português'}
-      className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 transition-colors w-full"
+      className={`flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 transition-colors${className ? ` ${className}` : ''}`}
     >
       {locale === 'pt' ? <BRFlag /> : <USFlag />}
       <span className="font-medium">{locale === 'pt' ? 'PT' : 'EN'}</span>

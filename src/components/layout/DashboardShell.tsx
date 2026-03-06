@@ -4,6 +4,7 @@ import { useMockSession } from '@/lib/mock-session'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { MockEntitySwitcher } from '@/components/dev/MockEntitySwitcher'
 import { featureFlags } from '@/lib/feature-flags'
+import { ENTITY_CONFIG } from '@/lib/entity-config'
 
 export function DashboardShell({ children }: { children: React.ReactNode }) {
   const { user, entityType } = useMockSession()
@@ -15,7 +16,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         userName={user.name}
         companyName={user.company_name}
         mapaRegistered={user.mapa_registered}
-        roleLabel={user.role_label}
+        roleLabel={ENTITY_CONFIG[entityType].label}
       />
       <main className="flex-1 ml-64 min-h-screen">
         {children}

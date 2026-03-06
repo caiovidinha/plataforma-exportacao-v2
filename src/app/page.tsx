@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { getTranslations } from 'next-intl/server'
+import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
 
 export default async function LandingPage() {
   const t = await getTranslations('landing')
@@ -57,6 +58,7 @@ export default async function LandingPage() {
           <a href="#quem-usa" className="hidden sm:block hover:text-slate-200 transition-colors">{t('nav.whoUses')}</a>
         </nav>
         <div className="flex items-center gap-3">
+          <LanguageSwitcher />
           <Link href="/entrar" className="btn-ghost text-sm">{t('nav.signIn')}</Link>
           <Link href="/registro" className="btn-primary text-sm">{t('nav.register')}</Link>
         </div>

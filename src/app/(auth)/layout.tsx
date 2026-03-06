@@ -1,12 +1,15 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Leaf } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
+import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
 
 export const metadata: Metadata = {
   description: 'Plataforma B2B de exportação de castanha-do-Brasil',
 }
 
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
+export default async function AuthLayout({ children }: { children: React.ReactNode }) {
+  const t = await getTranslations('landing')
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col">
       {/* Minimal header */}
@@ -18,8 +21,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           <span className="font-display font-semibold text-sm tracking-wide">CastanhaExport</span>
         </Link>
         <nav className="flex items-center gap-4 text-sm text-slate-400">
-          <Link href="/entrar" className="hover:text-slate-200 transition-colors">Entrar</Link>
-          <Link href="/registro" className="btn-primary py-1.5 text-xs">Cadastrar</Link>
+          <LanguageSwitcher />
+          <Link href="/entrar" className="hover:text-slate-200 transition-colors">{t('nav.signIn')}</Link>
+          <Link href="/registro" className="btn-primary py-1.5 text-xs">{t('nav.register')}</Link>
         </nav>
       </header>
 
@@ -29,7 +33,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       </main>
 
       <footer className="text-center text-xs text-slate-600 py-4 border-t border-slate-800/40">
-        © {new Date().getFullYear()} CastanhaExport · Plataforma B2B de Exportação
+        {t('footerCopyright', { year: new Date().getFullYear() })}
       </footer>
     </div>
   )

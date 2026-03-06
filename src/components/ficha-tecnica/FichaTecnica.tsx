@@ -13,12 +13,15 @@ import {
   XCircle,
   Ship,
   Plane,
+  Tag,
+  ClipboardList,
+  FileText,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import type { Product, LegalRequirement } from '@/types'
 
-type TabId = 'geral' | 'organolÃ©ptico' | 'fisicoquimico' | 'nutricional' | 'exigencias'
+type TabId = 'geral' | 'organoleptico' | 'fisicoquimico' | 'nutricional' | 'exigencias'
 
 // ---- Linha de dado simples ------------------------------------
 function DataRow({ label, value, highlight }: { label: string; value: React.ReactNode; highlight?: boolean }) {
@@ -70,13 +73,13 @@ function LegalRequirementsPanel({ requirements }: { requirements: LegalRequireme
 
   const selected = requirements.find((r) => r.country_code === selectedCountry)
 
-  const docTypeIcon = {
-    FITOSSANITARIO: 'ðŸŒ¿',
-    ORIGEM: 'ðŸ·ï¸',
-    HIGIENICO_SANITARIO: 'ðŸ”¬',
-    MERCADO: 'ðŸ“‹',
-    OUTROS: 'ðŸ“„',
-  }
+  const docTypeIconMap = {
+    FITOSSANITARIO: Leaf,
+    ORIGEM: Tag,
+    HIGIENICO_SANITARIO: Microscope,
+    MERCADO: ClipboardList,
+    OUTROS: FileText,
+  } as const
 
   const docTypeLabel = {
     FITOSSANITARIO: t('docTypeFito'),
@@ -115,7 +118,9 @@ function LegalRequirementsPanel({ requirements }: { requirements: LegalRequireme
           <h4 className="text-sm font-semibold text-slate-200">
             {t('requiredDocFor')} <span className="text-brand-400">{selected.country_name}</span>
           </h4>
-          {selected.documents.map((doc, i) => (
+          {selected.documents.map((doc, i) => {
+            const DocIcon = docTypeIconMap[doc.type] ?? FileText
+            return (
             <div
               key={i}
               className={cn(
@@ -127,7 +132,7 @@ function LegalRequirementsPanel({ requirements }: { requirements: LegalRequireme
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-base">{docTypeIcon[doc.type]}</span>
+                  <DocIcon className="w-4 h-4 text-brand-400 flex-shrink-0" />
                   <span className="text-xs font-semibold text-slate-200">{doc.name}</span>
                 </div>
                 {doc.required ? (
@@ -148,7 +153,8 @@ function LegalRequirementsPanel({ requirements }: { requirements: LegalRequireme
                 {docTypeLabel[doc.type]}
               </span>
             </div>
-          ))}
+            )
+          })}
         </div>
       )}
     </div>
@@ -162,7 +168,7 @@ export function FichaTecnica({ product }: { product: Product }) {
 
   const TABS = [
     { id: 'geral' as TabId, label: t('tabGeneral'), icon: Info },
-    { id: 'organolÃ©ptico' as TabId, label: t('tabOrganoleptic'), icon: Leaf },
+    { id: 'organoleptico' as TabId, label: t('tabOrganoleptic'), icon: Leaf },
     { id: 'fisicoquimico' as TabId, label: t('tabPhysicochemical'), icon: FlaskConical },
     { id: 'nutricional' as TabId, label: t('tabNutritional'), icon: Microscope },
     { id: 'exigencias' as TabId, label: t('tabLegal'), icon: ShieldCheck },
@@ -233,8 +239,8 @@ export function FichaTecnica({ product }: { product: Product }) {
           </div>
         )}
 
-        {/* -------- ORGANOLÃ‰PTICO -------- */}
-        {activeTab === 'organolÃ©ptico' && (
+        {/* -------- ORGANOLÉPTICO -------- */}
+        {activeTab === 'organoleptico' && (
           <div className="card space-y-0">
             <p className="text-xs text-slate-400 mb-3">
               {t('orgSensoryNote')} <strong className="text-slate-300">{product.organoleptical.analysis_method}</strong>

@@ -9,14 +9,14 @@ import {
   ChevronDown,
   ChevronRight,
   FileText,
-  Download,
   CalendarDays,
   User,
   ExternalLink,
   AlertTriangle,
 } from 'lucide-react'
-import { cn, formatDate, stepStatusColors, stepStatusLabel, documentTypeLabel } from '@/lib/utils'
+import { cn, formatDate, stepStatusColors, stepStatusLabel } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
+import { DocumentViewer } from '@/components/ui/DocumentViewer'
 import type { ExportWorkflow, WorkflowStep, WorkflowStepStatus } from '@/types'
 
 // ---- Ícone por status ------------------------------------------
@@ -53,35 +53,6 @@ function DateRow({ label, planned, actual, late }: { label: string; planned: str
           </span>
         ) : (
           <span className="text-slate-600 italic">—</span>
-        )}
-      </div>
-    </div>
-  )
-}
-
-// ---- Linha de documento ----------------------------------------
-function DocumentRow({ doc }: { doc: ExportWorkflow['steps'][0]['documents'][0] }) {
-  const statusClass = {
-    PENDENTE: 'text-slate-400',
-    EMITIDO: 'text-brand-400',
-    ASSINADO: 'text-violet-400',
-    APROVADO: 'text-emerald-400',
-    REJEITADO: 'text-red-400',
-  }[doc.status]
-
-  return (
-    <div className="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-dark-100 group">
-      <div className="flex items-center gap-2">
-        <FileText className="w-3.5 h-3.5 text-slate-500" />
-        <span className="text-xs text-slate-300">{documentTypeLabel[doc.type] ?? doc.type}</span>
-        <span className="text-xs text-slate-500">— {doc.name}</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <span className={cn('text-xs font-medium', statusClass)}>{doc.status}</span>
-        {doc.url && (
-          <a href={doc.url} target="_blank" rel="noopener noreferrer" className="opacity-0 group-hover:opacity-100 transition-opacity">
-            <Download className="w-3.5 h-3.5 text-slate-400 hover:text-brand-400" />
-          </a>
         )}
       </div>
     </div>
@@ -187,11 +158,7 @@ function WorkflowStepCard({
                 <p className="text-xs font-medium text-slate-400 mb-1.5 flex items-center gap-1">
                   <FileText className="w-3 h-3" /> {t('documentsSection')}
                 </p>
-                <div className="rounded-lg border border-slate-700/40 overflow-hidden">
-                  {step.documents.map((doc) => (
-                    <DocumentRow key={doc.id} doc={doc} />
-                  ))}
-                </div>
+                <DocumentViewer documents={step.documents} />
               </div>
             )}
 

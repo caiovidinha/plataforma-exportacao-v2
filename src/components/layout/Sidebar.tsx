@@ -69,6 +69,20 @@ export function Sidebar({
   const isTrading = TRADING_ENTITIES.includes(entityType)
   const EntityIcon = ENTITY_ICONS[entityType] ?? Leaf
 
+  // Locale-aware entity name using static keys so next-intl resolves correctly
+  const entityName = ({
+    exportador:            t('entities.exportador'),
+    importador:            t('entities.importador'),
+    transportadora:        t('entities.transportadora'),
+    'companhia-navegacao': t('entities.companhia-navegacao'),
+    despachante:           t('entities.despachante'),
+    corretora:             t('entities.corretora'),
+    terminal:              t('entities.terminal'),
+    seguradora:            t('entities.seguradora'),
+    certificadora:         t('entities.certificadora'),
+    laboratorio:           t('entities.laboratorio'),
+  } satisfies Record<EntitySlug, string>)[entityType]
+
   // ─── Nav items built with translations ──────────────────────────────────
   const tradingNav = [
     { href: '/dashboard',        label: t('nav.overview'),       icon: LayoutDashboard },
@@ -163,7 +177,7 @@ export function Sidebar({
           <div className="flex items-center gap-1.5 mb-3 bg-violet-500/10 border border-violet-500/20 rounded px-2 py-1">
             <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
             <span className="text-xs text-violet-300 font-medium">
-              {t('sidebar.mockLabel', { role: roleLabel })}
+              {t('sidebar.mockLabel', { role: entityName })}
             </span>
           </div>
         )}
@@ -177,7 +191,7 @@ export function Sidebar({
         </button>
 
         <div className="mt-3 pt-3 border-t border-slate-700/50">
-          <LanguageSwitcher />
+          <LanguageSwitcher className="w-full" />
         </div>
       </div>
     </aside>

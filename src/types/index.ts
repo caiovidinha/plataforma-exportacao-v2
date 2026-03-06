@@ -149,6 +149,7 @@ export interface Offer {
   status: OfferStatus
   created_at: string
   expires_at: string
+  featured?: boolean
 }
 
 export type MatchStatus = 'PENDENTE' | 'ACEITO' | 'RECUSADO' | 'CONTRATADO'

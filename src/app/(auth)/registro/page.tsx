@@ -15,8 +15,23 @@ const ICONS: Record<string, ElementType> = {
   DollarSign, Warehouse, Shield, BadgeCheck, Microscope,
 }
 
+// Maps slug → description key in the "entities" namespace
+const DESC_KEY: Record<string, string> = {
+  exportador:             'exportadorDesc',
+  importador:             'importadorDesc',
+  transportadora:         'transportadoraDesc',
+  'companhia-navegacao':  'companhia-navegacaoDesc',
+  despachante:            'despachantDesc',
+  corretora:              'corretoraDesc',
+  terminal:               'terminalDesc',
+  seguradora:             'seguradoraDesc',
+  certificadora:          'certificadoraDesc',
+  laboratorio:            'laboratorioDesc',
+}
+
 export default async function RegistroPage() {
   const t = await getTranslations('registro')
+  const tEntities = await getTranslations('entities')
 
   return (
     <div className="w-full max-w-3xl space-y-8">
@@ -41,9 +56,11 @@ export default async function RegistroPage() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className={cn('text-sm font-semibold text-slate-100 group-hover:text-white transition-colors', cfg.color.replace('text-', 'group-hover:text-').replace('400', '300'))}>
-                  {cfg.label}
+                  {tEntities(slug as Parameters<typeof tEntities>[0])}
                 </p>
-                <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{cfg.description}</p>
+                <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
+                  {tEntities(DESC_KEY[slug] as Parameters<typeof tEntities>[0])}
+                </p>
               </div>
             </Link>
           )
