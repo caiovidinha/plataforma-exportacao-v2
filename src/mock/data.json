@@ -142,6 +142,35 @@
       "status": "ATIVA",
       "created_at": "2025-10-15T14:00:00Z",
       "expires_at": "2026-06-30T23:59:59Z"
+    },
+    {
+      "id": "off_003",
+      "featured": true,
+      "product": {
+        "id": "prod_001",
+        "name": "Castanha-do-Brasil Premium — Orgânica Fair Trade",
+        "description": "Lote premium certificado orgânico IBD e Fair Trade, colhido em reservas extrativistas do Acre. Laudo MAPA aprovado, aflatoxina < 4 ppb, umidade 3,2%. Rastreabilidade total da floresta ao porto. Ideal para marcas premium europeias e norte-americanas.",
+        "images": ["https://placehold.co/600x400/92400e/ffffff?text=Premium+Castanha"],
+        "packaging": "Big bags 500 kg com liner interno EVOH"
+      },
+      "exporter": {
+        "id": "usr_002",
+        "company_name": "AmazonNuts Export S.A.",
+        "country": "BR",
+        "rating": 4.9,
+        "mapa_registered": true
+      },
+      "available_quantity_kg": 80000,
+      "price_per_kg_usd": 5.80,
+      "incoterm": "CIF",
+      "origin_port": "Porto de Santos (SP)",
+      "destination_ports": ["Rotterdam", "Hamburg", "Felixstowe", "Barcelona"],
+      "delivery_days": 28,
+      "harvest_year": 2025,
+      "sale_modality": "CONTRATO_LONGO_PRAZO",
+      "status": "ATIVA",
+      "created_at": "2026-02-01T09:00:00Z",
+      "expires_at": "2026-08-31T23:59:59Z"
     }
   ],
 
