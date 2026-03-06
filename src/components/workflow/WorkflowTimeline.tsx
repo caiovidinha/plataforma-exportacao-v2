@@ -43,18 +43,21 @@ function StatusBadge({ status }: { status: WorkflowStepStatus }) {
 function DateRow({ label, planned, actual, late }: { label: string; planned: string; actual?: string; late?: boolean }) {
   const t = useTranslations('workflow')
   return (
-    <div className="flex items-center justify-between text-xs">
-      <span className="text-slate-500">{label}</span>
-      <div className="flex items-center gap-3">
-        <span className="text-slate-400">{formatDate(planned)}</span>
-        {actual ? (
-          <span className={cn('font-medium', late ? 'text-red-400' : 'text-emerald-400')}>
-            {formatDate(actual)} {late && t('lateLabel')}
-          </span>
-        ) : (
-          <span className="text-slate-600 italic">—</span>
-        )}
-      </div>
+    <div className="grid grid-cols-3 items-center text-xs py-1">
+      <span className="text-slate-400">{label}</span>
+      <span className="text-slate-300 tabular-nums">{formatDate(planned)}</span>
+      {actual ? (
+        <span className={cn('font-medium tabular-nums', late ? 'text-red-400' : 'text-emerald-400')}>
+          {formatDate(actual)}
+          {late && (
+            <span className="ml-1 text-[10px] font-semibold uppercase tracking-wide text-red-500">
+              {t('lateLabel')}
+            </span>
+          )}
+        </span>
+      ) : (
+        <span className="text-slate-600 italic">—</span>
+      )}
     </div>
   )
 }
@@ -141,13 +144,12 @@ function WorkflowStepCard({
             <p className="text-xs text-slate-400 mt-3 leading-relaxed">{step.description}</p>
 
             {/* Datas */}
-            <div className="bg-dark-100 rounded-lg px-3 py-2.5 space-y-1.5">
-              <div className="flex items-center justify-between text-xs font-medium text-slate-400 mb-1">
+            <div className="bg-dark-100 rounded-lg px-3 py-2.5">
+              {/* Header */}
+              <div className="grid grid-cols-3 items-center text-[10px] font-semibold uppercase tracking-wide text-slate-500 pb-1.5 mb-1 border-b border-slate-700/50">
                 <span className="flex items-center gap-1"><CalendarDays className="w-3 h-3" /> {t('datesSection')}</span>
-                <div className="flex gap-6">
-                  <span>{t('planned')}</span>
-                  <span>{t('actual')}</span>
-                </div>
+                <span>{t('planned')}</span>
+                <span>{t('actual')}</span>
               </div>
               <DateRow label={t('startLabel')} planned={step.planned_date} actual={step.actual_date} late={late} />
             </div>

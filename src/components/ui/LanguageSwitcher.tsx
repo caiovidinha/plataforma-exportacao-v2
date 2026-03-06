@@ -2,10 +2,11 @@
 
 import { useRouter } from 'next/navigation'
 import { useLocale } from 'next-intl'
+import { cn } from '@/lib/utils'
 
 function BRFlag() {
   return (
-    <svg viewBox="0 0 20 14" width="20" height="14" className="rounded-sm flex-shrink-0" role="img" aria-label="Bandeira do Brasil">
+    <svg viewBox="0 0 20 14" width="16" height="11" className="rounded-sm flex-shrink-0" role="img" aria-label="Bandeira do Brasil">
       <rect width="20" height="14" fill="#009c3b" />
       <polygon points="10,1 19,7 10,13 1,7" fill="#ffdf00" />
       <circle cx="10" cy="7" r="3" fill="#002776" />
@@ -15,7 +16,7 @@ function BRFlag() {
 
 function USFlag() {
   return (
-    <svg viewBox="0 0 20 14" width="20" height="14" className="rounded-sm flex-shrink-0" role="img" aria-label="US Flag">
+    <svg viewBox="0 0 20 14" width="16" height="11" className="rounded-sm flex-shrink-0" role="img" aria-label="US Flag">
       <rect width="20" height="14" fill="#B22234" />
       <rect y="1.08" width="20" height="1.08" fill="white" />
       <rect y="3.23" width="20" height="1.08" fill="white" />
@@ -28,26 +29,47 @@ function USFlag() {
   )
 }
 
+const LOCALES = [
+  { code: 'pt', label: 'PT', Flag: BRFlag },
+  { code: 'en', label: 'EN', Flag: USFlag },
+] as const
+
 export function LanguageSwitcher({ className }: { className?: string }) {
   const router = useRouter()
   const locale = useLocale()
 
-  function toggle() {
-    const next = locale === 'pt' ? 'en' : 'pt'
+  function setLocale(next: string) {
+    if (next === locale) return
     document.cookie = `locale=${next}; path=/; max-age=31536000`
     router.refresh()
   }
 
   return (
-    <button
-      onClick={toggle}
-      title={locale === 'pt' ? 'Switch to English' : 'Mudar para Português'}
-      className={`flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 transition-colors${className ? ` ${className}` : ''}`}
+    <div
+      role="group"
+      aria-label="Language switcher"
+      className={cn(
+        'inline-flex items-center rounded-full border border-slate-700/80 bg-dark-100 p-0.5 gap-0.5',
+        className,
+      )}
     >
-      {locale === 'pt' ? <BRFlag /> : <USFlag />}
-      <span className="font-medium">{locale === 'pt' ? 'PT' : 'EN'}</span>
-      <span className="text-slate-600">·</span>
-      <span className="text-slate-500">{locale === 'pt' ? 'English' : 'Português'}</span>
-    </button>
+      {LOCALES.map(({ code, label, Flag }) => (
+        <button
+          key={code}
+          onClick={() => setLocale(code)}
+          aria-pressed={locale === code}
+          title={code === 'pt' ? 'Mudar para Português' : 'Switch to English'}
+          className={cn(
+            'flex flex-1 items-center justify-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-all duration-150',
+            locale === code
+              ? 'bg-brand-500 text-white shadow-sm'
+              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/40',
+          )}
+        >
+          <Flag />
+          {label}
+        </button>
+      ))}
+    </div>
   )
 }
