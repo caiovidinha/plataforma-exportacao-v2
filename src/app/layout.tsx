@@ -27,7 +27,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Toaster
             position="bottom-right"
             toastOptions={{
-              style: { background: '#1a2836', color: '#f1f5f9', border: '1px solid #243548' },
+              style: { background: '#261810', color: '#f1f5f9', border: '1px solid #3e281a' },
             }}
           />
         </NextIntlClientProvider>

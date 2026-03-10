@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import {
   Leaf, Globe, GitBranch, FileText, Package,
   TrendingUp, Shield, ChevronRight, Star, ArrowRight,
@@ -43,9 +44,9 @@ export default async function LandingPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen bg-[#110b06] text-slate-100">
       {/* ── NAVBAR ── */}
-      <header className="sticky top-0 z-40 flex items-center justify-between px-6 py-4 border-b border-slate-800/60 bg-slate-950/90 backdrop-blur-sm">
+      <header className="sticky top-0 z-40 flex items-center justify-between px-6 py-4 border-b border-[#4a2e18]/40 bg-[#110b06]/50 backdrop-blur-md">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-brand-500/20 flex items-center justify-center">
             <Leaf className="w-4 h-4 text-brand-400" />
@@ -64,39 +65,21 @@ export default async function LandingPage() {
         </div>
       </header>
 
-      {/* ── HERO ── */}
-      <section className="relative overflow-hidden px-6 py-24 md:py-36 text-center">
-        {/* Background glow */}
-        <div className="absolute inset-0 -z-10 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-brand-500/10 blur-[120px] rounded-full" />
-        </div>
-        <div className="max-w-3xl mx-auto space-y-6">
-          <div className="inline-flex items-center gap-2 text-xs font-medium text-brand-400 bg-brand-400/10 border border-brand-400/20 rounded-full px-4 py-1.5">
-            <Leaf className="w-3.5 h-3.5" />
-            {t('hero.badge')}
-          </div>
-          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-            {t('hero.h1Part1')}{' '}
-            <span className="text-brand-400">{t('hero.h1Strong')}</span>{' '}
-            {t('hero.h1Part2')}
-          </h1>
-          <p className="text-lg text-slate-400 max-w-xl mx-auto leading-relaxed">
-            {t('hero.subtitle')}
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-            <Link href="/registro" className="btn-primary text-base px-8 py-3 rounded-xl">
-              {t('hero.ctaFree')} <ArrowRight className="w-4 h-4 ml-2" />
-            </Link>
-            <Link href="/entrar" className="btn-ghost text-base px-8 py-3 rounded-xl">
-              {t('hero.alreadyHaveAccount')}
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* ── BANNER ── */}
+      <div className="w-full">
+        <Image
+          src="/img/banner.jpeg"
+          alt="CastanhaExport Banner"
+          width={1920}
+          height={600}
+          className="w-full object-cover"
+          priority
+        />
+      </div>
 
       {/* ── STATS STRIP ── */}
-      <section className="border-y border-slate-800/60 bg-slate-900/40">
-        <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-4 divide-x divide-slate-800/60">
+      <section className="border-y border-[#4a2e18]/60 bg-[#1c1208]/40">
+        <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-4 divide-x divide-[#4a2e18]/60">
           {[
             { v: '120+', l: t('statsExporters') },
             { v: '300+', l: t('statsImporters') },
@@ -131,7 +114,7 @@ export default async function LandingPage() {
       </section>
 
       {/* ── HOW IT WORKS ── */}
-      <section id="como-funciona" className="bg-slate-900/40 border-y border-slate-800/60">
+      <section id="como-funciona" className="bg-[#1c1208]/40 border-y border-[#4a2e18]/60">
         <div className="max-w-5xl mx-auto px-6 py-24 space-y-12">
           <div className="text-center space-y-2">
             <h2 className="font-display text-3xl font-bold text-white">{t('howWorksSectionTitle')}</h2>
@@ -163,7 +146,7 @@ export default async function LandingPage() {
           {ENTITIES.map(({ icon: Icon, label, color, bg, slug }) => (
             <Link key={slug} href={`/registro/${slug}`}
               className={cn(
-                'card flex flex-col items-center gap-2 py-5 text-center hover:border-slate-600 hover:bg-slate-800/70 transition-all group cursor-pointer',
+                'card flex flex-col items-center gap-2 py-5 text-center hover:border-[#7a4e30]/60 hover:bg-[#3e2818]/70 transition-all group cursor-pointer',
               )}>
               <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center', bg)}>
                 <Icon className={cn('w-5 h-5', color)} />
@@ -183,7 +166,7 @@ export default async function LandingPage() {
 
       {/* ── CTA BANNER ── */}
       <section className="max-w-5xl mx-auto px-6 pb-24">
-        <div className="rounded-2xl bg-gradient-to-br from-brand-900/40 via-slate-900 to-slate-900 border border-brand-400/20 p-10 text-center space-y-5">
+        <div className="rounded-2xl bg-gradient-to-br from-brand-900/40 via-[#1c1208] to-[#1c1208] border border-brand-400/20 p-10 text-center space-y-5">
           <Leaf className="w-10 h-10 text-brand-400 mx-auto" />
           <h2 className="font-display text-2xl md:text-3xl font-bold text-white">
             {t('ctaTitle')}
@@ -203,7 +186,7 @@ export default async function LandingPage() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="border-t border-slate-800/60 px-6 py-8 text-center text-xs text-slate-600">
+      <footer className="border-t border-[#4a2e18]/60 px-6 py-8 text-center text-xs text-slate-600">
         <p>{t('footerCopyright', { year: new Date().getFullYear() })}</p>
         <p className="mt-1">{t('footerIntegrations')}</p>
       </footer>

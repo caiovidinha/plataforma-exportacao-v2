@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default async function AuthLayout({ children }: { children: React.ReactNode }) {
   const t = await getTranslations('landing')
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col">
+    <div className="min-h-screen bg-[#110b06] flex flex-col">
       {/* Minimal header */}
       <header className="flex items-center justify-between px-6 py-4 border-b border-slate-800/60">
         <Link href="/" className="flex items-center gap-2 text-slate-100 hover:text-brand-300 transition-colors">
