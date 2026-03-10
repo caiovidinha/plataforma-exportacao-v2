@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Leaf } from 'lucide-react'
+import Image from 'next/image'
 import { getTranslations } from 'next-intl/server'
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
 
@@ -14,11 +14,8 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
     <div className="min-h-screen bg-[#110b06] flex flex-col">
       {/* Minimal header */}
       <header className="flex items-center justify-between px-6 py-4 border-b border-slate-800/60">
-        <Link href="/" className="flex items-center gap-2 text-slate-100 hover:text-brand-300 transition-colors">
-          <div className="w-8 h-8 rounded-lg bg-brand-500/20 flex items-center justify-center">
-            <Leaf className="w-4 h-4 text-brand-400" />
-          </div>
-          <span className="font-display font-semibold text-sm tracking-wide">BrazilXHub</span>
+        <Link href="/" className="flex items-center">
+          <Image src="/img/logo.webp" alt="BrazilXHub" width={140} height={40} className="h-8 w-auto" />
         </Link>
         <nav className="flex items-center gap-4 text-sm text-slate-400">
           <LanguageSwitcher />
