@@ -18,7 +18,7 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
           <div className="w-8 h-8 rounded-lg bg-brand-500/20 flex items-center justify-center">
             <Leaf className="w-4 h-4 text-brand-400" />
           </div>
-          <span className="font-display font-semibold text-sm tracking-wide">CastanhaExport</span>
+          <span className="font-display font-semibold text-sm tracking-wide">BrazilXHub</span>
         </Link>
         <nav className="flex items-center gap-4 text-sm text-slate-400">
           <LanguageSwitcher />

@@ -273,7 +273,7 @@
     "ctaSubtitle": "Create your account for free and start connecting your company to the international market.",
     "ctaCreateAccount": "Create free account",
     "ctaAlreadyHaveAccount": "I already have an account",
-    "footerCopyright": "© {year} CastanhaExport · B2B Platform for Brazil Nut Exports",
+    "footerCopyright": "© {year} BrazilXHub · B2B Platform for Brazil Nut Exports",
     "footerIntegrations": "Integrated with SISCOMEX · MAPA · Gov.br · SIGVIG · SWIFT"
   },
   "auth": {
@@ -298,7 +298,7 @@
   },
   "entrar": {
     "welcomeBack": "Welcome back",
-    "accessAccount": "Access your CastanhaExport account",
+    "accessAccount": "Access your BrazilXHub account",
     "emailLabel": "Email",
     "emailPlaceholder": "you@company.com",
     "passwordLabel": "Password",

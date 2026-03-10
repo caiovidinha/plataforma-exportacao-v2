@@ -273,7 +273,7 @@
     "ctaSubtitle": "Crie sua conta gratuitamente e comece a conectar sua empresa ao mercado internacional.",
     "ctaCreateAccount": "Criar conta gratuita",
     "ctaAlreadyHaveAccount": "Já tenho conta",
-    "footerCopyright": "© {year} CastanhaExport · Plataforma B2B de Exportação de Castanha-do-Brasil",
+    "footerCopyright": "© {year} BrazilXHub · Plataforma B2B de Exportação de Castanha-do-Brasil",
     "footerIntegrations": "Integrado com SISCOMEX · MAPA · Gov.br · SIGVIG · SWIFT"
   },
   "auth": {
@@ -298,7 +298,7 @@
   },
   "entrar": {
     "welcomeBack": "Bem-vindo de volta",
-    "accessAccount": "Acesse sua conta CastanhaExport",
+    "accessAccount": "Acesse sua conta BrazilXHub",
     "emailLabel": "E-mail",
     "emailPlaceholder": "voce@empresa.com.br",
     "passwordLabel": "Senha",

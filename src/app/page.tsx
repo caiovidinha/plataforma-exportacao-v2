@@ -5,7 +5,6 @@ import {
   TrendingUp, Shield, ChevronRight, Star, ArrowRight,
   Truck, Ship, Microscope, Building2, DollarSign, Warehouse,
 } from 'lucide-react'
-import { cn } from '@/lib/utils'
 import { getTranslations } from 'next-intl/server'
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
 
@@ -46,18 +45,18 @@ export default async function LandingPage() {
   return (
     <div className="min-h-screen bg-[#110b06] text-slate-100">
       {/* ── NAVBAR ── */}
-      <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 py-4 border-b border-[#dbcbba]/60 bg-[#ede5dc]/80 backdrop-blur-md">
+      <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-24 py-4 border-b border-[#dbcbba]/60 bg-[#ede5dc]/80 backdrop-blur-md">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-[#584531]/20 flex items-center justify-center">
             <Leaf className="w-4 h-4 text-[#584531]" />
           </div>
-          <span className="font-display font-semibold tracking-wide text-[#584531]">CastanhaExport</span>
+          <span className="font-display font-semibold tracking-wide text-[#584531]">BrazilXHub</span>
         </Link>
-        <nav className="flex items-center gap-6 text-sm text-[#584531]/70">
+        {/* <nav className="flex items-center gap-6 text-sm text-[#584531]/70">
           <a href="#funcionalidades" className="hidden sm:block hover:text-[#584531] transition-colors">{t('nav.features')}</a>
           <a href="#como-funciona" className="hidden sm:block hover:text-[#584531] transition-colors">{t('nav.howItWorks')}</a>
           <a href="#quem-usa" className="hidden sm:block hover:text-[#584531] transition-colors">{t('nav.whoUses')}</a>
-        </nav>
+        </nav> */}
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
           <Link href="/entrar" className="inline-flex items-center gap-2 text-[#584531]/80 hover:text-[#584531] px-3 py-2 rounded-lg transition-colors text-sm">{t('nav.signIn')}</Link>
