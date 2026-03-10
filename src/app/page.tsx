@@ -154,7 +154,7 @@ export default async function LandingPage() {
           height={1200}
           className="w-full h-auto block opacity-60"
         />
-        <div className="absolute inset-0" />
+        <div className="absolute inset-0"/>
         <div className="absolute inset-0 flex items-center">
           <div className="relative z-10 w-full max-w-5xl mx-auto px-6 py-24 space-y-12">
           <div className="text-center space-y-2">
