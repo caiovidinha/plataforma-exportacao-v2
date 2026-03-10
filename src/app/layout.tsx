@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Outfit } from 'next/font/google'
+import { Inter, Outfit, Montserrat } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
@@ -7,6 +7,7 @@ import './globals.css'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' })
+const montserrat = Montserrat({ subsets: ['latin'], variable: '--font-montserrat' })
 
 export const metadata: Metadata = {
   title: {
@@ -21,7 +22,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.variable} ${outfit.variable} font-sans bg-dark text-slate-100 antialiased`}>
+      <body className={`${inter.variable} ${outfit.variable} ${montserrat.variable} font-sans bg-dark text-slate-100 antialiased`}>
         <NextIntlClientProvider messages={messages}>
           {children}
           <Toaster

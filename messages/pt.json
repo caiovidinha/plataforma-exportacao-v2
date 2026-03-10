@@ -217,13 +217,12 @@
       "register": "Cadastrar"
     },
     "hero": {
-      "badge": "Plataforma B2B de Exportação · Castanha-do-Brasil",
-      "h1Part1": "Exporte castanha",
-      "h1Strong": "com segurança",
-      "h1Part2": "do Brasil para o mundo",
-      "subtitle": "Conectamos exportadores, importadores e toda a cadeia logística em uma plataforma integrada. Do match ao pagamento, com rastreabilidade total.",
-      "ctaFree": "Começar gratuitamente",
-      "alreadyHaveAccount": "Já tenho conta"
+      "eyebrow": "Plataforma B2B · Exportação",
+      "headline": "Castanha-do-Brasil para o mundo",
+      "subtitle": "A mais completa plataforma integrada, que conecta exportadores, importadores e toda a cadeia logística com segurança e rastreabilidade.",
+      "ctaPrimary": "Cadastrar",
+      "ctaSecondary": "Já tenho conta",
+      "logosLabel": "Parceiros & Certificações"
     },
     "statsExporters": "Exportadores",
     "statsImporters": "Importadores",
@@ -252,7 +251,7 @@
     "step03Title": "Contratação",
     "step03Desc": "Despachante, câmbio, transporte e terminal contratados em bloco.",
     "step04Title": "Liberação MAPA",
-    "step04Desc": "Auditoria, análise de aflatoxina em lab credenciado e Certificado Fitossanitário.",
+    "step04Desc": "Auditoria, análise e Certificado Fitossanitário.",
     "step05Title": "Embarque",
     "step05Desc": "Siscomex, DU-E, estufagem e embarque no navio.",
     "step06Title": "Pagamento",

@@ -46,39 +46,78 @@ export default async function LandingPage() {
   return (
     <div className="min-h-screen bg-[#110b06] text-slate-100">
       {/* ── NAVBAR ── */}
-      <header className="sticky top-0 z-40 flex items-center justify-between px-6 py-4 border-b border-[#4a2e18]/40 bg-[#110b06]/50 backdrop-blur-md">
+      <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 py-4 border-b border-[#dbcbba]/60 bg-[#ede5dc]/80 backdrop-blur-md">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-brand-500/20 flex items-center justify-center">
-            <Leaf className="w-4 h-4 text-brand-400" />
+          <div className="w-8 h-8 rounded-lg bg-[#584531]/20 flex items-center justify-center">
+            <Leaf className="w-4 h-4 text-[#584531]" />
           </div>
-          <span className="font-display font-semibold tracking-wide">CastanhaExport</span>
+          <span className="font-display font-semibold tracking-wide text-[#584531]">CastanhaExport</span>
         </Link>
-        <nav className="flex items-center gap-6 text-sm text-slate-400">
-          <a href="#funcionalidades" className="hidden sm:block hover:text-slate-200 transition-colors">{t('nav.features')}</a>
-          <a href="#como-funciona" className="hidden sm:block hover:text-slate-200 transition-colors">{t('nav.howItWorks')}</a>
-          <a href="#quem-usa" className="hidden sm:block hover:text-slate-200 transition-colors">{t('nav.whoUses')}</a>
+        <nav className="flex items-center gap-6 text-sm text-[#584531]/70">
+          <a href="#funcionalidades" className="hidden sm:block hover:text-[#584531] transition-colors">{t('nav.features')}</a>
+          <a href="#como-funciona" className="hidden sm:block hover:text-[#584531] transition-colors">{t('nav.howItWorks')}</a>
+          <a href="#quem-usa" className="hidden sm:block hover:text-[#584531] transition-colors">{t('nav.whoUses')}</a>
         </nav>
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
-          <Link href="/entrar" className="btn-ghost text-sm">{t('nav.signIn')}</Link>
-          <Link href="/registro" className="btn-primary text-sm">{t('nav.register')}</Link>
+          <Link href="/entrar" className="inline-flex items-center gap-2 text-[#584531]/80 hover:text-[#584531] px-3 py-2 rounded-lg transition-colors text-sm">{t('nav.signIn')}</Link>
+          <Link href="/registro" className="inline-flex items-center gap-2 bg-[#584531] hover:bg-[#6b5540] text-[#ede5dc] font-semibold px-4 py-2 rounded-lg transition-colors text-sm">{t('nav.register')}</Link>
         </div>
       </header>
 
-      {/* ── BANNER ── */}
-      <div className="w-full">
+      {/* ── HERO ── */}
+      <section className="relative w-full">
+
+        {/* Fundo */}
         <Image
-          src="/img/banner.jpeg"
-          alt="CastanhaExport Banner"
-          width={1920}
-          height={600}
-          className="w-full object-cover"
+          src="/img/hero-background.webp"
+          alt="Castanha-do-Brasil"
+          width={2560}
+          height={1237}
+          className="w-screen h-auto block"
           priority
         />
-      </div>
+
+        {/* Elementos — esquerda, rodapé */}
+        <div className="absolute bottom-0 left-0 px-24 pb-16 flex flex-col items-start gap-9 max-w-2xl">
+
+          {/* Subtítulo */}
+          <p className="font-montserrat text-lg text-white leading-relaxed">
+            {t('hero.subtitle')}
+          </p>
+
+          {/* Headline */}
+          <h1 className="font-montserrat text-4xl md:text-5xl font-medium text-white mb-1 -mt-1">
+            {t('hero.headline')}
+          </h1>
+
+          {/* Botões */}
+          <div className="flex flex-wrap gap-3">
+            <Link href="/registro"
+              className="inline-flex items-center gap-2 font-montserrat text-sm px-6 py-2 rounded-full bg-[#462a1f] hover:bg-[#5a3529] text-white transition-colors">
+              {t('hero.ctaPrimary')} <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+            <Link href="/entrar"
+              className="inline-flex items-center gap-2 font-montserrat text-sm px-6 py-2 rounded-full bg-[#574531] hover:bg-[#6b5540] text-white/80 transition-colors">
+              {t('hero.ctaSecondary')} <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          {/* Ícones */}
+          <Image
+            src="/img/hero-icons.webp"
+            alt=""
+            width={400}
+            height={100}
+            className="h-12 w-auto pt-1 mt-4 -mb-4"
+          />
+
+        </div>
+
+      </section>
 
       {/* ── STATS STRIP ── */}
-      <section className="border-y border-[#4a2e18]/60 bg-[#1c1208]/40">
+      <section className="hidden border-y border-[#4a2e18]/60 bg-[#1c1208]/40">
         <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-4 divide-x divide-[#4a2e18]/60">
           {[
             { v: '120+', l: t('statsExporters') },
@@ -95,40 +134,42 @@ export default async function LandingPage() {
       </section>
 
       {/* ── FEATURES ── */}
-      <section id="funcionalidades" className="max-w-5xl mx-auto px-6 py-24 space-y-12">
-        <div className="text-center space-y-2">
-          <h2 className="font-display text-3xl font-bold text-white">{t('featuresSectionTitle')}</h2>
-          <p className="text-slate-400 max-w-md mx-auto text-sm">{t('featuresSectionSubtitle')}</p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {FEATURES.map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="card space-y-3 hover:border-slate-600 transition-colors">
-              <div className="w-10 h-10 rounded-lg bg-brand-400/10 flex items-center justify-center">
-                <Icon className="w-5 h-5 text-brand-400" />
+      <section id="funcionalidades" className="bg-[#ede5dc] w-full py-24">
+        <div className="max-w-5xl mx-auto px-6 space-y-12">
+          <div className="text-center space-y-2">
+            <h2 className="font-display text-3xl font-bold text-[#584531]">{t('featuresSectionTitle')}</h2>
+            <p className="text-[#584531] max-w-md mx-auto text-sm">{t('featuresSectionSubtitle')}</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {FEATURES.map(({ icon: Icon, title, desc }) => (
+              <div key={title} className="bg-[#dbcbba] rounded-xl p-5 space-y-3">
+                <div className="w-10 h-10 rounded-lg bg-[#ede5dc] flex items-center justify-center">
+                  <Icon className="w-5 h-5 text-[#584531]" />
+                </div>
+                <h3 className="font-semibold text-[#584531]">{title}</h3>
+                <p className="text-sm text-[#584531] leading-relaxed">{desc}</p>
               </div>
-              <h3 className="font-semibold text-slate-100">{title}</h3>
-              <p className="text-sm text-slate-500 leading-relaxed">{desc}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ── HOW IT WORKS ── */}
-      <section id="como-funciona" className="bg-[#1c1208]/40 border-y border-[#4a2e18]/60">
+      <section id="como-funciona" className="bg-[#584531] w-full">
         <div className="max-w-5xl mx-auto px-6 py-24 space-y-12">
           <div className="text-center space-y-2">
-            <h2 className="font-display text-3xl font-bold text-white">{t('howWorksSectionTitle')}</h2>
-            <p className="text-slate-400 text-sm max-w-md mx-auto">{t('howWorksSectionSubtitle')}</p>
+            <h2 className="font-display text-3xl font-bold text-[#ede5dc]">{t('howWorksSectionTitle')}</h2>
+            <p className="text-[#ede5dc] text-sm max-w-lg mx-auto">{t('howWorksSectionSubtitle')}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {STEPS.map((s) => (
-              <div key={s.n} className="card flex gap-4">
-                <span className="text-3xl font-display font-bold text-brand-400/30 leading-none flex-shrink-0 select-none">
+              <div key={s.n} className="bg-[#dbcbba] rounded-xl p-5 flex gap-4">
+                <span className="text-3xl font-display font-bold text-[#584531]/30 leading-none flex-shrink-0 select-none">
                   {s.n}
                 </span>
                 <div>
-                  <p className="font-semibold text-slate-100 text-sm">{s.title}</p>
-                  <p className="text-xs text-slate-500 mt-1 leading-relaxed">{s.desc}</p>
+                  <p className="font-semibold text-[#584531] text-sm">{s.title}</p>
+                  <p className="text-xs text-[#584531] mt-1 leading-relaxed">{s.desc}</p>
                 </div>
               </div>
             ))}
@@ -137,56 +178,58 @@ export default async function LandingPage() {
       </section>
 
       {/* ── WHO USES IT ── */}
-      <section id="quem-usa" className="max-w-5xl mx-auto px-6 py-24 space-y-12">
-        <div className="text-center space-y-2">
-          <h2 className="font-display text-3xl font-bold text-white">{t('whoUsesSectionTitle')}</h2>
-          <p className="text-slate-400 text-sm">{t('whoUsesSectionSubtitle')}</p>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-          {ENTITIES.map(({ icon: Icon, label, color, bg, slug }) => (
-            <Link key={slug} href={`/registro/${slug}`}
-              className={cn(
-                'card flex flex-col items-center gap-2 py-5 text-center hover:border-[#7a4e30]/60 hover:bg-[#3e2818]/70 transition-all group cursor-pointer',
-              )}>
-              <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center', bg)}>
-                <Icon className={cn('w-5 h-5', color)} />
-              </div>
-              <p className="text-xs font-medium text-slate-300 group-hover:text-white transition-colors leading-tight">
-                {label}
-              </p>
-            </Link>
-          ))}
-        </div>
-        <div className="text-center">
-          <Link href="/registro" className="btn-primary text-sm px-8">
-            {t('whoUsesCta')} <ChevronRight className="w-4 h-4 ml-1" />
-          </Link>
-        </div>
-      </section>
-
-      {/* ── CTA BANNER ── */}
-      <section className="max-w-5xl mx-auto px-6 pb-24">
-        <div className="rounded-2xl bg-gradient-to-br from-brand-900/40 via-[#1c1208] to-[#1c1208] border border-brand-400/20 p-10 text-center space-y-5">
-          <Leaf className="w-10 h-10 text-brand-400 mx-auto" />
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-white">
-            {t('ctaTitle')}
-          </h2>
-          <p className="text-slate-400 text-sm max-w-sm mx-auto">
-            {t('ctaSubtitle')}
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link href="/registro" className="btn-primary text-sm px-8 py-3 rounded-xl">
-              {t('ctaCreateAccount')} <ArrowRight className="w-4 h-4 ml-1" />
-            </Link>
-            <Link href="/entrar" className="btn-ghost text-sm">
-              {t('ctaAlreadyHaveAccount')}
+      <section id="quem-usa" className="bg-[#dbcbba] w-full py-24">
+        <div className="max-w-5xl mx-auto px-6 space-y-12">
+          <div className="text-center space-y-2">
+            <h2 className="font-display text-3xl font-bold text-[#584531]">{t('whoUsesSectionTitle')}</h2>
+            <p className="text-[#584531] text-sm">{t('whoUsesSectionSubtitle')}</p>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            {ENTITIES.map(({ icon: Icon, label, color, bg, slug }) => (
+              <Link key={slug} href={`/registro/${slug}`}
+                className="bg-[#ede5dc] rounded-xl p-5 flex flex-col items-center gap-2 text-center hover:brightness-105 transition-all cursor-pointer">
+                <div className="w-10 h-10 rounded-xl bg-[#dbcbba] flex items-center justify-center">
+                  <Icon className="w-5 h-5 text-[#584531]" />
+                </div>
+                <p className="text-xs font-medium text-[#584531] leading-tight">
+                  {label}
+                </p>
+              </Link>
+            ))}
+          </div>
+          <div className="text-center">
+            <Link href="/registro" className="inline-flex items-center gap-2 font-semibold text-sm px-8 py-2.5 rounded-lg bg-[#584531] text-[#ede5dc] hover:bg-[#6b5540] transition-colors">
+              {t('whoUsesCta')} <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
       </section>
 
+      {/* ── CTA BANNER ── */}
+      <section className="bg-[#ede5dc] w-full py-24">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="rounded-2xl bg-[#584531] p-10 text-center space-y-5">
+            <Leaf className="w-10 h-10 text-[#ede5dc] mx-auto" />
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-[#ede5dc]">
+              {t('ctaTitle')}
+            </h2>
+            <p className="text-[#ede5dc]/80 text-sm max-w-sm mx-auto">
+              {t('ctaSubtitle')}
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link href="/registro" className="inline-flex items-center gap-2 font-semibold text-sm px-8 py-3 rounded-xl bg-[#dbcbba] text-[#584531] hover:bg-[#ede5dc] transition-colors">
+                {t('ctaCreateAccount')} <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link href="/entrar" className="inline-flex items-center gap-2 text-[#ede5dc] hover:text-white px-3 py-2 rounded-lg transition-colors text-sm">
+                {t('ctaAlreadyHaveAccount')}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── FOOTER ── */}
-      <footer className="border-t border-[#4a2e18]/60 px-6 py-8 text-center text-xs text-slate-600">
+      <footer className="bg-[#dbcbba] px-6 py-8 text-center text-xs text-[#584531]">
         <p>{t('footerCopyright', { year: new Date().getFullYear() })}</p>
         <p className="mt-1">{t('footerIntegrations')}</p>
       </footer>

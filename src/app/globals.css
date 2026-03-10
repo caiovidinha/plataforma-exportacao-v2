@@ -7,6 +7,10 @@
     --dark: #1c1208;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   * {
     @apply border-slate-700/50;
   }

@@ -217,13 +217,12 @@
       "register": "Register"
     },
     "hero": {
-      "badge": "B2B Export Platform · Brazil Nut",
-      "h1Part1": "Export nuts",
-      "h1Strong": "safely",
-      "h1Part2": "from Brazil to the world",
-      "subtitle": "We connect exporters, importers and the entire logistics chain in an integrated platform. From match to payment, with full traceability.",
-      "ctaFree": "Start for free",
-      "alreadyHaveAccount": "I already have an account"
+      "eyebrow": "B2B Platform · Export",
+      "headline": "Brazil's Finest, in a Nutshell",
+      "subtitle": "The most complete integrated platform, connecting exporters, importers, and the entire logistics chain with security and traceability.",
+      "ctaPrimary": "Register Now",
+      "ctaSecondary": "Log In",
+      "logosLabel": "Partners & Certifications"
     },
     "statsExporters": "Exporters",
     "statsImporters": "Importers",
