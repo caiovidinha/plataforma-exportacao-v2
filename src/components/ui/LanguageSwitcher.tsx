@@ -49,7 +49,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
       role="group"
       aria-label="Language switcher"
       className={cn(
-        'inline-flex items-center rounded-full border border-[#dbcbba] bg-[#dbcbba] p-0.5 gap-0.5',
+        'inline-flex items-center rounded-full border border-[#3e2e1e]/60 bg-[#3e2e1e]/40 p-0.5 gap-0.5',
         className,
       )}
     >
@@ -62,8 +62,8 @@ export function LanguageSwitcher({ className }: { className?: string }) {
           className={cn(
             'flex flex-1 items-center justify-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-all duration-150',
             locale === code
-              ? 'bg-[#584531] text-[#ede5dc] shadow-sm'
-              : 'text-[#584531]/70 hover:text-[#584531] hover:bg-[#ede5dc]/60',
+              ? 'bg-[#ede5dc] text-[#584531] shadow-sm'
+              : 'text-[#ede5dc]/70 hover:text-[#ede5dc] hover:bg-[#584531]/60',
           )}
         >
           <Flag />

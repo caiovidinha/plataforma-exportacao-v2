@@ -19,7 +19,7 @@ export default function EntrarPage() {
     e.preventDefault()
     setError('')
     setLoading(true)
-    // Mock auth — accept any non-empty credentials
+    // Mock auth - accept any non-empty credentials
     await new Promise((r) => setTimeout(r, 800))
     if (!email || !password) {
       setError(t('errorFillFields'))

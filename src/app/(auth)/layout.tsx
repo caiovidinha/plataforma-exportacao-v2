@@ -15,7 +15,7 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
       {/* Minimal header */}
       <header className="flex items-center justify-between px-6 py-4 border-b border-slate-800/60">
         <Link href="/" className="flex items-center">
-          <Image src="/img/logo.webp" alt="BrazilXHub" width={140} height={40} className="h-8 w-auto" />
+          <Image src="/img/logo.webp" alt="brazilXHUB" width={140} height={40} className="h-8 w-auto" />
         </Link>
         <nav className="flex items-center gap-4 text-sm text-slate-400">
           <LanguageSwitcher />

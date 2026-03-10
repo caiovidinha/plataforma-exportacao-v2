@@ -1,7 +1,7 @@
 import { EntitySlug } from '@/lib/entity-config'
 import type { EntityMember } from '@/types'
 
-// Shape of a mock user session — one pre-built profile per entity type
+// Shape of a mock user session - one pre-built profile per entity type
 export interface MockUser {
   id: string
   name: string
@@ -152,9 +152,9 @@ export const MOCK_USERS: Record<EntitySlug, MockUser> = {
       { label: 'monthlyRevenue',   value: 'R$ 21k' },
     ],
     service_contracts: [
-      { id: 'sc_d1', workflow_id: 'wf_001', exporter: 'Castanheira Export Ltda.', importer: 'NaturalKern GmbH', description: 'Despacho aduaneiro Santos — REDEX + SISCOMEX', value_brl: 3200, status: 'EM_ANDAMENTO', requested_at: '2025-11-08', deadline: '2025-11-28' },
-      { id: 'sc_d2', workflow_id: 'wf_002', exporter: 'Cooperativa Amazônica', importer: 'BioNuts BV', description: 'Despacho aduaneiro Santos — REDEX + SISCOMEX', value_brl: 3200, status: 'PENDENTE', requested_at: '2025-11-14', deadline: '2025-12-05' },
-      { id: 'sc_d3', workflow_id: 'wf_004', exporter: 'NutriCast Exportações', importer: 'OrgaNut GmbH', description: 'Despacho aduaneiro Belém — REDEX', value_brl: 2800, status: 'CONCLUIDO', requested_at: '2025-10-01', deadline: '2025-10-20' },
+      { id: 'sc_d1', workflow_id: 'wf_001', exporter: 'Castanheira Export Ltda.', importer: 'NaturalKern GmbH', description: 'Despacho aduaneiro Santos - REDEX + SISCOMEX', value_brl: 3200, status: 'EM_ANDAMENTO', requested_at: '2025-11-08', deadline: '2025-11-28' },
+      { id: 'sc_d2', workflow_id: 'wf_002', exporter: 'Cooperativa Amazônica', importer: 'BioNuts BV', description: 'Despacho aduaneiro Santos - REDEX + SISCOMEX', value_brl: 3200, status: 'PENDENTE', requested_at: '2025-11-14', deadline: '2025-12-05' },
+      { id: 'sc_d3', workflow_id: 'wf_004', exporter: 'NutriCast Exportações', importer: 'OrgaNut GmbH', description: 'Despacho aduaneiro Belém - REDEX', value_brl: 2800, status: 'CONCLUIDO', requested_at: '2025-10-01', deadline: '2025-10-20' },
     ],
   },
   corretora: {

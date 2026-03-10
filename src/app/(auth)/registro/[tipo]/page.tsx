@@ -84,7 +84,7 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
 
-  // Step 0 — Empresa
+  // Step 0 - Empresa
   const [empresa, setEmpresa] = useState({
     company_name: '',
     cnpj: '',
@@ -92,10 +92,10 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
     website: '',
   })
 
-  // Step 1 — Específicos (keyed by field.key)
+  // Step 1 - Específicos (keyed by field.key)
   const [specifics, setSpecifics] = useState<Record<string, string>>({})
 
-  // Step 2 — Acesso
+  // Step 2 - Acesso
   const [acesso, setAcesso] = useState({ email: '', password: '', confirm: '' })
   const [acessoError, setAcessoError] = useState('')
   const [showPwd, setShowPwd] = useState(false)
@@ -421,7 +421,7 @@ function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-start justify-between gap-2 px-3 py-2">
       <span className="text-slate-500">{label}</span>
-      <span className="text-slate-200 font-medium text-right">{value || '—'}</span>
+      <span className="text-slate-200 font-medium text-right">{value || '-'}</span>
     </div>
   )
 }

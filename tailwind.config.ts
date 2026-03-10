@@ -23,7 +23,7 @@ const config: Config = {
           900: '#1c1208',
           950: '#0f0804',
         },
-        // Identidade visual B2B — tons terrosos/âmbar remetendo à castanha
+        // Identidade visual B2B - tons terrosos/âmbar remetendo à castanha
         brand: {
           50:  '#fdf8f0',
           100: '#faefd9',

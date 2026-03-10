@@ -1,5 +1,5 @@
 // ============================================================
-// Feature Flags — centraliza o controle em um único lugar.
+// Feature Flags - centraliza o controle em um único lugar.
 // A flag NEXT_PUBLIC_USE_MOCK_DATA no .env.local controla tudo.
 // ============================================================
 

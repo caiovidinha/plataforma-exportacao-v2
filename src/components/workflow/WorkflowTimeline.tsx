@@ -56,7 +56,7 @@ function DateRow({ label, planned, actual, late }: { label: string; planned: str
           )}
         </span>
       ) : (
-        <span className="text-slate-600 italic">—</span>
+        <span className="text-slate-600 italic">-</span>
       )}
     </div>
   )

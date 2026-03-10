@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import {
-  Leaf, Globe, GitBranch, FileText, Package,
+  Globe, GitBranch, FileText, Package,
   TrendingUp, Shield, ChevronRight, Star, ArrowRight,
   Truck, Ship, Microscope, Building2, DollarSign, Warehouse,
 } from 'lucide-react'
@@ -45,19 +45,14 @@ export default async function LandingPage() {
   return (
     <div className="min-h-screen bg-[#110b06] text-slate-100">
       {/* ── NAVBAR ── */}
-      <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-24 py-4 border-b border-[#dbcbba]/60 bg-[#ede5dc]/80 backdrop-blur-md">
+      <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-24 py-4 border-b border-[#3e2e1e]/40 bg-[#584531]/50 backdrop-blur-md">
         <Link href="/" className="flex items-center">
-          <Image src="/img/logo.webp" alt="BrazilXHub" width={140} height={40} className="h-9 w-auto" priority />
+          <Image src="/img/logo.webp" alt="brazilXHUB" width={140} height={40} className="h-9 w-auto brightness-90" priority />
         </Link>
-        {/* <nav className="flex items-center gap-6 text-sm text-[#584531]/70">
-          <a href="#funcionalidades" className="hidden sm:block hover:text-[#584531] transition-colors">{t('nav.features')}</a>
-          <a href="#como-funciona" className="hidden sm:block hover:text-[#584531] transition-colors">{t('nav.howItWorks')}</a>
-          <a href="#quem-usa" className="hidden sm:block hover:text-[#584531] transition-colors">{t('nav.whoUses')}</a>
-        </nav> */}
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
-          <Link href="/entrar" className="inline-flex items-center gap-2 text-[#584531]/80 hover:text-[#584531] px-3 py-2 rounded-lg transition-colors text-sm">{t('nav.signIn')}</Link>
-          <Link href="/registro" className="inline-flex items-center gap-2 bg-[#584531] hover:bg-[#6b5540] text-[#ede5dc] font-semibold px-4 py-2 rounded-lg transition-colors text-sm">{t('nav.register')}</Link>
+          <Link href="/entrar" className="inline-flex items-center gap-2 text-[#ede5dc]/80 hover:text-[#ede5dc] px-3 py-2 rounded-lg transition-colors text-sm">{t('nav.signIn')}</Link>
+          <Link href="/registro" className="inline-flex items-center gap-2 bg-[#ede5dc] hover:bg-[#dbcbba] text-[#584531] font-semibold px-4 py-2 rounded-lg transition-colors text-sm">{t('nav.register')}</Link>
         </div>
       </header>
 
@@ -74,7 +69,7 @@ export default async function LandingPage() {
           priority
         />
 
-        {/* Elementos — esquerda, rodapé */}
+        {/* Elementos - esquerda, rodapé */}
         <div className="absolute bottom-0 left-0 px-24 pb-16 flex flex-col items-start gap-9 max-w-2xl">
 
           {/* Subtítulo */}
@@ -151,8 +146,17 @@ export default async function LandingPage() {
       </section>
 
       {/* ── HOW IT WORKS ── */}
-      <section id="como-funciona" className="bg-[#584531] w-full">
-        <div className="max-w-5xl mx-auto px-6 py-24 space-y-12">
+      <section id="como-funciona" className="relative w-full overflow-hidden">
+        <Image
+          src="/img/banner-sec.webp"
+          alt=""
+          width={2560}
+          height={1200}
+          className="w-full h-auto block opacity-60"
+        />
+        <div className="absolute inset-0" />
+        <div className="absolute inset-0 flex items-center">
+          <div className="relative z-10 w-full max-w-5xl mx-auto px-6 py-24 space-y-12">
           <div className="text-center space-y-2">
             <h2 className="font-display text-3xl font-bold text-[#ede5dc]">{t('howWorksSectionTitle')}</h2>
             <p className="text-[#ede5dc] text-sm max-w-lg mx-auto">{t('howWorksSectionSubtitle')}</p>
@@ -169,6 +173,7 @@ export default async function LandingPage() {
                 </div>
               </div>
             ))}
+          </div>
           </div>
         </div>
       </section>
@@ -205,7 +210,7 @@ export default async function LandingPage() {
       <section className="bg-[#ede5dc] w-full py-24">
         <div className="max-w-5xl mx-auto px-6">
           <div className="rounded-2xl bg-[#584531] p-10 text-center space-y-5">
-            <Leaf className="w-10 h-10 text-[#ede5dc] mx-auto" />
+            <Image src="/img/logo-branca-icon.webp" alt="" width={40} height={40} className="mx-auto" />
             <h2 className="font-display text-2xl md:text-3xl font-bold text-[#ede5dc]">
               {t('ctaTitle')}
             </h2>

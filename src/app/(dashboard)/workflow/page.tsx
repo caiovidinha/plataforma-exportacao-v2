@@ -66,7 +66,7 @@ export default async function WorkflowPage() {
                     {w.negotiation.origin_port} → {w.negotiation.destination_port}
                   </p>
                   <p className="text-xs text-slate-500 mt-1">
-                    {t('currentStep')} <strong className="text-slate-300">{currentStep?.title ?? '—'}</strong>
+                    {t('currentStep')} <strong className="text-slate-300">{currentStep?.title ?? '-'}</strong>
                   </p>
                 </div>
 

@@ -107,7 +107,7 @@ export function Sidebar({
 
   return (
     <aside className="fixed left-0 top-0 h-full w-64 bg-dark-50 border-r border-slate-700/50 flex flex-col z-40">
-      {/* Logo — links back to landing page */}
+      {/* Logo - links back to landing page */}
       <Link
         href="/"
         className="flex items-center gap-3 px-5 py-5 border-b border-slate-700/50 hover:bg-dark-100 transition-colors"

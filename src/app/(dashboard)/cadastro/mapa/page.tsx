@@ -78,8 +78,8 @@ export default function MapaCadastroPage() {
         <h2 className="section-title mb-4">Links Úteis</h2>
         <div className="space-y-2">
           {[
-            { label: 'Portal MAPA — Gov.br', url: 'https://www.gov.br/agricultura/pt-br/assuntos/inspecao' },
-            { label: 'SISCOMEX — Habilitação', url: 'https://www.siscomex.gov.br/' },
+            { label: 'Portal MAPA - Gov.br', url: 'https://www.gov.br/agricultura/pt-br/assuntos/inspecao' },
+            { label: 'SISCOMEX - Habilitação', url: 'https://www.siscomex.gov.br/' },
             { label: 'Cadastro Exportador Vegetal (MAPA)', url: 'https://www.gov.br/mapa/pt-br/assuntos/exportacao' },
           ].map((l) => (
             <a key={l.url} href={l.url} target="_blank" rel="noopener noreferrer"

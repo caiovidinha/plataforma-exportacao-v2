@@ -148,7 +148,7 @@
       "featured": true,
       "product": {
         "id": "prod_001",
-        "name": "Castanha-do-Brasil Premium — Orgânica Fair Trade",
+        "name": "Castanha-do-Brasil Premium - Orgânica Fair Trade",
         "description": "Lote premium certificado orgânico IBD e Fair Trade, colhido em reservas extrativistas do Acre. Laudo MAPA aprovado, aflatoxina < 4 ppb, umidade 3,2%. Rastreabilidade total da floresta ao porto. Ideal para marcas premium europeias e norte-americanas.",
         "images": ["https://placehold.co/600x400/92400e/ffffff?text=Premium+Castanha"],
         "packaging": "Big bags 500 kg com liner interno EVOH"
@@ -290,7 +290,7 @@
           "id": "step_003",
           "order": 3,
           "code": "ENTRADA_REDEX",
-          "title": "Entrada no REDEX — Emissão de Invoice e Packing List",
+          "title": "Entrada no REDEX - Emissão de Invoice e Packing List",
           "description": "Mercadoria entra no terminal alfandegário secundário (REDEX). Emissão e assinatura de Invoice e Packing List.",
           "status": "CONCLUIDO",
           "responsible_party": "Despachante + Exportador",
@@ -320,13 +320,13 @@
           "id": "step_005",
           "order": 5,
           "code": "FISCALIZACAO_MAPA",
-          "title": "Fiscalização MAPA — Auditoria e Análise Laboratorial",
+          "title": "Fiscalização MAPA - Auditoria e Análise Laboratorial",
           "description": "Auditor fiscal MAPA agenda e realiza fiscalização. Amostra coletada para análise laboratorial de aflatoxina. Laudo emitido.",
           "status": "EM_ANDAMENTO",
           "responsible_party": "MAPA + Laboratório + Despachante + Empresa de Auditoria",
           "planned_date": "2025-12-10",
           "documents": [
-            { "id": "doc_007", "type": "LAUDO_LAB", "name": "Laudo Laboratorial — Aflatoxina", "status": "PENDENTE", "emitted_by": "LabControl Análises Ltda." }
+            { "id": "doc_007", "type": "LAUDO_LAB", "name": "Laudo Laboratorial - Aflatoxina", "status": "PENDENTE", "emitted_by": "LabControl Análises Ltda." }
           ],
           "blockers": ["Aguardando liberação da agenda do auditor fiscal MAPA"]
         },
@@ -347,7 +347,7 @@
           "id": "step_007",
           "order": 7,
           "code": "ENTRADA_SISCOMEX_DUE",
-          "title": "Entrada no SISCOMEX — Emissão da DU-E",
+          "title": "Entrada no SISCOMEX - Emissão da DU-E",
           "description": "Contêiner movido para área primária (SISCOMEX). Passagem pelo canal de conferência. Despachante emite DU-E.",
           "status": "PENDENTE",
           "responsible_party": "Despachante + SISCOMEX",
@@ -360,20 +360,20 @@
           "id": "step_008",
           "order": 8,
           "code": "EMBARQUE_NAVIO_BL",
-          "title": "Embarque no Navio — Draft do BL — Saída do Porto",
+          "title": "Embarque no Navio - Draft do BL - Saída do Porto",
           "description": "Contêiner entra no navio. Companhia de Navegação emite Draft do BL. Após pagamento, BL original liberado.",
           "status": "PENDENTE",
           "responsible_party": "Companhia de Navegação + Corretora de Câmbio",
           "planned_date": "2025-12-20",
           "documents": [
-            { "id": "doc_010", "type": "BL", "name": "Bill of Lading — MSC HAMBURG", "status": "PENDENTE" }
+            { "id": "doc_010", "type": "BL", "name": "Bill of Lading - MSC HAMBURG", "status": "PENDENTE" }
           ]
         },
         {
           "id": "step_009",
           "order": 9,
           "code": "CHEGADA_PORTO_DESTINO",
-          "title": "Chegada ao Porto de Destino — Liberação Final",
+          "title": "Chegada ao Porto de Destino - Liberação Final",
           "description": "Navio chega a Hamburg. Importador recebe documentação. Fiscalização local. Carga liberada.",
           "status": "PENDENTE",
           "responsible_party": "Importador",
@@ -520,21 +520,21 @@
     },
     {
       "id": "mn_002",
-      "title": "Normativa 37/2025 — Procedimentos para Certificado Fitossanitário",
+      "title": "Normativa 37/2025 - Procedimentos para Certificado Fitossanitário",
       "date": "2025-08-01",
       "url": "https://www.gov.br/agricultura/pt-br",
       "category": "NORMATIVA"
     },
     {
       "id": "mn_003",
-      "title": "Informativo: Calendário de Fiscalização MAPA — Porto de Belém (Nov/Dez 2025)",
+      "title": "Informativo: Calendário de Fiscalização MAPA - Porto de Belém (Nov/Dez 2025)",
       "date": "2025-10-20",
       "url": "https://www.gov.br/agricultura/pt-br",
       "category": "INFORMATIVO"
     },
     {
       "id": "mn_004",
-      "title": "SIGVIG: Atualização dos Requisitos de Importação — Japão (aflatoxina)",
+      "title": "SIGVIG: Atualização dos Requisitos de Importação - Japão (aflatoxina)",
       "date": "2025-07-10",
       "url": "https://www.gov.br/agricultura/pt-br",
       "category": "NORMATIVA"

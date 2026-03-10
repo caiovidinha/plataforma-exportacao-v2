@@ -37,8 +37,8 @@ export function formatNumber(value: number) {
 
 export function incotermLabel(incoterm: 'FOB' | 'CIF') {
   const map = {
-    FOB: 'FOB — Free On Board',
-    CIF: 'CIF — Cost, Insurance & Freight',
+    FOB: 'FOB - Free On Board',
+    CIF: 'CIF - Cost, Insurance & Freight',
   }
   return map[incoterm]
 }

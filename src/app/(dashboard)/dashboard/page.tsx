@@ -129,7 +129,7 @@ export default function DashboardPage() {
   const contracts = user.service_contracts ?? []
 
   const mapaNotices = [
-    { id: '1', title: 'Instrução Normativa 83/2024 — Novos requisitos fitossanitários', date: '2024-06-01', category: 'NORMATIVA' },
+    { id: '1', title: 'Instrução Normativa 83/2024 - Novos requisitos fitossanitários', date: '2024-06-01', category: 'NORMATIVA' },
     { id: '2', title: 'Alerta: Suspensão temporária de exportações para mercados afetados', date: '2024-05-28', category: 'ALERTA' },
     { id: '3', title: 'Resultado da campanha de monitoramento de aflatoxinas Q2', date: '2024-05-15', category: 'INFORMATIVO' },
   ]
@@ -149,7 +149,7 @@ export default function DashboardPage() {
       <div className="p-6 space-y-6">
         <div>
           <h1 className="page-title">{t('greetingMorning', { name: user.name.split(' ')[0] })}</h1>
-          <p className="text-sm text-slate-400 mt-1">{user.company_name} — {user.role_label}</p>
+          <p className="text-sm text-slate-400 mt-1">{user.company_name} - {user.role_label}</p>
         </div>
 
         {entityType === 'exportador' && !user.mapa_registered && (

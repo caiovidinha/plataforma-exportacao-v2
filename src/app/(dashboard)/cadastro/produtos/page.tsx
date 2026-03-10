@@ -15,7 +15,7 @@ const fields = [
 const products = mockData.products.map((p) => ({
   ...p,
   organic: String((p as Record<string,unknown>).organic ?? 'false'),
-  moisture_percent: String((p.physicochemical as Record<string,unknown>).moisture_percent ?? '—'),
+  moisture_percent: String((p.physicochemical as Record<string,unknown>).moisture_percent ?? '-'),
 }))
 
 export default function ProdutosPage() {

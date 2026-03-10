@@ -92,7 +92,7 @@ export function EntityCrud<T extends Record<string, unknown>>({
               <button className="w-full flex items-center justify-between text-left gap-2"
                       onClick={() => setExpanded(isExpanded ? null : id)}>
                 <div>
-                  <p className="text-sm font-semibold text-slate-100">{String(it[displayKey] ?? '—')}</p>
+                  <p className="text-sm font-semibold text-slate-100">{String(it[displayKey] ?? '-')}</p>
                   {secondaryKey && <p className="text-xs text-slate-500 mt-0.5">{String(it[secondaryKey] ?? '')}</p>}
                 </div>
                 {isExpanded ? <ChevronUp className="w-4 h-4 text-slate-500" /> : <ChevronDown className="w-4 h-4 text-slate-500" />}
@@ -104,7 +104,7 @@ export function EntityCrud<T extends Record<string, unknown>>({
                     {fields.map((f) => (
                       <div key={f.key} className={f.span === 'full' ? 'col-span-2' : ''}>
                         <dt className="text-slate-500">{f.label}</dt>
-                        <dd className="text-slate-200 font-medium truncate">{String(it[f.key] ?? '—')}</dd>
+                        <dd className="text-slate-200 font-medium truncate">{String(it[f.key] ?? '-')}</dd>
                       </div>
                     ))}
                   </dl>

@@ -24,7 +24,7 @@ export const useMockSession = create<MockSessionState>()(
 )
 
 // Convenience helper used inside server components that can't access Zustand.
-// Returns the default (exportador) — the client switcher overrides for interactive use.
+// Returns the default (exportador) - the client switcher overrides for interactive use.
 export function getDefaultMockUser() {
   return MOCK_USERS['exportador']
 }

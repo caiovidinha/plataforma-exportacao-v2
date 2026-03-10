@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 import { getTranslations } from 'next-intl/server'
 import type { ElementType } from 'react'
 
-export const metadata = { title: 'Cadastro — O que você é?' }
+export const metadata = { title: 'Cadastro - O que você é?' }
 
 const ICONS: Record<string, ElementType> = {
   Globe, Building2, Truck, Ship, FileCheck,
