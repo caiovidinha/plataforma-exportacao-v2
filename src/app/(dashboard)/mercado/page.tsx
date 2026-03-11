@@ -68,7 +68,7 @@ export default async function MercadoPage() {
             rel="noopener noreferrer"
             className="card hover:border-slate-600 transition-all group flex items-start gap-4"
           >
-            <div className={cn('w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0', link.bg)}>
+            <div className={cn('w-10 h-10 flex items-center justify-center flex-shrink-0', link.bg)}>
               <link.icon className={cn('w-5 h-5', link.color)} />
             </div>
             <div className="flex-1">

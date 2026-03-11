@@ -38,7 +38,7 @@ export function StartNegotiationForm({ offer }: { offer: Offer }) {
       <div className="card bg-dark-100/50 space-y-3">
         <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">{t('novaOfferSummary')}</h3>
         <div className="flex items-start gap-4">
-          <div className="w-16 h-16 rounded-lg overflow-hidden bg-dark-100 flex-shrink-0">
+          <div className="w-16 h-16 overflow-hidden bg-dark-100 flex-shrink-0">
             {offer.product.images?.[0] ? (
               <img src={offer.product.images[0]} alt={offer.product.name} className="w-full h-full object-cover" />
             ) : (
@@ -117,7 +117,7 @@ export function StartNegotiationForm({ offer }: { offer: Offer }) {
       </div>
 
       {/* Estimated total */}
-      <div className="bg-brand-500/10 border border-brand-500/20 rounded-lg px-4 py-3 flex items-center justify-between">
+      <div className="bg-brand-500/10 border border-brand-500/20 px-4 py-3 flex items-center justify-between">
         <span className="text-xs text-slate-400">{t('novaTotalLabel')}</span>
         <span className="text-lg font-display font-bold text-white">
           USD {formatNumber(Math.round(total))}

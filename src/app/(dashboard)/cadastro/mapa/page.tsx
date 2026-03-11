@@ -48,7 +48,7 @@ export default function MapaCadastroPage() {
       </div>
 
       {/* Alert */}
-      <div className="rounded-lg bg-amber-400/10 border border-amber-400/30 p-4 flex gap-3 text-sm">
+      <div className="bg-amber-400/10 border border-amber-400/30 p-4 flex gap-3 text-sm">
         <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
         <div className="text-slate-300">
           Seu perfil ainda <strong className="text-amber-300">não está cadastrado no MAPA</strong>. Sem esse registro, você não poderá emitir o Certificado Fitossanitário nem exportar legalmente.

@@ -47,7 +47,7 @@ function PreviewModal({ doc, onClose }: { doc: WorkflowDocument; onClose: () => 
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-4xl max-h-[90vh] flex flex-col bg-dark-50 rounded-2xl border border-slate-700/50 shadow-2xl overflow-hidden"
+        className="relative w-full max-w-4xl max-h-[90vh] flex flex-col bg-dark-50 border border-slate-700/50 shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -93,7 +93,7 @@ function PreviewModal({ doc, onClose }: { doc: WorkflowDocument; onClose: () => 
           {isImage && doc.url && (
             <div className="flex items-center justify-center p-6 min-h-[72vh]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={doc.url} alt={doc.name} className="max-w-full max-h-full object-contain rounded-lg" />
+              <img src={doc.url} alt={doc.name} className="max-w-full max-h-full object-contain" />
             </div>
           )}
           {!isPdf && !isImage && (
@@ -131,7 +131,7 @@ export function DocumentViewer({ documents }: DocumentViewerProps) {
 
   return (
     <>
-      <div className="rounded-lg border border-slate-700/40 overflow-hidden divide-y divide-slate-700/30">
+      <div className="border border-slate-700/40 overflow-hidden divide-y divide-slate-700/30">
         {documents.map((doc) => (
           <div
             key={doc.id}

@@ -33,7 +33,7 @@
 
 @layer components {
   .card {
-    @apply bg-dark-50 border border-slate-700/50 rounded-xl p-5;
+    @apply bg-dark-50 border border-slate-700/50 p-5;
   }
 
   .btn-primary {

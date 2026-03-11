@@ -222,7 +222,7 @@ export default function MinhaContaPage() {
               const RoleIcon = ROLE_ICONS[member.entity_role]
               return (
                 <div key={member.id}
-                  className={cn('flex items-center justify-between py-2.5 px-3 rounded-lg', member.active ? 'bg-dark-100' : 'opacity-50 bg-dark-100')}>
+                  className={cn('flex items-center justify-between py-2.5 px-3', member.active ? 'bg-dark-100' : 'opacity-50 bg-dark-100')}>
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center flex-shrink-0">
                       <RoleIcon className="w-3.5 h-3.5 text-slate-300" />
@@ -248,7 +248,7 @@ export default function MinhaContaPage() {
       {/* Invite Modal */}
       {inviteOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-dark-200 border border-dark-50 rounded-xl shadow-2xl w-full max-w-md p-6 space-y-5">
+          <div className="bg-dark-200 border border-dark-50 shadow-2xl w-full max-w-md p-6 space-y-5">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-semibold text-white flex items-center gap-2">
                 <UserPlus className="w-4 h-4 text-brand-400" /> {t('inviteTitle')}

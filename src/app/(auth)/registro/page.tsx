@@ -51,7 +51,7 @@ export default async function RegistroPage() {
               className={cn(
                 'group card flex items-start gap-4 hover:border-slate-500 hover:bg-slate-800/70 transition-all cursor-pointer',
               )}>
-              <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-105', cfg.bg)}>
+              <div className={cn('w-12 h-12 flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-105', cfg.bg)}>
                 <Icon className={cn('w-6 h-6', cfg.color)} />
               </div>
               <div className="flex-1 min-w-0">

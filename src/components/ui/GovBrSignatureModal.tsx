@@ -57,7 +57,7 @@ export function GovBrSignatureModal({ documentLabel, onClose, onSuccess }: Props
           <button onClick={onClose}><X className="w-5 h-5 text-slate-400 hover:text-slate-200" /></button>
         </div>
 
-        <p className="text-xs text-slate-400 bg-slate-800 rounded-lg px-3 py-2 border border-slate-700">
+        <p className="text-xs text-slate-400 bg-slate-800 px-3 py-2 border border-slate-700">
           <Shield className="w-3 h-3 inline mr-1 text-[#1351b4]" />
           {t('documentLabel')} <span className="text-slate-200 font-medium">{documentLabel}</span>
         </p>

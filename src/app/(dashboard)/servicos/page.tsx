@@ -35,7 +35,7 @@ function ProviderCard({ provider, label }: { provider: Awaited<ReturnType<typeof
   return (
     <div className="card hover:border-slate-600 transition-all flex flex-col gap-3">
       <div className="flex items-start gap-3">
-        <div className={cn('w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0', cfg.bg)}>
+        <div className={cn('w-10 h-10 flex items-center justify-center flex-shrink-0', cfg.bg)}>
           <cfg.icon className={cn('w-5 h-5', cfg.color)} />
         </div>
         <div className="flex-1 min-w-0">

@@ -20,7 +20,7 @@ function OfferCard({ offer }: { offer: Offer }) {
   return (
     <Link href={`/vitrine/${offer.id}`} className="card hover:border-slate-600 transition-all hover:translate-y-[-2px] group block">
       {/* Imagem do produto */}
-      <div className="w-full h-40 rounded-lg bg-dark-100 mb-4 overflow-hidden">
+      <div className="w-full h-40 bg-dark-100 mb-4 overflow-hidden">
         {offer.product.images?.[0] ? (
           <img src={offer.product.images[0]} alt={offer.product.name} className="w-full h-full object-cover" />
         ) : (
@@ -51,11 +51,11 @@ function OfferCard({ offer }: { offer: Offer }) {
 
       {/* Dados chave */}
       <div className="grid grid-cols-2 gap-2 mb-3">
-        <div className="bg-dark-100 rounded-lg px-2.5 py-2">
+        <div className="bg-dark-100 px-2.5 py-2">
           <p className="text-xs text-slate-500">{t('availableQty')}</p>
           <p className="text-sm font-semibold text-white">{formatNumber(offer.available_quantity_kg)} kg</p>
         </div>
-        <div className="bg-dark-100 rounded-lg px-2.5 py-2">
+        <div className="bg-dark-100 px-2.5 py-2">
           <p className="text-xs text-slate-500">{t('pricePerKg')}</p>
           <p className="text-sm font-semibold text-brand-300">USD {offer.price_per_kg_usd.toFixed(2)}</p>
         </div>
@@ -93,7 +93,7 @@ function FeaturedOfferCard({ offer }: { offer: Offer }) {
   return (
     <Link
       href={`/vitrine/${offer.id}`}
-      className="relative flex rounded-xl border border-amber-600/40 bg-dark-50 shadow-[0_0_28px_rgba(217,119,6,0.14)] hover:border-amber-500/60 hover:shadow-[0_0_40px_rgba(217,119,6,0.22)] transition-all duration-200 group overflow-hidden"
+      className="relative flex border border-amber-600/40 bg-dark-50 shadow-[0_0_28px_rgba(217,119,6,0.14)] hover:border-amber-500/60 hover:shadow-[0_0_40px_rgba(217,119,6,0.22)] transition-all duration-200 group overflow-hidden"
     >
       {/* Left gold accent strip */}
       <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-400 via-yellow-500 to-amber-600 rounded-l-xl" />
@@ -159,15 +159,15 @@ function FeaturedOfferCard({ offer }: { offer: Offer }) {
 
         {/* Info chips */}
         <div className="flex flex-wrap gap-2">
-          <span className="flex items-center gap-1 bg-dark-100 rounded-md px-2.5 py-1 text-[11px] text-slate-300">
+          <span className="flex items-center gap-1 bg-dark-100 px-2.5 py-1 text-[11px] text-slate-300">
             <Ship className="w-3 h-3 text-slate-500" />
             {t('incotermLabel')} <strong className="text-slate-200">{offer.incoterm}</strong>
           </span>
-          <span className="flex items-center gap-1 bg-dark-100 rounded-md px-2.5 py-1 text-[11px] text-slate-300">
+          <span className="flex items-center gap-1 bg-dark-100 px-2.5 py-1 text-[11px] text-slate-300">
             <MapPin className="w-3 h-3 text-slate-500" />
             {offer.origin_port}
           </span>
-          <span className="flex items-center gap-1 bg-dark-100 rounded-md px-2.5 py-1 text-[11px] text-slate-300">
+          <span className="flex items-center gap-1 bg-dark-100 px-2.5 py-1 text-[11px] text-slate-300">
             <Calendar className="w-3 h-3 text-slate-500" />
             {offer.delivery_days} {t('deliveryDays')}
           </span>

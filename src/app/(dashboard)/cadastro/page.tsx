@@ -69,7 +69,7 @@ export default function CadastroPage() {
       </div>
 
       {isExportador && !user.mapa_registered && (
-        <div className="rounded-lg bg-amber-400/10 border border-amber-400/30 p-4 flex items-start justify-between gap-4">
+        <div className="bg-amber-400/10 border border-amber-400/30 p-4 flex items-start justify-between gap-4">
           <div className="flex gap-3">
             <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
             <div>
@@ -84,7 +84,7 @@ export default function CadastroPage() {
       )}
 
       {isTrading && (
-        <div className="rounded-lg bg-blue-500/10 border border-blue-500/20 p-4">
+        <div className="bg-blue-500/10 border border-blue-500/20 p-4">
           <p className="text-xs text-blue-300 leading-relaxed">
             <strong className="font-semibold">{t('providerTipHeading')}</strong>{' '}
             {t('providerTipBody1')}{' '}
@@ -99,7 +99,7 @@ export default function CadastroPage() {
         {items.map(({ href, label, icon: Icon, desc }) => (
           <Link key={href} href={href}
             className="card flex items-center gap-4 hover:border-slate-600 hover:bg-slate-800/60 transition-all group">
-            <div className="w-10 h-10 rounded-lg bg-brand-400/10 flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 bg-brand-400/10 flex items-center justify-center flex-shrink-0">
               <Icon className="w-5 h-5 text-brand-400" />
             </div>
             <div className="flex-1 min-w-0">

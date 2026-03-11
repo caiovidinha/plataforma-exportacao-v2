@@ -43,15 +43,15 @@ function LiquidacaoFOB({ data }: { data: LiquidationFOB }) {
           <DollarSign className="w-4 h-4 text-emerald-400" /> {t('fobSummaryTitle')}
         </h3>
         <div className="grid grid-cols-3 gap-3">
-          <div className="bg-dark-100 rounded-lg px-3 py-2.5">
+          <div className="bg-dark-100 px-3 py-2.5">
             <p className="text-xs text-slate-400">{t('usdLabel')}</p>
             <p className="text-base font-display font-bold text-white">{formatCurrency(data.amount_usd, 'USD')}</p>
           </div>
-          <div className="bg-dark-100 rounded-lg px-3 py-2.5">
+          <div className="bg-dark-100 px-3 py-2.5">
             <p className="text-xs text-slate-400">{t('exchangeRateLabel')}</p>
             <p className="text-base font-display font-bold text-brand-300">R$ {data.exchange_rate.toFixed(2)}</p>
           </div>
-          <div className="bg-brand-500/10 border border-brand-500/20 rounded-lg px-3 py-2.5">
+          <div className="bg-brand-500/10 border border-brand-500/20 px-3 py-2.5">
             <p className="text-xs text-slate-400">{t('brlLabel')}</p>
             <p className="text-base font-display font-bold text-white">{formatCurrency(data.amount_brl, 'BRL')}</p>
           </div>
@@ -86,7 +86,7 @@ function LiquidacaoFOB({ data }: { data: LiquidationFOB }) {
                   {step.id === 'SWIFT_RECEBIDO' && active && (
                     <div className="mt-3 space-y-2">
                       {data.swift_document_url ? (
-                        <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-3 py-2">
+                        <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-3 py-2">
                           <FileCheck className="w-4 h-4 text-emerald-400" />
                           <span className="text-xs text-emerald-300">{t('swiftReceived')}</span>
                           <a href={data.swift_document_url} target="_blank" rel="noopener noreferrer" className="ml-auto text-xs text-brand-400 hover:underline flex items-center gap-1">
@@ -94,7 +94,7 @@ function LiquidacaoFOB({ data }: { data: LiquidationFOB }) {
                           </a>
                         </div>
                       ) : (
-                        <div className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 rounded-lg px-3 py-2">
+                        <div className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 px-3 py-2">
                           <AlertCircle className="w-4 h-4 text-amber-400" />
                           <span className="text-xs text-amber-300">{t('awaitingSwiftExchange')}</span>
                         </div>
@@ -125,14 +125,14 @@ function LiquidacaoCIF({ data }: { data: LiquidationCIF }) {
       </h3>
       <div className="space-y-3">
         {data.arrival_date && (
-          <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-3 py-2">
+          <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-3 py-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
             <span className="text-xs text-emerald-300">{t('shipArrived', { date: data.arrival_date })}</span>
           </div>
         )}
 
         {data.payment_status === 'AGUARDANDO_CHEGADA' && (
-          <div className="flex items-center gap-2 bg-brand-500/10 border border-brand-500/30 rounded-lg px-3 py-2">
+          <div className="flex items-center gap-2 bg-brand-500/10 border border-brand-500/30 px-3 py-2">
             <Ship className="w-4 h-4 text-brand-400 animate-pulse-slow" />
             <span className="text-xs text-brand-300">{t('inTransit')}</span>
           </div>
@@ -145,14 +145,14 @@ function LiquidacaoCIF({ data }: { data: LiquidationCIF }) {
         )}
 
         {data.payment_status === 'AGUARDANDO_FISCALIZACAO_MAPA_DESTINO' && (
-          <div className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 rounded-lg px-3 py-2">
+          <div className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 px-3 py-2">
             <AlertCircle className="w-4 h-4 text-amber-400" />
             <span className="text-xs text-amber-300">{t('awaitingMapaInspection')}</span>
           </div>
         )}
 
         {data.aflatoxin_result_at_destination && (
-          <div className={cn('flex items-center gap-2 rounded-lg px-3 py-2 border',
+          <div className={cn('flex items-center gap-2 px-3 py-2 border',
             data.aflatoxin_result_at_destination === 'APROVADO'
               ? 'bg-emerald-500/10 border-emerald-500/30'
               : 'bg-red-500/10 border-red-500/30'
@@ -165,14 +165,14 @@ function LiquidacaoCIF({ data }: { data: LiquidationCIF }) {
         )}
 
         {data.payment_status === 'AGUARDANDO_SWIFT' && (
-          <div className="flex items-center gap-2 bg-brand-500/10 border border-brand-500/30 rounded-lg px-3 py-2">
+          <div className="flex items-center gap-2 bg-brand-500/10 border border-brand-500/30 px-3 py-2">
             <DollarSign className="w-4 h-4 text-brand-400" />
             <span className="text-xs text-brand-300">{t('awaitingSwiftCif')}</span>
           </div>
         )}
 
         {data.exchange_settlement_date && (
-          <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-3 py-2">
+          <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-3 py-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
             <span className="text-xs text-emerald-300">
               {t('paymentSettled', { date: data.exchange_settlement_date })}

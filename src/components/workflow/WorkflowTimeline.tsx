@@ -109,7 +109,7 @@ function WorkflowStepCard({
       </div>
 
       {/* Conteúdo */}
-      <div className={cn('flex-1 mb-4 rounded-xl border transition-colors',
+      <div className={cn('flex-1 mb-4 border transition-colors',
         isCurrent
           ? 'border-brand-500/40 bg-brand-500/5'
           : 'border-slate-700/50 bg-dark-50',
@@ -144,7 +144,7 @@ function WorkflowStepCard({
             <p className="text-xs text-slate-400 mt-3 leading-relaxed">{step.description}</p>
 
             {/* Datas */}
-            <div className="bg-dark-100 rounded-lg px-3 py-2.5">
+            <div className="bg-dark-100 px-3 py-2.5">
               {/* Header */}
               <div className="grid grid-cols-3 items-center text-[10px] font-semibold uppercase tracking-wide text-slate-500 pb-1.5 mb-1 border-b border-slate-700/50">
                 <span className="flex items-center gap-1"><CalendarDays className="w-3 h-3" /> {t('datesSection')}</span>
@@ -166,7 +166,7 @@ function WorkflowStepCard({
 
             {/* Referência externa */}
             {step.external_ref && (
-              <div className="flex items-center gap-2 text-xs text-slate-400 bg-dark-100 rounded-lg px-3 py-2">
+              <div className="flex items-center gap-2 text-xs text-slate-400 bg-dark-100 px-3 py-2">
                 <ExternalLink className="w-3 h-3 text-brand-400" />
                 <span>{t('reference')} <strong className="text-brand-300">{step.external_ref}</strong></span>
               </div>
@@ -174,7 +174,7 @@ function WorkflowStepCard({
 
             {/* Bloqueadores */}
             {step.blockers && step.blockers.length > 0 && (
-              <div className="rounded-lg border border-orange-500/30 bg-orange-500/5 px-3 py-2.5">
+              <div className="border border-orange-500/30 bg-orange-500/5 px-3 py-2.5">
                 <p className="text-xs font-medium text-orange-400 flex items-center gap-1.5 mb-1.5">
                   <AlertTriangle className="w-3.5 h-3.5" /> {t('pendingBlockers')}
                 </p>
@@ -269,12 +269,12 @@ export function WorkflowTimeline({ workflow }: { workflow: ExportWorkflow }) {
 
         {/* Partes */}
         <div className="grid grid-cols-2 gap-3 pt-1">
-          <div className="bg-dark-100 rounded-lg px-3 py-2">
+          <div className="bg-dark-100 px-3 py-2">
             <p className="text-xs text-slate-500 mb-0.5">{t('exporter')}</p>
             <p className="text-sm font-medium text-slate-200">{workflow.exporter.company_name}</p>
             <p className="text-xs text-slate-500">{workflow.exporter.country}</p>
           </div>
-          <div className="bg-dark-100 rounded-lg px-3 py-2">
+          <div className="bg-dark-100 px-3 py-2">
             <p className="text-xs text-slate-500 mb-0.5">{t('importer')}</p>
             <p className="text-sm font-medium text-slate-200">{workflow.importer.company_name}</p>
             <p className="text-xs text-slate-500">{workflow.importer.country}</p>

@@ -20,7 +20,7 @@ export function MapaRegistrationAlert({ show = true, variant = 'banner' }: MapaR
 
   if (variant === 'card') {
     return (
-      <div className="bg-amber-500/10 border border-amber-500/40 rounded-xl p-5">
+      <div className="bg-amber-500/10 border border-amber-500/40 p-5">
         <div className="flex gap-4">
           <div className="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center flex-shrink-0">
             <AlertTriangle className="w-5 h-5 text-amber-400" />

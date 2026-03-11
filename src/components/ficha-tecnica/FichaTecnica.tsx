@@ -37,7 +37,7 @@ function DataRow({ label, value, highlight }: { label: string; value: React.Reac
 function AflatoxinTable({ tolerances }: { tolerances: Product['physicochemical']['aflatoxin_tolerance_by_country'] }) {
   const t = useTranslations('ficha')
   return (
-    <div className="rounded-xl border border-slate-700/50 overflow-hidden">
+    <div className="border border-slate-700/50 overflow-hidden">
       <div className="grid grid-cols-3 gap-0 bg-dark-100 px-4 py-2 text-xs font-semibold text-slate-400">
         <span>{t('aflatoxinCountry')}</span>
         <span className="text-center">{t('aflatoxinTolerance')}</span>
@@ -124,7 +124,7 @@ function LegalRequirementsPanel({ requirements }: { requirements: LegalRequireme
             <div
               key={i}
               className={cn(
-                'rounded-xl border p-4 space-y-1.5',
+                'border p-4 space-y-1.5',
                 doc.required
                   ? 'border-brand-500/30 bg-brand-500/5'
                   : 'border-slate-700/40 bg-dark-50',
@@ -177,7 +177,7 @@ export function FichaTecnica({ product }: { product: Product }) {
   return (
     <div className="space-y-5">
       {/* Abas */}
-      <div className="flex gap-1 bg-dark-100 p-1 rounded-xl overflow-x-auto">
+      <div className="flex gap-1 bg-dark-100 p-1 overflow-x-auto">
         {TABS.map(({ id, label, icon: Icon }) => (
           <button
             key={id}

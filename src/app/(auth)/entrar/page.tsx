@@ -33,7 +33,7 @@ export default function EntrarPage() {
     <div className="w-full max-w-sm space-y-6">
       {/* Logo mark */}
       <div className="text-center space-y-1">
-        <div className="w-12 h-12 rounded-xl bg-brand-500/15 flex items-center justify-center mx-auto mb-3">
+        <div className="w-12 h-12 bg-brand-500/15 flex items-center justify-center mx-auto mb-3">
           <Leaf className="w-6 h-6 text-brand-400" />
         </div>
         <h1 className="text-xl font-display font-bold text-slate-100">{t('welcomeBack')}</h1>

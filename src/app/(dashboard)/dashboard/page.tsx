@@ -66,7 +66,7 @@ function StatCard({
   const Icon = (icon && ICON_MAP[icon]) ? ICON_MAP[icon] : Package
   return (
     <Link href={href} className="card hover:border-slate-600 transition-colors group">
-      <div className={cn('w-10 h-10 rounded-lg flex items-center justify-center mb-3', bg)}>
+      <div className={cn('w-10 h-10 flex items-center justify-center mb-3', bg)}>
         <Icon className={cn('w-5 h-5', color)} />
       </div>
       <p className={cn('text-2xl font-display font-bold', color)}>
@@ -98,7 +98,7 @@ function ContractsMiniList({ contracts }: { contracts: MockServiceContract[] }) 
       </div>
       <div className="space-y-2">
         {contracts.slice(0, 5).map((c) => (
-          <div key={c.id} className="flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-dark-100 transition-colors">
+          <div key={c.id} className="flex items-center justify-between py-2.5 px-3 hover:bg-dark-100 transition-colors">
             <div className="min-w-0">
               <p className="text-sm text-slate-200 truncate">{c.service_type ?? c.description}</p>
               <p className="text-xs text-slate-500">{c.requester_name ?? c.exporter} · {c.product_name ?? c.importer}</p>
@@ -191,7 +191,7 @@ export default function DashboardPage() {
                     { id: '3', primary: 'Óleo de Castanha 2t', secondary: 'Santos → Miami · EXW', badge: t('inProgress') },
                   ].map((item) => (
                     <Link key={item.id} href={`/workflow/${item.id}`}
-                      className="flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-dark-100 transition-colors group">
+                      className="flex items-center justify-between py-2.5 px-3 hover:bg-dark-100 transition-colors group">
                       <div>
                         <p className="text-sm text-slate-200 group-hover:text-white">{item.primary}</p>
                         <p className="text-xs text-slate-500">{item.secondary}</p>
@@ -211,7 +211,7 @@ export default function DashboardPage() {
                 </div>
                 <div className="space-y-2.5">
                   {mapaNotices.map((n) => (
-                    <div key={n.id} className="py-2.5 px-3 rounded-lg hover:bg-dark-100 transition-colors">
+                    <div key={n.id} className="py-2.5 px-3 hover:bg-dark-100 transition-colors">
                       <div className="flex items-start gap-2">
                         <span className={cn('badge flex-shrink-0 mt-0.5 border', categoryColor[n.category])}>
                           {n.category}
@@ -244,7 +244,7 @@ export default function DashboardPage() {
                     { id: '3', text: 'Operação de câmbio USD 80.000 aguardando proposta', type: 'CÂMBIO', urgency: 'NORMAL' },
                   ].map((item) => (
                     <Link key={item.id} href="/servicos"
-                      className="flex items-start justify-between py-2.5 px-3 rounded-lg hover:bg-dark-100 transition-colors group gap-3">
+                      className="flex items-start justify-between py-2.5 px-3 hover:bg-dark-100 transition-colors group gap-3">
                       <p className="text-xs text-slate-300 group-hover:text-white leading-relaxed">{item.text}</p>
                       <div className="flex flex-col gap-1 flex-shrink-0 items-end">
                         <span className="badge border border-brand-500/30 text-brand-400 bg-brand-400/10">{item.type}</span>
@@ -256,7 +256,7 @@ export default function DashboardPage() {
                   ))}
                 </div>
                 <Link href="/servicos"
-                  className="flex items-center justify-center gap-2 mt-4 text-xs text-brand-400 hover:text-brand-300 border border-brand-500/20 rounded-lg py-2 hover:bg-brand-400/5 transition-colors">
+                  className="flex items-center justify-center gap-2 mt-4 text-xs text-brand-400 hover:text-brand-300 border border-brand-500/20 py-2 hover:bg-brand-400/5 transition-colors">
                   Ver todas as oportunidades <ChevronRight className="w-3 h-3" />
                 </Link>
               </div>

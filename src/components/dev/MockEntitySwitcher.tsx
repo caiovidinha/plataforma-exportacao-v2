@@ -36,7 +36,7 @@ export function MockEntitySwitcher() {
   return (
     <div className="fixed bottom-4 right-4 z-50">
       {open && (
-        <div className="mb-2 w-72 rounded-xl bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden">
+        <div className="mb-2 w-72 bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700 bg-slate-800/80">
             <div className="flex items-center gap-2">
@@ -68,7 +68,7 @@ export function MockEntitySwitcher() {
                     isActive && 'bg-slate-800 border-l-2 pl-3.5',
                     isActive ? `border-current ${cfg.color}` : 'border-transparent',
                   )}>
-                  <div className={cn('w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0', cfg.bg)}>
+                  <div className={cn('w-7 h-7 flex items-center justify-center flex-shrink-0', cfg.bg)}>
                     <ItemIcon className={cn('w-3.5 h-3.5', cfg.color)} />
                   </div>
                   <div className="min-w-0">
@@ -92,7 +92,7 @@ export function MockEntitySwitcher() {
           'bg-slate-900 border-violet-500/40 text-violet-300 hover:bg-slate-800 hover:border-violet-400',
         )}>
         <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-        <div className={cn('w-4 h-4 rounded flex items-center justify-center flex-shrink-0', current.bg)}>
+          <div className={cn('w-4 h-4 flex items-center justify-center flex-shrink-0', current.bg)}>
           <Icon className={cn('w-2.5 h-2.5', current.color)} />
         </div>
         <span className="max-w-[100px] truncate">{current.label}</span>

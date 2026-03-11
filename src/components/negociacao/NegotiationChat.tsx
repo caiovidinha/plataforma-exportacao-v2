@@ -14,10 +14,10 @@ interface Props {
 function Message({ msg, isOwn }: { msg: Negotiation['messages'][0]; isOwn: boolean }) {
   return (
     <div className={cn('flex', isOwn ? 'justify-end' : 'justify-start')}>
-      <div className={cn('max-w-[70%] rounded-2xl px-4 py-2.5',
+      <div className={cn('max-w-[70%] px-4 py-2.5',
         isOwn
-          ? 'bg-brand-500/20 border border-brand-500/30 text-slate-100 rounded-tr-sm'
-          : 'bg-dark-100 border border-slate-700/40 text-slate-200 rounded-tl-sm',
+          ? 'bg-brand-500/20 border border-brand-500/30 text-slate-100'
+          : 'bg-dark-100 border border-slate-700/40 text-slate-200',
       )}>
         {!isOwn && <p className="text-xs font-medium text-brand-400 mb-1">{msg.sender_name}</p>}
         <p className="text-sm leading-relaxed">{msg.content}</p>
@@ -127,7 +127,7 @@ export function NegotiationChat({ negotiation, currentUserId }: Props) {
             <span className="flex-1">{t('rowPrice')}</span>
             <span className="text-brand-300 font-semibold">USD {deal.price_per_kg_usd.toFixed(2)}</span>
           </div>
-          <div className="bg-brand-500/10 border border-brand-500/20 rounded-lg px-3 py-2.5 flex items-center justify-between">
+          <div className="bg-brand-500/10 border border-brand-500/20 px-3 py-2.5 flex items-center justify-between">
             <span className="text-xs text-slate-400">{t('rowTotal')}</span>
             <span className="text-sm font-display font-bold text-white">
               USD {formatNumber(deal.total_usd)}
@@ -170,7 +170,7 @@ export function NegotiationChat({ negotiation, currentUserId }: Props) {
         )}
 
         {negotiation.status === 'ACORDO_FECHADO' && (
-          <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 text-center">
+          <div className="bg-emerald-500/10 border border-emerald-500/30 p-3 text-center">
             <CheckCircle2 className="w-6 h-6 text-emerald-400 mx-auto mb-1.5" />
             <p className="text-xs font-semibold text-emerald-300">{t('agreementClosedTitle')}</p>
             <p className="text-xs text-emerald-400/70 mt-0.5">{t('agreementClosedDesc')}</p>

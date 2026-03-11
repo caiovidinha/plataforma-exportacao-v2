@@ -171,7 +171,7 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
     <div className="w-full max-w-lg space-y-6">
       {/* Entity badge */}
       <div className="flex items-center gap-3">
-        <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0', cfg.bg)}>
+        <div className={cn('w-10 h-10 flex items-center justify-center flex-shrink-0', cfg.bg)}>
           <Icon className={cn('w-5 h-5', cfg.color)} />
         </div>
         <div>
@@ -410,7 +410,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <div>
       <p className="text-slate-400 font-semibold uppercase tracking-wider text-[10px] mb-2">{title}</p>
-      <div className="rounded-lg bg-slate-800/60 border border-slate-700 divide-y divide-slate-700/60">
+      <div className="bg-slate-800/60 border border-slate-700 divide-y divide-slate-700/60">
         {children}
       </div>
     </div>

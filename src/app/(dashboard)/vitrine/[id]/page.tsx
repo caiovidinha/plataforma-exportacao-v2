@@ -51,7 +51,7 @@ export default async function OfertaDetailPage({ params }: Props) {
                 </div>
               </div>
               {!offer.exporter.mapa_registered && (
-                <div className="ml-auto flex items-center gap-1.5 text-xs text-amber-400 bg-amber-500/10 border border-amber-500/30 rounded-lg px-2.5 py-1.5">
+                <div className="ml-auto flex items-center gap-1.5 text-xs text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2.5 py-1.5">
                   <AlertTriangle className="w-3.5 h-3.5" />
                   {t('exporterNoMapa')}
                 </div>
@@ -111,7 +111,7 @@ export default async function OfertaDetailPage({ params }: Props) {
             </div>
 
             {/* Total estimado */}
-            <div className="bg-brand-500/10 border border-brand-500/20 rounded-lg px-3 py-2.5">
+            <div className="bg-brand-500/10 border border-brand-500/20 px-3 py-2.5">
               <p className="text-xs text-slate-400 mb-0.5">{t('estimatedTotal')}</p>
               <p className="font-display font-bold text-white text-lg">
                 USD {formatNumber(offer.available_quantity_kg * offer.price_per_kg_usd)}
