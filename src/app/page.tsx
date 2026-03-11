@@ -199,7 +199,7 @@ export default async function LandingPage() {
             ))}
           </div>
           <div className="text-center">
-            <Link href="/registro" className="inline-flex items-center gap-2 font-semibold text-sm px-8 py-2.5 rounded-lg bg-[#584531] text-[#ede5dc] hover:bg-[#6b5540] transition-colors">
+            <Link href="/registro" className="inline-flex items-center gap-2 font-montserrat text-sm px-6 py-2 rounded-full bg-[#462a1f] hover:bg-[#5a3529] text-white transition-colors">
               {t('whoUsesCta')} <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
@@ -218,10 +218,10 @@ export default async function LandingPage() {
               {t('ctaSubtitle')}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Link href="/registro" className="inline-flex items-center gap-2 font-semibold text-sm px-8 py-3 rounded-xl bg-[#dbcbba] text-[#584531] hover:bg-[#ede5dc] transition-colors">
+              <Link href="/registro" className="inline-flex items-center gap-2 font-montserrat text-sm px-6 py-2 rounded-full bg-[#dbcbba] hover:bg-[#ede5dc] text-[#584531] transition-colors">
                 {t('ctaCreateAccount')} <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link href="/entrar" className="inline-flex items-center gap-2 text-[#ede5dc] hover:text-white px-3 py-2 rounded-lg transition-colors text-sm">
+              <Link href="/entrar" className="inline-flex items-center gap-2 font-montserrat text-sm px-6 py-2 rounded-full bg-[#574531] hover:bg-[#6b5540] text-white/80 transition-colors">
                 {t('ctaAlreadyHaveAccount')}
               </Link>
             </div>
