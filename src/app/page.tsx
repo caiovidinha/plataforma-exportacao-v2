@@ -2,11 +2,11 @@ import Link from 'next/link'
 import Image from 'next/image'
 import {
   Globe, GitBranch, FileText, Package,
-  TrendingUp, Shield, ChevronRight, Star, ArrowRight,
-  Truck, Ship, Microscope, Building2, DollarSign, Warehouse,
+  TrendingUp, Shield, ChevronRight, ArrowRight,
 } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
+import { ExportFlowAnimation } from '@/components/landing/ExportFlowAnimation'
 
 export default async function LandingPage() {
   const t = await getTranslations('landing')
@@ -21,16 +21,16 @@ export default async function LandingPage() {
   ]
 
   const ENTITIES = [
-    { icon: Globe,      label: t('entityExporters'),    color: 'text-brand-400',   bg: 'bg-brand-400/10',   slug: 'exportador' },
-    { icon: Building2,  label: t('entityImporters'),    color: 'text-blue-400',    bg: 'bg-blue-400/10',    slug: 'importador' },
-    { icon: Truck,      label: t('entityCarriers'),     color: 'text-orange-400',  bg: 'bg-orange-400/10',  slug: 'transportadora' },
-    { icon: Ship,       label: t('entityShippingLines'),color: 'text-cyan-400',    bg: 'bg-cyan-400/10',    slug: 'companhia-navegacao' },
-    { icon: FileText,   label: t('entityBrokers'),      color: 'text-green-400',   bg: 'bg-green-400/10',   slug: 'despachante' },
-    { icon: DollarSign, label: t('entityExchangeHouses'),color:'text-emerald-400', bg: 'bg-emerald-400/10', slug: 'corretora' },
-    { icon: Warehouse,  label: t('entityTerminals'),    color: 'text-amber-400',   bg: 'bg-amber-400/10',   slug: 'terminal' },
-    { icon: Shield,     label: t('entityInsurers'),     color: 'text-violet-400',  bg: 'bg-violet-400/10',  slug: 'seguradora' },
-    { icon: Star,       label: t('entityCertifiers'),   color: 'text-rose-400',    bg: 'bg-rose-400/10',    slug: 'certificadora' },
-    { icon: Microscope, label: t('entityLabs'),         color: 'text-red-400',     bg: 'bg-red-400/10',     slug: 'laboratorio' },
+    { label: t('entityExporters'),      desc: t('entityExportersDesc'),      slug: 'exportador' },
+    { label: t('entityImporters'),      desc: t('entityImportersDesc'),      slug: 'importador' },
+    { label: t('entityCarriers'),       desc: t('entityCarriersDesc'),       slug: 'transportadora' },
+    { label: t('entityShippingLines'),  desc: t('entityShippingLinesDesc'),  slug: 'companhia-navegacao' },
+    { label: t('entityBrokers'),        desc: t('entityBrokersDesc'),        slug: 'despachante' },
+    { label: t('entityExchangeHouses'), desc: t('entityExchangeHousesDesc'), slug: 'corretora' },
+    { label: t('entityTerminals'),      desc: t('entityTerminalsDesc'),      slug: 'terminal' },
+    { label: t('entityInsurers'),       desc: t('entityInsurersDesc'),       slug: 'seguradora' },
+    { label: t('entityCertifiers'),     desc: t('entityCertifiersDesc'),     slug: 'certificadora' },
+    { label: t('entityLabs'),           desc: t('entityLabsDesc'),           slug: 'laboratorio' },
   ]
 
   const STEPS = [
@@ -97,10 +97,9 @@ export default async function LandingPage() {
           {/* Ícones */}
           <Image
             src="/img/hero-icons.webp"
-            alt=""
-            width={400}
-            height={100}
-            className="h-8 2xl:h-12 w-auto pt-1 mt-1 2xl:mt-4 -mb-2 2xl:-mb-4"
+            alt="partners-icons"
+            width={500}
+            height={0}
           />
 
         </div>
@@ -145,6 +144,17 @@ export default async function LandingPage() {
         </div>
       </section>
 
+      {/* ── EXPORT FLOW ANIMATION ── */}
+      <section id="fluxo" className="bg-[#ede5dc] w-full py-16 hidden">
+        <div className="max-w-5xl mx-auto px-6 space-y-8">
+          <div className="text-center space-y-1">
+            <p className="text-[0.7rem] tracking-widest uppercase text-[#584531]/50 font-medium">Do campo ao pagamento</p>
+            <h2 className="font-display text-2xl font-bold text-[#584531]">O fluxo completo da exportação</h2>
+          </div>
+          <ExportFlowAnimation />
+        </div>
+      </section>
+
       {/* ── HOW IT WORKS ── */}
       <section id="como-funciona" className="relative w-full overflow-hidden">
         <Image
@@ -185,16 +195,31 @@ export default async function LandingPage() {
             <h2 className="font-display text-[2.4rem] font-bold text-[#584531]">{t('whoUsesSectionTitle')}</h2>
             <p className="text-[#584531] text-sm">{t('whoUsesSectionSubtitle')}</p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            {ENTITIES.map(({ icon: Icon, label, color, bg, slug }) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {ENTITIES.map(({ label, desc, slug }) => (
               <Link key={slug} href={`/registro/${slug}`}
-                className="bg-[#ede5dc] p-5 flex flex-col items-center gap-2 text-center hover:brightness-105 transition-all cursor-pointer">
-                <div className="w-10 h-10 bg-[#dbcbba] flex items-center justify-center">
-                  <Icon className="w-5 h-5 text-[#584531]" />
+                className="bg-[#ede5dc] flex flex-col hover:brightness-105 transition-all cursor-pointer">
+                {/* Título acima da imagem — altura fixa para alinhar imagens */}
+                <div className="px-3 pt-6 pb-2 text-center flex items-center justify-center" style={{ maxHeight: '2.75rem' }}>
+                  <h3 className="font-display font-bold text-[#584531] uppercase tracking-wide text-[0.75rem] leading-tight">{label}</h3>
                 </div>
-                <p className="text-xs font-medium text-[#584531] leading-tight">
-                  {label}
-                </p>
+                {/* Imagem com dimensões originais */}
+                <div className="px-3 pt-3">
+                  <Image
+                    src={`/img/${slug}.webp`}
+                    alt={label}
+                    width={400}
+                    height={300}
+                    className="w-full h-auto"
+                  />
+                </div>
+                {/* Texto + seta */}
+                <div className="px-3 pb-3 flex flex-col flex-1 justify-between gap-2">
+                  <p className="text-[0.62rem] text-[#584531] leading-relaxed">{desc}</p>
+                  <div className="flex justify-end">
+                    <ArrowRight className="w-3 h-3 text-[#584531]" />
+                  </div>
+                </div>
               </Link>
             ))}
           </div>
