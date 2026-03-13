@@ -283,7 +283,7 @@
     "ctaSubtitle": "Create your account for free and start connecting your company to the international market.",
     "ctaCreateAccount": "Create free account",
     "ctaAlreadyHaveAccount": "I already have an account",
-    "footerCopyright": "© {year} brazilXHUB · B2B Platform for Brazil Nut Exports",
+    "footerCopyright": "© {year} Brazil X Hub · B2B Platform for Brazil Nut Exports",
     "footerIntegrations": "Integrated with SISCOMEX · MAPA · Gov.br · SIGVIG · SWIFT"
   },
   "auth": {
@@ -308,7 +308,7 @@
   },
   "entrar": {
     "welcomeBack": "Welcome back",
-    "accessAccount": "Access your brazilXHUB account",
+    "accessAccount": "Access your Brazil X Hub account",
     "emailLabel": "Email",
     "emailPlaceholder": "you@company.com",
     "passwordLabel": "Password",
@@ -322,8 +322,8 @@
     "errorFillFields": "Please fill in email and password."
   },
   "registro": {
-    "pageTitle": "How will you use the platform?",
-    "pageDesc": "Select the type that best describes your company. Your registration will be customized accordingly.",
+    "pageTitle": "Welcome to Brazil X Hub!",
+    "pageDesc": "Select the type of your company. Your registration will be customized accordingly.",
     "hasAccount": "Already have an account?",
     "signIn": "Sign in",
     "stepCompany": "Company",

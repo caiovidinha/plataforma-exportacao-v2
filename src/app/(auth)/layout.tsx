@@ -11,26 +11,27 @@ export const metadata: Metadata = {
 export default async function AuthLayout({ children }: { children: React.ReactNode }) {
   const t = await getTranslations('landing')
   return (
-    <div className="min-h-screen bg-[#110b06] flex flex-col">
-      {/* Minimal header */}
-      <header className="flex items-center justify-between px-6 py-4 border-b border-slate-800/60">
+    <div className="min-h-screen bg-[#ede5dc] flex flex-col">
+      {/* Header — identical to landing page navbar */}
+      <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-24 py-4 border-b border-[#3e2e1e]/40 bg-[#584531]/50 backdrop-blur-md">
         <Link href="/" className="flex items-center">
-          <Image src="/img/logo.webp" alt="brazilXHUB" width={140} height={40} className="h-8 w-auto" />
+          <Image src="/img/logo.webp" alt="Brazil X Hub" width={140} height={40} className="h-9 w-auto brightness-90" priority />
         </Link>
-        <nav className="flex items-center gap-4 text-sm text-slate-400">
+        <div className="flex items-center gap-3">
           <LanguageSwitcher />
-          <Link href="/entrar" className="hover:text-slate-200 transition-colors">{t('nav.signIn')}</Link>
-          <Link href="/registro" className="btn-primary py-1.5 text-xs">{t('nav.register')}</Link>
-        </nav>
+          <Link href="/entrar" className="inline-flex items-center gap-2 text-[#ede5dc]/80 hover:text-[#ede5dc] px-3 py-2 rounded-lg transition-colors text-sm">{t('nav.signIn')}</Link>
+          <Link href="/registro" className="inline-flex items-center gap-2 bg-[#ede5dc] hover:bg-[#dbcbba] text-[#584531] shadow-sm px-2.5 py-1 rounded-full text-xs font-semibold transition-colors">{t('nav.register')}</Link>
+        </div>
       </header>
 
-      {/* Content */}
-      <main className="flex-1 flex items-center justify-center px-4 py-10">
+      {/* Content — pt-[73px] offsets the fixed header */}
+      <main className="flex-1 flex items-center justify-center px-4 pt-[73px] pb-10">
         {children}
       </main>
 
-      <footer className="text-center text-xs text-slate-600 py-4 border-t border-slate-800/40">
-        {t('footerCopyright', { year: new Date().getFullYear() })}
+      <footer className="bg-[#dbcbba] px-6 py-8 text-center text-xs text-[#584531]">
+        <p>{t('footerCopyright', { year: new Date().getFullYear() })}</p>
+        <p className="mt-1">{t('footerIntegrations')}</p>
       </footer>
     </div>
   )

@@ -16,12 +16,12 @@ function Message({ msg, isOwn }: { msg: Negotiation['messages'][0]; isOwn: boole
     <div className={cn('flex', isOwn ? 'justify-end' : 'justify-start')}>
       <div className={cn('max-w-[70%] px-4 py-2.5',
         isOwn
-          ? 'bg-brand-500/20 border border-brand-500/30 text-slate-100'
-          : 'bg-dark-100 border border-slate-700/40 text-slate-200',
+          ? 'bg-[#584531]/15 border border-[#584531]/25 text-[#3e2e1e]'
+          : 'bg-white/50 border border-[#3e2e1e]/15 text-[#3e2e1e]',
       )}>
-        {!isOwn && <p className="text-xs font-medium text-brand-400 mb-1">{msg.sender_name}</p>}
+        {!isOwn && <p className="text-xs font-medium text-[#584531] mb-1">{msg.sender_name}</p>}
         <p className="text-sm leading-relaxed">{msg.content}</p>
-        <p className="text-xs text-slate-500 mt-1 text-right">
+        <p className="text-xs text-[#584531]/60 mt-1 text-right">
           {new Date(msg.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
         </p>
       </div>
@@ -60,16 +60,16 @@ export function NegotiationChat({ negotiation, currentUserId }: Props) {
       {/* Chat */}
       <div className="lg:col-span-2 card flex flex-col p-0 overflow-hidden">
         {/* Header chat */}
-        <div className="px-5 py-3.5 border-b border-slate-700/50 flex items-center justify-between">
+        <div className="px-5 py-3.5 border-b border-[#3e2e1e]/15 flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-semibold text-slate-100">{deal.product_name}</h3>
-            <p className="text-xs text-slate-500">
+            <h3 className="text-sm font-semibold text-[#3e2e1e]">{deal.product_name}</h3>
+            <p className="text-xs text-[#584531]/70">
               {negotiation.exporter.company_name} ↔ {negotiation.importer.company_name}
             </p>
           </div>
           <span className={cn('badge',
             negotiation.status === 'ACORDO_FECHADO'
-              ? 'text-emerald-400 border-emerald-400/30 bg-emerald-400/10'
+              ? 'text-emerald-700 border-emerald-700/30 bg-emerald-700/10'
               : 'text-brand-400 border-brand-400/30 bg-brand-400/10'
           )}>
             {negotiation.status === 'ACORDO_FECHADO' ? (
@@ -87,7 +87,7 @@ export function NegotiationChat({ negotiation, currentUserId }: Props) {
         </div>
 
         {/* Input */}
-        <div className="px-4 py-3 border-t border-slate-700/50 flex gap-2">
+        <div className="px-4 py-3 border-t border-[#3e2e1e]/15 flex gap-2">
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -109,12 +109,12 @@ export function NegotiationChat({ negotiation, currentUserId }: Props) {
       {/* Painel de Fechamento */}
       <div className="card space-y-4 overflow-y-auto">
         <h3 className="section-title flex items-center gap-2">
-          <FileText className="w-4 h-4 text-brand-400" /> {t('closingPanelTitle')}
+          <FileText className="w-4 h-4 text-[#584531]" /> {t('closingPanelTitle')}
         </h3>
 
         <div className="space-y-2.5">
           <div className="flex items-center gap-2 text-xs text-slate-400">
-            <Package className="w-3.5 h-3.5 text-brand-400" />
+            <Package className="w-3.5 h-3.5 text-[#584531]" />
             <span className="flex-1">{t('rowProduct')}</span>
             <span className="text-slate-200 font-medium">{deal.product_name}</span>
           </div>
@@ -123,13 +123,13 @@ export function NegotiationChat({ negotiation, currentUserId }: Props) {
             <span className="text-slate-200 font-medium">{formatNumber(deal.quantity_kg)} kg</span>
           </div>
           <div className="flex items-center gap-2 text-xs text-slate-400">
-            <DollarSign className="w-3.5 h-3.5 text-brand-400" />
+            <DollarSign className="w-3.5 h-3.5 text-[#584531]" />
             <span className="flex-1">{t('rowPrice')}</span>
-            <span className="text-brand-300 font-semibold">USD {deal.price_per_kg_usd.toFixed(2)}</span>
+            <span className="text-[#3e2e1e] font-semibold">USD {deal.price_per_kg_usd.toFixed(2)}</span>
           </div>
-          <div className="bg-brand-500/10 border border-brand-500/20 px-3 py-2.5 flex items-center justify-between">
-            <span className="text-xs text-slate-400">{t('rowTotal')}</span>
-            <span className="text-sm font-display font-bold text-white">
+          <div className="bg-[#584531]/10 border border-[#584531]/20 px-3 py-2.5 flex items-center justify-between">
+            <span className="text-xs text-[#584531]">{t('rowTotal')}</span>
+            <span className="text-sm font-display font-bold text-[#3e2e1e]">
               USD {formatNumber(deal.total_usd)}
             </span>
           </div>
@@ -146,13 +146,13 @@ export function NegotiationChat({ negotiation, currentUserId }: Props) {
             <span className="text-slate-200">{deal.delivery_deadline}</span>
           </div>
           <div className="flex items-center gap-2 text-xs text-slate-400">
-            <Ship className="w-3.5 h-3.5 text-blue-400" />
+            <Ship className="w-3.5 h-3.5 text-[#584531]" />
             <span className="flex-1">{t('rowTransport')}</span>
             <span className="text-slate-200">{deal.transport_mode}</span>
           </div>
           <div className="flex items-center gap-2 text-xs text-slate-400">
             <span className="flex-1">{t('rowIncoterm')}</span>
-            <span className="font-semibold text-brand-300">{deal.incoterm}</span>
+            <span className="font-semibold text-[#3e2e1e]">{deal.incoterm}</span>
           </div>
           <div className="flex items-start gap-2 text-xs text-slate-400">
             <span className="flex-1">{t('rowRoute')}</span>
@@ -170,10 +170,10 @@ export function NegotiationChat({ negotiation, currentUserId }: Props) {
         )}
 
         {negotiation.status === 'ACORDO_FECHADO' && (
-          <div className="bg-emerald-500/10 border border-emerald-500/30 p-3 text-center">
-            <CheckCircle2 className="w-6 h-6 text-emerald-400 mx-auto mb-1.5" />
-            <p className="text-xs font-semibold text-emerald-300">{t('agreementClosedTitle')}</p>
-            <p className="text-xs text-emerald-400/70 mt-0.5">{t('agreementClosedDesc')}</p>
+          <div className="bg-emerald-700/10 border border-emerald-700/30 p-3 text-center">
+            <CheckCircle2 className="w-6 h-6 text-emerald-700 mx-auto mb-1.5" />
+            <p className="text-xs font-semibold text-emerald-700">{t('agreementClosedTitle')}</p>
+            <p className="text-xs text-emerald-700/70 mt-0.5">{t('agreementClosedDesc')}</p>
           </div>
         )}
       </div>

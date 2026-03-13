@@ -4,7 +4,6 @@ import {
   Globe, Building2, Truck, Ship, FileCheck,
   DollarSign, Warehouse, Shield, BadgeCheck, Microscope,
 } from 'lucide-react'
-import { cn } from '@/lib/utils'
 import { getTranslations } from 'next-intl/server'
 import type { ElementType } from 'react'
 
@@ -36,8 +35,8 @@ export default async function RegistroPage() {
   return (
     <div className="w-full max-w-3xl space-y-8">
       <div className="text-center space-y-2">
-        <h1 className="text-2xl font-display font-bold text-slate-100">{t('pageTitle')}</h1>
-        <p className="text-sm text-slate-400 max-w-md mx-auto">
+        <h1 className="text-2xl font-sans font-bold text-[#3e2e1e] pt-10">{t('pageTitle')}</h1>
+        <p className="text-sm text-[#584531]/80 max-w-md mx-auto font-sans">
           {t('pageDesc')}
         </p>
       </div>
@@ -48,17 +47,15 @@ export default async function RegistroPage() {
           const Icon = ICONS[cfg.icon] ?? Globe
           return (
             <Link key={slug} href={`/registro/${slug}`}
-              className={cn(
-                'group card flex items-start gap-4 hover:border-slate-500 hover:bg-slate-800/70 transition-all cursor-pointer',
-              )}>
-              <div className={cn('w-12 h-12 flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-105', cfg.bg)}>
-                <Icon className={cn('w-6 h-6', cfg.color)} />
+              className="group flex items-start gap-4 bg-[#584531]/10 hover:border-[#584531] hover:brightness-150 transition-all cursor-pointer p-5 shadow-sm">
+              <div className="w-10 h-10 flex items-center justify-center flex-shrink-0 bg-[#584531]/10">
+                <Icon className="w-5 h-5 text-[#584531]" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className={cn('text-sm font-semibold text-slate-100 group-hover:text-white transition-colors', cfg.color.replace('text-', 'group-hover:text-').replace('400', '300'))}>
+                <p className="text-sm font-semibold text-[#3e2e1e] group-hover:text-[#110b06] transition-colors font-sans">
                   {tEntities(slug as Parameters<typeof tEntities>[0])}
                 </p>
-                <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
+                <p className="text-[0.69rem] text-[#584531] mt-0.5 leading-relaxed font-sans">
                   {tEntities(DESC_KEY[slug] as Parameters<typeof tEntities>[0])}
                 </p>
               </div>
@@ -67,9 +64,9 @@ export default async function RegistroPage() {
         })}
       </div>
 
-      <p className="text-center text-sm text-slate-500 pt-2">
+      <p className="text-center text-sm text-[#584531]/80 pt-2 font-sans">
         {t('hasAccount')}{' '}
-        <Link href="/entrar" className="text-brand-400 hover:text-brand-300 font-medium transition-colors">
+        <Link href="/entrar" className="text-[#3e2e1e] hover:text-[#110b06] hover:underline font-semibold transition-colors">
           {t('signIn')}
         </Link>
       </p>

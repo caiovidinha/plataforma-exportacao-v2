@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useMockSession } from '@/lib/mock-session'
 import { MapaRegistrationAlert } from '@/components/ui/MapaRegistrationAlert'
@@ -32,16 +32,16 @@ const ICON_MAP: Record<string, React.ElementType> = {
 
 const STAT_COLORS = [
   { text: 'text-brand-400', bg: 'bg-brand-400/10', href: '/workflow' },
-  { text: 'text-blue-400', bg: 'bg-blue-400/10', href: '/vitrine' },
-  { text: 'text-violet-400', bg: 'bg-violet-400/10', href: '/negociacao' },
-  { text: 'text-emerald-400', bg: 'bg-emerald-400/10', href: '/liquidacao' },
+  { text: 'text-[#584531]', bg: 'bg-[#584531]/10', href: '/vitrine' },
+  { text: 'text-[#3e2e1e]', bg: 'bg-[#3e2e1e]/10', href: '/negociacao' },
+  { text: 'text-emerald-700', bg: 'bg-emerald-700/10', href: '/liquidacao' },
 ]
 
 const PROVIDER_STAT_COLORS = [
   { text: 'text-brand-400', bg: 'bg-brand-400/10', href: '/contratos-servico' },
-  { text: 'text-blue-400', bg: 'bg-blue-400/10', href: '/contratos-servico' },
-  { text: 'text-emerald-400', bg: 'bg-emerald-400/10', href: '/contratos-servico' },
-  { text: 'text-violet-400', bg: 'bg-violet-400/10', href: '/minha-conta' },
+  { text: 'text-[#584531]', bg: 'bg-[#584531]/10', href: '/contratos-servico' },
+  { text: 'text-emerald-700', bg: 'bg-emerald-700/10', href: '/contratos-servico' },
+  { text: 'text-[#3e2e1e]', bg: 'bg-[#3e2e1e]/10', href: '/minha-conta' },
 ]
 
 const TRADING_ENTITIES = ['exportador', 'importador']
@@ -65,15 +65,15 @@ function StatCard({
 }) {
   const Icon = (icon && ICON_MAP[icon]) ? ICON_MAP[icon] : Package
   return (
-    <Link href={href} className="card hover:border-slate-600 transition-colors group">
+    <Link href={href} className="card hover:border-[#3e2e1e]/30 transition-colors group">
       <div className={cn('w-10 h-10 flex items-center justify-center mb-3', bg)}>
         <Icon className={cn('w-5 h-5', color)} />
       </div>
       <p className={cn('text-2xl font-display font-bold', color)}>
         {value}
-        {unit && <span className="text-sm ml-1 font-normal text-slate-400">{unit}</span>}
+        {unit && <span className="text-sm ml-1 font-normal text-[#584531]">{unit}</span>}
       </p>
-      <p className="text-xs text-slate-400 mt-0.5">{label}</p>
+      <p className="text-xs text-[#584531] mt-0.5">{label}</p>
     </Link>
   )
 }
@@ -81,18 +81,18 @@ function StatCard({
 function ContractsMiniList({ contracts }: { contracts: MockServiceContract[] }) {
   const t = useTranslations('dashboard')
   const STATUS_COLOR: Record<string, string> = {
-    PENDENTE: 'text-amber-400 bg-amber-400/10 border-amber-400/20',
-    CONTRATADO: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
-    CONCLUIDO: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20',
+    PENDENTE: 'text-[#584531] bg-[#584531]/10 border-[#584531]/20',
+    CONTRATADO: 'text-[#3e2e1e] bg-[#3e2e1e]/10 border-[#3e2e1e]/20',
+    CONCLUIDO: 'text-emerald-700 bg-emerald-700/10 border-emerald-700/20',
     CANCELADO: 'text-slate-400 bg-slate-400/10 border-slate-400/20',
   }
   return (
     <div className="card">
       <div className="flex items-center justify-between mb-4">
         <h3 className="section-title flex items-center gap-2">
-          <FileText className="w-4 h-4 text-brand-400" /> {t('recentContracts')}
+          <FileText className="w-4 h-4 text-[#584531]" /> {t('recentContracts')}
         </h3>
-        <Link href="/contratos-servico" className="text-xs text-brand-400 hover:text-brand-300">
+        <Link href="/contratos-servico" className="text-xs text-[#584531] hover:text-[#3e2e1e] underline-offset-2 hover:underline">
           {t('viewContracts')}
         </Link>
       </div>
@@ -100,21 +100,21 @@ function ContractsMiniList({ contracts }: { contracts: MockServiceContract[] }) 
         {contracts.slice(0, 5).map((c) => (
           <div key={c.id} className="flex items-center justify-between py-2.5 px-3 hover:bg-dark-100 transition-colors">
             <div className="min-w-0">
-              <p className="text-sm text-slate-200 truncate">{c.service_type ?? c.description}</p>
-              <p className="text-xs text-slate-500">{c.requester_name ?? c.exporter} · {c.product_name ?? c.importer}</p>
+              <p className="text-sm text-[#3e2e1e] truncate">{c.service_type ?? c.description}</p>
+              <p className="text-xs text-[#584531]/70">{c.requester_name ?? c.exporter} · {c.product_name ?? c.importer}</p>
             </div>
             <div className="flex items-center gap-3 flex-shrink-0 ml-3">
-              <span className="text-xs font-medium text-emerald-400">
+              <span className="text-xs font-medium text-emerald-700">
                 R$&nbsp;{c.value_brl.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </span>
-              <span className={cn('border text-xs px-2 py-0.5 rounded-full', STATUS_COLOR[c.status])}>
+              <span className={cn('border text-xs px-2 py-0.5', STATUS_COLOR[c.status])}>
                 {c.status === 'PENDENTE' ? t('statusPendente') : c.status === 'CONTRATADO' ? t('statusContratado') : c.status === 'CONCLUIDO' ? t('statusConcluido') : t('statusCancelado')}
               </span>
             </div>
           </div>
         ))}
         {contracts.length === 0 && (
-          <p className="text-sm text-slate-500 py-4 text-center">{t('noContracts')}</p>
+          <p className="text-sm text-[#584531]/60 py-4 text-center">{t('noContracts')}</p>
         )}
       </div>
     </div>
@@ -135,8 +135,8 @@ export default function DashboardPage() {
   ]
 
   const categoryColor: Record<string, string> = {
-    ALERTA: 'text-red-400 bg-red-400/10 border-red-400/30',
-    NORMATIVA: 'text-blue-400 bg-blue-400/10 border-blue-400/30',
+    ALERTA: 'text-[#3e2e1e] bg-[#3e2e1e]/10 border-[#3e2e1e]/30',
+    NORMATIVA: 'text-[#584531] bg-[#584531]/10 border-[#584531]/30',
     INFORMATIVO: 'text-slate-400 bg-slate-400/10 border-slate-400/30',
   }
 
@@ -149,7 +149,7 @@ export default function DashboardPage() {
       <div className="p-6 space-y-6">
         <div>
           <h1 className="page-title">{t('greetingMorning', { name: user.name.split(' ')[0] })}</h1>
-          <p className="text-sm text-slate-400 mt-1">{user.company_name} - {user.role_label}</p>
+          <p className="text-sm text-[#584531] mt-1">{user.company_name} - {user.role_label}</p>
         </div>
 
         {entityType === 'exportador' && !user.mapa_registered && (
@@ -180,9 +180,9 @@ export default function DashboardPage() {
               <div className="card">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="section-title flex items-center gap-2">
-                    <GitBranch className="w-4 h-4 text-brand-400" /> {t('recentWorkflows')}
+                    <GitBranch className="w-4 h-4 text-[#584531]" /> {t('recentWorkflows')}
                   </h3>
-                  <Link href="/workflow" className="text-xs text-brand-400 hover:text-brand-300">{t('viewWorkflows')}</Link>
+                  <Link href="/workflow" className="text-xs text-[#584531] hover:text-[#3e2e1e] underline-offset-2 hover:underline">{t('viewWorkflows')}</Link>
                 </div>
                 <div className="space-y-1">
                   {[
@@ -193,8 +193,8 @@ export default function DashboardPage() {
                     <Link key={item.id} href={`/workflow/${item.id}`}
                       className="flex items-center justify-between py-2.5 px-3 hover:bg-dark-100 transition-colors group">
                       <div>
-                        <p className="text-sm text-slate-200 group-hover:text-white">{item.primary}</p>
-                        <p className="text-xs text-slate-500">{item.secondary}</p>
+                        <p className="text-sm text-[#3e2e1e] group-hover:text-[#1c1208]">{item.primary}</p>
+                        <p className="text-xs text-[#584531]/70">{item.secondary}</p>
                       </div>
                       <span className="text-xs text-brand-400 font-medium">{item.badge}</span>
                     </Link>
@@ -205,9 +205,9 @@ export default function DashboardPage() {
               <div className="card">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="section-title flex items-center gap-2">
-                    <Bell className="w-4 h-4 text-brand-400" /> {t('mapaNotices')}
+                    <Bell className="w-4 h-4 text-[#584531]" /> {t('mapaNotices')}
                   </h3>
-                  <Link href="/mercado" className="text-xs text-brand-400 hover:text-brand-300">{t('viewMarket')}</Link>
+                  <Link href="/mercado" className="text-xs text-[#584531] hover:text-[#3e2e1e] underline-offset-2 hover:underline">{t('viewMarket')}</Link>
                 </div>
                 <div className="space-y-2.5">
                   {mapaNotices.map((n) => (
@@ -217,8 +217,8 @@ export default function DashboardPage() {
                           {n.category}
                         </span>
                         <div>
-                          <p className="text-xs text-slate-300 leading-relaxed">{n.title}</p>
-                          <p className="text-xs text-slate-500 mt-0.5">{new Date(n.date).toLocaleDateString('pt-BR')}</p>
+                          <p className="text-xs text-[#3e2e1e] leading-relaxed">{n.title}</p>
+                          <p className="text-xs text-[#584531]/60 mt-0.5">{new Date(n.date).toLocaleDateString('pt-BR')}</p>
                         </div>
                       </div>
                     </div>
@@ -233,9 +233,9 @@ export default function DashboardPage() {
               <div className="card">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="section-title flex items-center gap-2">
-                    <BarChart2 className="w-4 h-4 text-brand-400" /> {t('marketOpportunities')}
+                    <BarChart2 className="w-4 h-4 text-[#584531]" /> {t('marketOpportunities')}
                   </h3>
-                  <Link href="/servicos" className="text-xs text-brand-400 hover:text-brand-300">{t('viewAllOpportunities')}</Link>
+                  <Link href="/servicos" className="text-xs text-[#584531] hover:text-[#3e2e1e] underline-offset-2 hover:underline">{t('viewAllOpportunities')}</Link>
                 </div>
                 <div className="space-y-2">
                   {[
@@ -245,18 +245,18 @@ export default function DashboardPage() {
                   ].map((item) => (
                     <Link key={item.id} href="/servicos"
                       className="flex items-start justify-between py-2.5 px-3 hover:bg-dark-100 transition-colors group gap-3">
-                      <p className="text-xs text-slate-300 group-hover:text-white leading-relaxed">{item.text}</p>
+                      <p className="text-xs text-[#3e2e1e] group-hover:text-[#1c1208] leading-relaxed">{item.text}</p>
                       <div className="flex flex-col gap-1 flex-shrink-0 items-end">
                         <span className="badge border border-brand-500/30 text-brand-400 bg-brand-400/10">{item.type}</span>
                         {item.urgency === 'URGENTE' && (
-                          <span className="badge border border-red-400/30 text-red-400 bg-red-400/10">{t('urgentBadge')}</span>
+                          <span className="badge border border-[#3e2e1e]/30 text-[#3e2e1e] bg-[#3e2e1e]/10">{t('urgentBadge')}</span>
                         )}
                       </div>
                     </Link>
                   ))}
                 </div>
                 <Link href="/servicos"
-                  className="flex items-center justify-center gap-2 mt-4 text-xs text-brand-400 hover:text-brand-300 border border-brand-500/20 py-2 hover:bg-brand-400/5 transition-colors">
+                  className="flex items-center justify-center gap-2 mt-4 text-xs text-[#584531] hover:text-[#3e2e1e] border border-[#584531]/25 py-2 hover:bg-[#584531]/5 transition-colors">
                   Ver todas as oportunidades <ChevronRight className="w-3 h-3" />
                 </Link>
               </div>

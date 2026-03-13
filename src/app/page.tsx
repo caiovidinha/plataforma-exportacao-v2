@@ -47,7 +47,7 @@ export default async function LandingPage() {
       {/* ── NAVBAR ── */}
       <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-24 py-4 border-b border-[#3e2e1e]/40 bg-[#584531]/50 backdrop-blur-md">
         <Link href="/" className="flex items-center">
-          <Image src="/img/logo.webp" alt="brazilXHUB" width={140} height={40} className="h-9 w-auto brightness-90" priority />
+          <Image src="/img/logo.webp" alt="Brazil X Hub" width={140} height={40} className="h-9 w-auto brightness-90" priority />
         </Link>
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
@@ -224,7 +224,7 @@ export default async function LandingPage() {
             ))}
           </div>
           <div className="text-center">
-            <Link href="/registro" className="inline-flex items-center gap-2 font-montserrat text-sm px-6 py-2 rounded-full bg-[#462a1f] hover:bg-[#5a3529] text-white transition-colors">
+            <Link href="/registro" className="inline-flex items-center gap-2 text-sm px-6 py-2 rounded-full bg-[#462a1f] hover:bg-[#5a3529] text-white transition-colors">
               {t('whoUsesCta')} <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
@@ -243,10 +243,10 @@ export default async function LandingPage() {
               {t('ctaSubtitle')}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Link href="/registro" className="inline-flex items-center gap-2 font-montserrat text-sm px-6 py-2 rounded-full bg-[#dbcbba] hover:bg-[#ede5dc] text-[#584531] transition-colors">
+              <Link href="/registro" className="inline-flex items-center gap-2 text-sm px-6 py-2 rounded-full bg-[#dbcbba] hover:bg-[#ede5dc] text-[#584531] transition-colors">
                 {t('ctaCreateAccount')} <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link href="/entrar" className="inline-flex items-center gap-2 font-montserrat text-sm px-6 py-2 rounded-full bg-[#574531] hover:bg-[#6b5540] text-white/80 transition-colors">
+              <Link href="/entrar" className="inline-flex items-center gap-2 text-sm px-6 py-2 rounded-full bg-[#574531] hover:bg-[#6b5540] text-white/80 transition-colors">
                 {t('ctaAlreadyHaveAccount')}
               </Link>
             </div>
@@ -255,7 +255,7 @@ export default async function LandingPage() {
               <Image
               src="/img/logo-cor.webp"
               alt="logo colorida"
-              width={150} height={50} 
+              width={110} height={37}
               />
             </div>
         </div>

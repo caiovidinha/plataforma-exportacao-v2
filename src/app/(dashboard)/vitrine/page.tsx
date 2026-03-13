@@ -11,10 +11,10 @@ export const metadata = { title: 'Vitrine de Ofertas' }
 function OfferCard({ offer }: { offer: Offer }) {
   const t = useTranslations('vitrine')
   const statusLabel = {
-    ATIVA: { label: t('statusAvailable'), cls: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/30' },
+    ATIVA: { label: t('statusAvailable'), cls: 'text-emerald-700 bg-emerald-700/10 border-emerald-700/30' },
     NEGOCIANDO: { label: t('statusNegotiating'), cls: 'text-brand-400 bg-brand-400/10 border-brand-400/30' },
     VENDIDA: { label: t('statusSold'), cls: 'text-slate-400 bg-slate-400/10 border-slate-400/30' },
-    EXPIRADA: { label: t('statusExpired'), cls: 'text-red-400 bg-red-400/10 border-red-400/30' },
+    EXPIRADA: { label: t('statusExpired'), cls: 'text-[#3e2e1e] bg-[#3e2e1e]/10 border-[#3e2e1e]/30' },
   }[offer.status]
 
   return (
@@ -32,7 +32,7 @@ function OfferCard({ offer }: { offer: Offer }) {
 
       {/* Cabeçalho */}
       <div className="flex items-start justify-between gap-2 mb-2">
-        <h3 className="text-sm font-semibold text-slate-100 group-hover:text-white leading-tight">{offer.product.name}</h3>
+        <h3 className="text-sm font-semibold text-[#3e2e1e] group-hover:text-[#1c1208] leading-tight">{offer.product.name}</h3>
         <span className={cn('badge flex-shrink-0', statusLabel.cls)}>{statusLabel.label}</span>
       </div>
 
@@ -45,7 +45,7 @@ function OfferCard({ offer }: { offer: Offer }) {
           <span className="text-xs text-slate-400">{offer.exporter.rating}</span>
         </div>
         {!offer.exporter.mapa_registered && (
-          <span className="text-xs text-amber-500 ml-1">{t('noMapa')}</span>
+          <span className="text-xs text-[#584531] ml-1">{t('noMapa')}</span>
         )}
       </div>
 
@@ -53,11 +53,11 @@ function OfferCard({ offer }: { offer: Offer }) {
       <div className="grid grid-cols-2 gap-2 mb-3">
         <div className="bg-dark-100 px-2.5 py-2">
           <p className="text-xs text-slate-500">{t('availableQty')}</p>
-          <p className="text-sm font-semibold text-white">{formatNumber(offer.available_quantity_kg)} kg</p>
+          <p className="text-sm font-semibold text-[#3e2e1e]">{formatNumber(offer.available_quantity_kg)} kg</p>
         </div>
         <div className="bg-dark-100 px-2.5 py-2">
           <p className="text-xs text-slate-500">{t('pricePerKg')}</p>
-          <p className="text-sm font-semibold text-brand-300">USD {offer.price_per_kg_usd.toFixed(2)}</p>
+          <p className="text-sm font-semibold text-[#584531]">USD {offer.price_per_kg_usd.toFixed(2)}</p>
         </div>
       </div>
 
@@ -76,8 +76,8 @@ function OfferCard({ offer }: { offer: Offer }) {
           <Calendar className="w-3 h-3" />
           <span>{t('harvest')} {offer.harvest_year}</span>
           <span className={cn('ml-auto badge', offer.sale_modality === 'SPOT'
-            ? 'text-blue-400 border-blue-400/30'
-            : 'text-violet-400 border-violet-400/30'
+            ? 'text-[#3e2e1e] border-[#3e2e1e]/30'
+            : 'text-[#584531] border-[#584531]/30'
           )}>
             {offer.sale_modality === 'SPOT' ? t('spotLabel') : t('longTermLabel')}
           </span>
@@ -93,15 +93,15 @@ function FeaturedOfferCard({ offer }: { offer: Offer }) {
   return (
     <Link
       href={`/vitrine/${offer.id}`}
-      className="relative flex border border-amber-600/40 bg-dark-50 shadow-[0_0_28px_rgba(217,119,6,0.14)] hover:border-amber-500/60 hover:shadow-[0_0_40px_rgba(217,119,6,0.22)] transition-all duration-200 group overflow-hidden"
+      className="relative flex border border-[#3e2e1e]/30 bg-dark-50 shadow-lg hover:border-[#3e2e1e]/50 hover:shadow-xl transition-all duration-200 group overflow-hidden"
     >
       {/* Left gold accent strip */}
-      <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-400 via-yellow-500 to-amber-600 rounded-l-xl" />
+      <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#3e2e1e]" />
 
       {/* Product image */}
       <div className="relative w-60 flex-shrink-0 ml-1 overflow-hidden">
         {/* DESTAQUE badge */}
-        <div className="absolute top-3 left-0 z-10 flex items-center gap-1 bg-gradient-to-r from-amber-600 to-yellow-500 text-white text-[10px] font-extrabold tracking-widest uppercase px-2.5 py-1 rounded-r-full shadow-lg">
+        <div className="absolute top-3 left-0 z-10 flex items-center gap-1 bg-[#3e2e1e] text-[#ede5dc] text-[10px] font-extrabold tracking-widest uppercase px-2.5 py-1 shadow-lg">
           <Star className="w-3 h-3 fill-white" />
           {t('featuredBadge')}
         </div>
@@ -123,10 +123,10 @@ function FeaturedOfferCard({ offer }: { offer: Offer }) {
       <div className="flex-1 px-5 py-4 flex flex-col gap-2.5">
         {/* Name + status */}
         <div className="flex items-start justify-between gap-4">
-          <h2 className="text-base font-bold text-white group-hover:text-amber-200 transition-colors leading-snug">
+          <h2 className="text-base font-bold text-[#3e2e1e] group-hover:text-[#1c1208] transition-colors leading-snug">
             {offer.product.name}
           </h2>
-          <span className="badge flex-shrink-0 text-emerald-400 bg-emerald-400/10 border-emerald-400/30">
+          <span className="badge flex-shrink-0 text-emerald-700 bg-emerald-700/10 border-emerald-700/30">
             {t('statusAvailable')}
           </span>
         </div>
@@ -140,18 +140,18 @@ function FeaturedOfferCard({ offer }: { offer: Offer }) {
         <div className="flex items-end gap-6">
           <div>
             <p className="text-[10px] text-slate-500 uppercase tracking-wide">{t('pricePerKg')}</p>
-            <p className="text-2xl font-extrabold text-amber-300 leading-none">
+            <p className="text-2xl font-extrabold text-[#3e2e1e] leading-none">
               USD {offer.price_per_kg_usd.toFixed(2)}
               <span className="text-sm font-normal text-slate-400">/kg</span>
             </p>
           </div>
           <div>
             <p className="text-[10px] text-slate-500 uppercase tracking-wide">{t('availableQty')}</p>
-            <p className="text-sm font-semibold text-slate-200">{formatNumber(offer.available_quantity_kg)} kg</p>
+            <p className="text-sm font-semibold text-[#3e2e1e]">{formatNumber(offer.available_quantity_kg)} kg</p>
           </div>
           <span className={cn('ml-auto badge self-start', offer.sale_modality === 'SPOT'
-            ? 'text-blue-400 border-blue-400/30'
-            : 'text-violet-400 border-violet-400/30'
+            ? 'text-[#3e2e1e] border-[#3e2e1e]/30'
+            : 'text-[#584531] border-[#584531]/30'
           )}>
             {offer.sale_modality === 'SPOT' ? t('spotLabel') : t('longTermLabel')}
           </span>
@@ -177,7 +177,7 @@ function FeaturedOfferCard({ offer }: { offer: Offer }) {
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-[10px] text-slate-500 uppercase tracking-wide">{t('featuredDestPorts')}</span>
           {offer.destination_ports.map(port => (
-            <span key={port} className="badge text-sky-400 border-sky-400/30 text-[10px]">{port}</span>
+            <span key={port} className="badge text-[#584531] border-[#584531]/30 text-[10px]">{port}</span>
           ))}
         </div>
 
@@ -189,10 +189,10 @@ function FeaturedOfferCard({ offer }: { offer: Offer }) {
             <span className="text-slate-700">•</span>
             <span className="text-xs text-slate-500">{offer.exporter.company_name}</span>
             {offer.exporter.mapa_registered && (
-              <span className="badge text-emerald-400 border-emerald-400/30 text-[10px]">MAPA ✓</span>
+              <span className="badge text-emerald-700 border-emerald-700/30 text-[10px]">MAPA ✓</span>
             )}
           </div>
-          <span className="text-xs font-bold text-amber-400 group-hover:text-amber-300 transition-colors">
+          <span className="text-xs font-bold text-[#3e2e1e] group-hover:text-[#1c1208] transition-colors">
             {t('featuredViewOffer')}
           </span>
         </div>
@@ -212,7 +212,7 @@ export default async function VitrinePage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="page-title">{t('pageTitle')}</h1>
-          <p className="text-sm text-slate-400 mt-1">{t('offersCount', { count: offers.length })}</p>
+          <p className="text-sm text-[#584531] mt-1">{t('offersCount', { count: offers.length })}</p>
         </div>
         <Link href="/vitrine/nova" className="btn-primary">
           <TrendingUp className="w-4 h-4" /> {t('newOffer')}
@@ -244,7 +244,7 @@ export default async function VitrinePage() {
         <div className="space-y-3">
           <div className="flex items-center gap-2">
             <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
-            <h2 className="text-sm font-semibold text-slate-200 tracking-wide">{t('featuredSection')}</h2>
+            <h2 className="text-sm font-semibold text-[#3e2e1e] tracking-wide">{t('featuredSection')}</h2>
           </div>
           <div className="space-y-4">
             {featuredOffers.map(offer => (

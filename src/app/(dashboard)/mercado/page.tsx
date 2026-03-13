@@ -53,9 +53,9 @@ export default async function MercadoPage() {
     <div className="p-6 space-y-6">
       <div>
         <h1 className="page-title flex items-center gap-2">
-          <BarChart2 className="w-6 h-6 text-brand-400" /> {t('pageTitle')}
+          <BarChart2 className="w-6 h-6 text-[#584531]" /> {t('pageTitle')}
         </h1>
-        <p className="text-sm text-slate-400 mt-1">{t('subtitle')}</p>
+        <p className="text-sm text-[#584531] mt-1">{t('subtitle')}</p>
       </div>
 
       {/* Links externos */}
@@ -66,17 +66,17 @@ export default async function MercadoPage() {
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="card hover:border-slate-600 transition-all group flex items-start gap-4"
+            className="card hover:border-[#3e2e1e]/30 transition-all group flex items-start gap-4"
           >
             <div className={cn('w-10 h-10 flex items-center justify-center flex-shrink-0', link.bg)}>
               <link.icon className={cn('w-5 h-5', link.color)} />
             </div>
             <div className="flex-1">
-              <h3 className="text-sm font-semibold text-slate-100 group-hover:text-white transition-colors flex items-center gap-1.5">
+              <h3 className="text-sm font-semibold text-[#3e2e1e] group-hover:text-[#1c1208] transition-colors flex items-center gap-1.5">
                 {link.title}
-                <ExternalLink className="w-3 h-3 text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <ExternalLink className="w-3 h-3 text-[#584531]/40 opacity-0 group-hover:opacity-100 transition-opacity" />
               </h3>
-              <p className="text-xs text-slate-400 mt-0.5">{link.desc}</p>
+              <p className="text-xs text-[#584531] mt-0.5">{link.desc}</p>
             </div>
           </a>
         ))}
@@ -85,7 +85,7 @@ export default async function MercadoPage() {
       {/* Informativos MAPA */}
       <div>
         <h2 className="section-title mb-4 flex items-center gap-2">
-          <Bell className="w-4 h-4 text-brand-400" /> {t('mapaNoticesTitle')}
+          <Bell className="w-4 h-4 text-[#584531]" /> {t('mapaNoticesTitle')}
         </h2>
         <div className="space-y-2.5">
           {notices.map((n) => (
@@ -94,18 +94,18 @@ export default async function MercadoPage() {
               href={n.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="card hover:border-slate-600 transition-all flex items-start gap-3 group"
+              className="card hover:border-[#3e2e1e]/30 transition-all flex items-start gap-3 group"
             >
               <span className={cn('badge flex-shrink-0 mt-0.5', categoryColor[n.category])}>
                 {n.category}
               </span>
               <div className="flex-1">
-                <p className="text-sm text-slate-200 group-hover:text-white transition-colors leading-relaxed">
+                <p className="text-sm text-[#3e2e1e] group-hover:text-[#1c1208] transition-colors leading-relaxed">
                   {n.title}
                 </p>
-                <p className="text-xs text-slate-500 mt-0.5">{formatDate(n.date)}</p>
+                <p className="text-xs text-[#584531]/60 mt-0.5">{formatDate(n.date)}</p>
               </div>
-              <ExternalLink className="w-4 h-4 text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-0.5" />
+              <ExternalLink className="w-4 h-4 text-[#584531]/40 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-0.5" />
             </a>
           ))}
         </div>

@@ -36,23 +36,26 @@ export function MockEntitySwitcher() {
   return (
     <div className="fixed bottom-4 right-4 z-50">
       {open && (
-        <div className="mb-2 w-72 bg-slate-900 border border-slate-700 shadow-2xl overflow-hidden">
+        <div className="mb-2 w-72 shadow-2xl overflow-hidden"
+          style={{ backgroundColor: '#2c1e12', border: '1px solid rgba(219,203,186,0.20)' }}>
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700 bg-slate-800/80">
+          <div className="flex items-center justify-between px-4 py-3"
+            style={{ borderBottom: '1px solid rgba(219,203,186,0.12)', backgroundColor: 'rgba(62,46,30,0.50)' }}>
             <div className="flex items-center gap-2">
-              <SlidersHorizontal className="w-3.5 h-3.5 text-violet-400" />
-              <span className="text-xs font-semibold text-slate-200">{t('simulateEntity')}</span>
+              <SlidersHorizontal className="w-3.5 h-3.5 text-[#dbcbba]" />
+              <span className="text-xs font-semibold text-[#ede5dc]">{t('simulateEntity')}</span>
             </div>
             <button onClick={() => setOpen(false)}>
-              <X className="w-3.5 h-3.5 text-slate-500 hover:text-slate-300" />
+              <X className="w-3.5 h-3.5 text-[#dbcbba]/50 hover:text-[#ede5dc] transition-colors" />
             </button>
           </div>
 
           {/* Current user info */}
-          <div className="px-4 py-2.5 bg-slate-800/40 border-b border-slate-700/50">
-            <p className="text-xs text-slate-400">{t('loggedAs')}</p>
-            <p className="text-sm font-semibold text-slate-100 truncate">{user.company_name}</p>
-            <p className="text-xs text-slate-500">{user.email}</p>
+          <div className="px-4 py-2.5"
+            style={{ backgroundColor: 'rgba(62,46,30,0.30)', borderBottom: '1px solid rgba(219,203,186,0.10)' }}>
+            <p className="text-xs text-[#dbcbba]/60">{t('loggedAs')}</p>
+            <p className="text-sm font-semibold text-[#ede5dc] truncate">{user.company_name}</p>
+            <p className="text-xs text-[#dbcbba]/40">{user.email}</p>
           </div>
 
           {/* Entity list */}
@@ -64,20 +67,23 @@ export function MockEntitySwitcher() {
               return (
                 <button key={slug} onClick={() => handleSwitch(slug)}
                   className={cn(
-                    'w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-slate-800 transition-colors',
-                    isActive && 'bg-slate-800 border-l-2 pl-3.5',
-                    isActive ? `border-current ${cfg.color}` : 'border-transparent',
-                  )}>
+                    'w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors',
+                    isActive ? 'border-l-2 pl-3.5 border-[#dbcbba]' : 'border-l-2 pl-3.5 border-transparent',
+                  )}
+                  style={{ backgroundColor: isActive ? 'rgba(62,46,30,0.60)' : undefined }}
+                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.backgroundColor = 'rgba(62,46,30,0.40)' }}
+                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.backgroundColor = '' }}
+                >
                   <div className={cn('w-7 h-7 flex items-center justify-center flex-shrink-0', cfg.bg)}>
                     <ItemIcon className={cn('w-3.5 h-3.5', cfg.color)} />
                   </div>
                   <div className="min-w-0">
-                    <p className={cn('text-xs font-medium', isActive ? 'text-slate-100' : 'text-slate-300')}>
+                    <p className={cn('text-xs font-medium', isActive ? 'text-[#ede5dc]' : 'text-[#dbcbba]')}>
                       {cfg.label}
                     </p>
-                    <p className="text-[10px] text-slate-500 truncate">{ENTITY_CONFIG[slug].tagline}</p>
+                    <p className="text-[10px] text-[#dbcbba]/40 truncate">{ENTITY_CONFIG[slug].tagline}</p>
                   </div>
-                  {isActive && <span className="ml-auto text-[10px] text-brand-400 font-semibold">{t('activeBadge')}</span>}
+                  {isActive && <span className="ml-auto text-[10px] text-[#dbcbba] font-semibold">{t('activeBadge')}</span>}
                 </button>
               )
             })}
@@ -87,11 +93,12 @@ export function MockEntitySwitcher() {
 
       {/* Trigger button */}
       <button onClick={() => setOpen(!open)}
-        className={cn(
-          'flex items-center gap-2 px-3 py-2 rounded-xl shadow-2xl border transition-all text-xs font-semibold',
-          'bg-slate-900 border-violet-500/40 text-violet-300 hover:bg-slate-800 hover:border-violet-400',
-        )}>
-        <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
+        className="flex items-center gap-2 px-3 py-2 shadow-2xl border transition-all text-xs font-semibold text-[#ede5dc]"
+        style={{ backgroundColor: '#2c1e12', borderColor: 'rgba(219,203,186,0.25)' }}
+        onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(62,46,30,0.80)'; e.currentTarget.style.borderColor = 'rgba(219,203,186,0.40)' }}
+        onMouseLeave={e => { e.currentTarget.style.backgroundColor = '#2c1e12'; e.currentTarget.style.borderColor = 'rgba(219,203,186,0.25)' }}
+      >
+        <span className="w-1.5 h-1.5 rounded-full bg-[#dbcbba]/70 animate-pulse" />
           <div className={cn('w-4 h-4 flex items-center justify-center flex-shrink-0', current.bg)}>
           <Icon className={cn('w-2.5 h-2.5', current.color)} />
         </div>

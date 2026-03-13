@@ -108,7 +108,7 @@ export function GovBrSignatureModal({ documentLabel, onClose, onSuccess }: Props
         {/* Success */}
         {stage === 'success' && (
           <div className="flex flex-col items-center gap-3 py-4">
-            <CheckCircle className="w-10 h-10 text-emerald-400" />
+            <CheckCircle className="w-10 h-10 text-emerald-700" />
             <p className="text-sm text-slate-100 font-semibold">{t('successTitle')}</p>
             <p className="text-xs text-slate-400 text-center">
               {t('successDescription')}

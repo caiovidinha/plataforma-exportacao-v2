@@ -110,7 +110,7 @@ export function EntityCrud<T extends Record<string, unknown>>({
                   </dl>
                   <div className="flex gap-2 pt-2">
                     <button className="btn-secondary text-xs" onClick={() => startEdit(it)}>{t('editBtn')}</button>
-                    <button className="btn-ghost text-xs text-red-400 hover:text-red-300 hover:bg-red-900/20"
+                    <button className="btn-ghost text-xs text-red-500 hover:text-red-700 hover:bg-red-500/10"
                             onClick={() => handleDelete(id)}>
                       {t('deleteBtn')}
                     </button>

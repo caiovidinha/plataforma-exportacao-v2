@@ -11,7 +11,7 @@ const statusClasses: Record<DocStatus, string> = {
   PENDENTE:  'text-slate-400 bg-slate-400/10 border-slate-400/20',
   EMITIDO:   'text-brand-400 bg-brand-400/10 border-brand-400/20',
   ASSINADO:  'text-violet-400 bg-violet-400/10 border-violet-400/20',
-  APROVADO:  'text-emerald-400 bg-emerald-400/10 border-emerald-400/20',
+  APROVADO:  'text-emerald-700 bg-emerald-700/10 border-emerald-700/20',
   REJEITADO: 'text-red-400 bg-red-400/10 border-red-400/20',
 }
 
@@ -47,11 +47,11 @@ function PreviewModal({ doc, onClose }: { doc: WorkflowDocument; onClose: () => 
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-4xl max-h-[90vh] flex flex-col bg-dark-50 border border-slate-700/50 shadow-2xl overflow-hidden"
+        className="relative w-full max-w-4xl max-h-[90vh] flex flex-col bg-white border border-[#3e2e1e]/20 shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3 border-b border-slate-700/40 flex-shrink-0">
+        <div className="flex items-center justify-between px-5 py-3 border-b border-[#3e2e1e]/15 flex-shrink-0">
           <div className="flex items-center gap-2 min-w-0">
             <FileIcon url={doc.url} />
             <span className="text-sm font-semibold text-slate-100 truncate">{doc.name}</span>
@@ -74,7 +74,7 @@ function PreviewModal({ doc, onClose }: { doc: WorkflowDocument; onClose: () => 
             )}
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg hover:bg-slate-700 text-slate-400 hover:text-slate-200 transition-colors"
+              className="p-1.5 hover:bg-[#3e2e1e]/10 text-[#584531]/60 hover:text-[#3e2e1e] transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -131,7 +131,7 @@ export function DocumentViewer({ documents }: DocumentViewerProps) {
 
   return (
     <>
-      <div className="border border-slate-700/40 overflow-hidden divide-y divide-slate-700/30">
+      <div className="border border-[#3e2e1e]/20 overflow-hidden divide-y divide-[#3e2e1e]/12">
         {documents.map((doc) => (
           <div
             key={doc.id}
@@ -153,7 +153,7 @@ export function DocumentViewer({ documents }: DocumentViewerProps) {
                 <>
                   <button
                     onClick={() => setPreview(doc)}
-                    className="p-1 rounded hover:bg-slate-700 text-slate-500 hover:text-brand-400 transition-colors"
+                    className="p-1 hover:bg-[#3e2e1e]/10 text-[#584531]/50 hover:text-[#584531] transition-colors"
                     title="Pré-visualizar"
                   >
                     <Eye className="w-3.5 h-3.5" />
@@ -163,7 +163,7 @@ export function DocumentViewer({ documents }: DocumentViewerProps) {
                     download
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-1 rounded hover:bg-slate-700 text-slate-500 hover:text-brand-400 transition-colors"
+                    className="p-1 hover:bg-[#3e2e1e]/10 text-[#584531]/50 hover:text-[#584531] transition-colors"
                     title="Download"
                   >
                     <Download className="w-3.5 h-3.5" />

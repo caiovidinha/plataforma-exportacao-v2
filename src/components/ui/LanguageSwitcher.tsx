@@ -49,7 +49,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
       role="group"
       aria-label="Language switcher"
       className={cn(
-        'inline-flex items-center rounded-full border border-[#3e2e1e]/60 bg-[#3e2e1e]/40 p-0.5 gap-0.5',
+        'inline-flex items-center border border-[#3e2e1e]/60 bg-[#3e2e1e]/40 p-0.5 gap-0.5 rounded-full',
         className,
       )}
     >
@@ -60,7 +60,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
           aria-pressed={locale === code}
           title={code === 'pt' ? 'Mudar para Português' : 'Switch to English'}
           className={cn(
-            'flex flex-1 items-center justify-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-all duration-150',
+            'flex flex-1 items-center justify-center gap-1.5 px-2.5 py-1 text-xs font-semibold transition-all duration-150 rounded-full',
             locale === code
               ? 'bg-[#ede5dc] text-[#584531] shadow-sm'
               : 'text-[#ede5dc]/70 hover:text-[#ede5dc] hover:bg-[#584531]/60',

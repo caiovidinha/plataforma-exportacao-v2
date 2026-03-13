@@ -10,14 +10,14 @@ import {
 const STEPS = [
   { icon: TreePine,      label: 'Colheita',        sub: 'Amazônia brasileira',      color: '#6d9e3f' },
   { icon: PackageOpen,   label: 'Embalagem',        sub: 'Processamento e benefício', color: '#c9a07a' },
-  { icon: Truck,         label: 'Transporte',       sub: 'Origem ao terminal',        color: '#e8a83a' },
+  { icon: Truck,         label: 'Transporte',       sub: 'Origem ao terminal',        color: '#8c5e38' },
   { icon: Warehouse,     label: 'Terminal',         sub: 'Pesagem e estufagem',       color: '#ab7d52' },
-  { icon: FlaskConical,  label: 'Laboratório',      sub: 'Laudo de aflatoxina',       color: '#d4891f' },
+  { icon: FlaskConical,  label: 'Laboratório',      sub: 'Laudo de aflatoxina',       color: '#ab7d52' },
   { icon: FileCheck,     label: 'Despachante',      sub: 'Siscomex · DU-E · MAPA',   color: '#8c5e38' },
-  { icon: Ship,          label: 'Embarque',         sub: 'Porto de Santos / Belém',   color: '#4a7fa5' },
+  { icon: Ship,          label: 'Embarque',         sub: 'Porto de Santos / Belém',   color: '#584531' },
   { icon: Globe,         label: 'Destino',          sub: 'Rotterdam · Hamburg · NYC', color: '#3a8a6e' },
   { icon: DollarSign,    label: 'Câmbio',           sub: 'Swift · Liquidação',        color: '#5a9e58' },
-  { icon: CheckCircle2,  label: 'Concluído',        sub: 'BL · Pagamento liberado',   color: '#e8a83a' },
+  { icon: CheckCircle2,  label: 'Concluído',        sub: 'BL · Pagamento liberado',   color: '#6d9e3f' },
 ]
 
 export function ExportFlowAnimation() {
@@ -71,7 +71,7 @@ export function ExportFlowAnimation() {
               {i < STEPS.length - 1 && (
                 <div className="flex-1 mx-1 relative h-px bg-[#584531]/20 overflow-hidden" style={{ marginBottom: '1.1rem' }}>
                   <motion.div
-                    className="absolute inset-y-0 left-0 bg-[#e8a83a]"
+                    className="absolute inset-y-0 left-0 bg-emerald-700"
                     initial={{ width: '0%' }}
                     animate={{ width: active >= i + 1 ? '100%' : '0%' }}
                     transition={{ duration: 0.6, ease: 'easeInOut' }}
@@ -86,7 +86,7 @@ export function ExportFlowAnimation() {
       {/* Barra de progresso geral */}
       <div className="h-px bg-[#584531]/15 rounded-full overflow-hidden">
         <motion.div
-          className="h-full bg-gradient-to-r from-[#6d9e3f] to-[#e8a83a] rounded-full"
+          className="h-full bg-gradient-to-r from-[#6d9e3f] to-emerald-700 rounded-full"
           initial={{ width: '0%' }}
           animate={{ width: active >= 0 ? `${((active + 1) / STEPS.length) * 100}%` : '0%' }}
           transition={{ duration: 0.6, ease: 'easeInOut' }}

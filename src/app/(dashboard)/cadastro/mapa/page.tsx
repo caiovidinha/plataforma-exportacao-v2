@@ -25,7 +25,7 @@ export default function MapaCadastroPage() {
     return (
       <div className="p-6 max-w-lg mx-auto">
         <div className="card text-center space-y-4 py-10">
-          <CheckCircle className="w-12 h-12 text-emerald-400 mx-auto" />
+          <CheckCircle className="w-12 h-12 text-emerald-700 mx-auto" />
           <h2 className="text-lg font-semibold text-slate-100">Número de Protocolo Salvo</h2>
           <p className="text-sm text-slate-400">
             Acompanhe o andamento diretamente no portal do MAPA. Atualizaremos este painel quando a aprovação for recebida.
@@ -50,8 +50,8 @@ export default function MapaCadastroPage() {
       {/* Alert */}
       <div className="bg-amber-400/10 border border-amber-400/30 p-4 flex gap-3 text-sm">
         <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-        <div className="text-slate-300">
-          Seu perfil ainda <strong className="text-amber-300">não está cadastrado no MAPA</strong>. Sem esse registro, você não poderá emitir o Certificado Fitossanitário nem exportar legalmente.
+          <div className="text-[#584531]">
+          Seu perfil ainda <strong className="text-amber-700">não está cadastrado no MAPA</strong>. Sem esse registro, você não poderá emitir o Certificado Fitossanitário nem exportar legalmente.
         </div>
       </div>
 
@@ -61,7 +61,7 @@ export default function MapaCadastroPage() {
         <ol className="space-y-4">
           {STEPS.map((s) => (
             <li key={s.num} className="card flex gap-4 items-start">
-              <span className="w-8 h-8 rounded-full bg-brand-400/15 text-brand-300 text-sm font-bold flex items-center justify-center flex-shrink-0">
+              <span className="w-8 h-8 bg-[#584531]/15 text-[#584531] text-sm font-bold flex items-center justify-center flex-shrink-0">
                 {s.num}
               </span>
               <div>
@@ -83,11 +83,11 @@ export default function MapaCadastroPage() {
             { label: 'Cadastro Exportador Vegetal (MAPA)', url: 'https://www.gov.br/mapa/pt-br/assuntos/exportacao' },
           ].map((l) => (
             <a key={l.url} href={l.url} target="_blank" rel="noopener noreferrer"
-               className="flex items-center justify-between card hover:border-slate-600 transition-colors group p-3">
-              <span className="text-sm text-slate-300 group-hover:text-brand-300 transition-colors flex items-center gap-2">
-                <FileText className="w-4 h-4 text-slate-500" /> {l.label}
+              className="flex items-center justify-between card hover:border-[#3e2e1e]/30 transition-colors group p-3">
+              <span className="text-sm text-[#3e2e1e] group-hover:text-[#584531] transition-colors flex items-center gap-2">
+                <FileText className="w-4 h-4 text-[#584531]/50" /> {l.label}
               </span>
-              <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-brand-400 transition-colors" />
+              <ExternalLink className="w-4 h-4 text-[#584531]/40 group-hover:text-[#584531] transition-colors" />
             </a>
           ))}
         </div>

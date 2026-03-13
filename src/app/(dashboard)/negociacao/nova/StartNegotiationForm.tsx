@@ -35,8 +35,8 @@ export function StartNegotiationForm({ offer }: { offer: Offer }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {/* Offer summary card */}
-      <div className="card bg-dark-100/50 space-y-3">
-        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wide">{t('novaOfferSummary')}</h3>
+      <div className="card bg-white/40 space-y-3">
+        <h3 className="text-xs font-semibold text-[#584531] uppercase tracking-wide">{t('novaOfferSummary')}</h3>
         <div className="flex items-start gap-4">
           <div className="w-16 h-16 overflow-hidden bg-dark-100 flex-shrink-0">
             {offer.product.images?.[0] ? (
@@ -48,19 +48,19 @@ export function StartNegotiationForm({ offer }: { offer: Offer }) {
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-slate-100 leading-snug">{offer.product.name}</p>
-            <div className="flex items-center gap-2 mt-1 text-xs text-slate-400">
-              <Star className="w-3 h-3 text-brand-400 fill-brand-400" />
+            <p className="text-sm font-semibold text-[#3e2e1e] leading-snug">{offer.product.name}</p>
+            <div className="flex items-center gap-2 mt-1 text-xs text-[#584531]">
+              <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
               <span>{offer.exporter.rating}</span>
-              <span className="text-slate-700">•</span>
+              <span className="text-[#584531]/40">•</span>
               <span>{offer.exporter.company_name}</span>
             </div>
             <div className="flex items-center gap-3 mt-2">
-              <span className="text-brand-300 font-bold text-sm">USD {offer.price_per_kg_usd.toFixed(2)}/kg</span>
-              <span className="text-slate-500 text-xs flex items-center gap-1">
+              <span className="text-[#3e2e1e] font-bold text-sm">USD {offer.price_per_kg_usd.toFixed(2)}/kg</span>
+              <span className="text-[#584531]/70 text-xs flex items-center gap-1">
                 <Ship className="w-3 h-3" /> {offer.incoterm}
               </span>
-              <span className="text-slate-500 text-xs flex items-center gap-1">
+              <span className="text-[#584531]/70 text-xs flex items-center gap-1">
                 <MapPin className="w-3 h-3" /> {offer.origin_port}
               </span>
             </div>
@@ -70,7 +70,7 @@ export function StartNegotiationForm({ offer }: { offer: Offer }) {
 
       {/* Quantity */}
       <div className="space-y-1.5">
-        <label className="text-xs font-medium text-slate-300">{t('novaQtyLabel')}</label>
+        <label className="text-xs font-medium text-[#584531]">{t('novaQtyLabel')}</label>
         <input
           type="number"
           className="input w-full"
@@ -81,12 +81,12 @@ export function StartNegotiationForm({ offer }: { offer: Offer }) {
           onChange={(e) => setQty(Number(e.target.value))}
           required
         />
-        <p className="text-xs text-slate-500">{t('novaQtyHint', { max: formatNumber(offer.available_quantity_kg) })}</p>
+        <p className="text-xs text-[#584531]/60">{t('novaQtyHint', { max: formatNumber(offer.available_quantity_kg) })}</p>
       </div>
 
       {/* Destination port */}
       <div className="space-y-1.5">
-        <label className="text-xs font-medium text-slate-300">{t('novaDestLabel')}</label>
+        <label className="text-xs font-medium text-[#584531]">{t('novaDestLabel')}</label>
         <select
           className="input w-full"
           value={destPort}
@@ -102,7 +102,7 @@ export function StartNegotiationForm({ offer }: { offer: Offer }) {
 
       {/* Payment conditions */}
       <div className="space-y-1.5">
-        <label className="text-xs font-medium text-slate-300">{t('novaPaymentLabel')}</label>
+        <label className="text-xs font-medium text-[#584531]">{t('novaPaymentLabel')}</label>
         <select
           className="input w-full"
           value={payment}
@@ -117,9 +117,9 @@ export function StartNegotiationForm({ offer }: { offer: Offer }) {
       </div>
 
       {/* Estimated total */}
-      <div className="bg-brand-500/10 border border-brand-500/20 px-4 py-3 flex items-center justify-between">
-        <span className="text-xs text-slate-400">{t('novaTotalLabel')}</span>
-        <span className="text-lg font-display font-bold text-white">
+      <div className="bg-[#584531]/10 border border-[#584531]/20 px-4 py-3 flex items-center justify-between">
+        <span className="text-xs text-[#584531]">{t('novaTotalLabel')}</span>
+        <span className="text-lg font-display font-bold text-[#3e2e1e]">
           USD {formatNumber(Math.round(total))}
         </span>
       </div>

@@ -12,7 +12,7 @@
     "myAccount": "Minha Conta"
   },
   "sidebar": {
-    "brandName": "PlataformaExport",
+    "brandName": "Brazil X Hub",
     "brandTagline": "Castanha & Agro B2B",
     "mockLabel": "Mock · {role}",
     "logout": "Sair",
@@ -283,7 +283,7 @@
     "ctaSubtitle": "Crie sua conta gratuitamente e comece a conectar sua empresa ao mercado internacional.",
     "ctaCreateAccount": "Criar conta gratuita",
     "ctaAlreadyHaveAccount": "Já tenho conta",
-    "footerCopyright": "© {year} brazilXHUB · Plataforma B2B de Exportação de Castanha-do-Brasil",
+    "footerCopyright": "© {year} Brazil X Hub · Plataforma B2B de Exportação de Castanha-do-Brasil",
     "footerIntegrations": "Integrado com SISCOMEX · MAPA · Gov.br · SIGVIG · SWIFT"
   },
   "auth": {
@@ -308,9 +308,9 @@
   },
   "entrar": {
     "welcomeBack": "Bem-vindo de volta",
-    "accessAccount": "Acesse sua conta brazilXHUB",
+    "accessAccount": "Acesse sua conta Brazil X Hub",
     "emailLabel": "E-mail",
-    "emailPlaceholder": "voce@empresa.com.br",
+    "emailPlaceholder": "voce@email.com",
     "passwordLabel": "Senha",
     "forgotPassword": "Esqueceu a senha?",
     "signInBtn": "Entrar",
@@ -322,8 +322,8 @@
     "errorFillFields": "Preencha e-mail e senha."
   },
   "registro": {
-    "pageTitle": "Como você vai usar a plataforma?",
-    "pageDesc": "Selecione o tipo que melhor descreve sua empresa. Seu cadastro será personalizado de acordo.",
+    "pageTitle": "Bem-vindo à Brazil X Hub!",
+    "pageDesc": "Selecione a categoria da sua empresa. Seu cadastro será personalizado.",
     "hasAccount": "Já tem conta?",
     "signIn": "Entrar",
     "stepCompany": "Empresa",
@@ -522,7 +522,7 @@
     "exportador": "Exportador",
     "exportadorDesc": "Empresas e produtores que exportam castanha-do-Brasil ou outros produtos agropecuários.",
     "importador": "Importador",
-    "importadorDesc": "Compradores internacionais que importam castanha-do-Brasil do Brasil.",
+    "importadorDesc": "Compradores internacionais que importam castanha-do-Brasil.",
     "transportadora": "Transportadora",
     "transportadoraDesc": "Empresas de transporte rodoviário ou fluvial que movem a mercadoria até o terminal.",
     "companhia-navegacao": "Companhia de Navegação",

@@ -22,11 +22,11 @@ import type { ExportWorkflow, WorkflowStep, WorkflowStepStatus } from '@/types'
 // ---- Ícone por status ------------------------------------------
 function StepIcon({ status, size = 'md' }: { status: WorkflowStepStatus; size?: 'sm' | 'md' }) {
   const cls = size === 'sm' ? 'w-4 h-4' : 'w-5 h-5'
-  if (status === 'CONCLUIDO') return <CheckCircle2 className={cn(cls, 'text-emerald-400')} />
+  if (status === 'CONCLUIDO') return <CheckCircle2 className={cn(cls, 'text-emerald-700')} />
   if (status === 'EM_ANDAMENTO') return <Clock className={cn(cls, 'text-brand-400 animate-pulse-slow')} />
-  if (status === 'ATRASADO') return <AlertCircle className={cn(cls, 'text-red-400')} />
-  if (status === 'BLOQUEADO') return <XCircle className={cn(cls, 'text-orange-400')} />
-  return <div className={cn(size === 'sm' ? 'w-4 h-4' : 'w-5 h-5', 'rounded-full border-2 border-slate-600')} />
+  if (status === 'ATRASADO') return <AlertCircle className={cn(cls, 'text-[#584531]')} />
+  if (status === 'BLOQUEADO') return <XCircle className={cn(cls, 'text-[#3e2e1e]')} />
+    return <div className={cn(size === 'sm' ? 'w-4 h-4' : 'w-5 h-5', 'border-2 border-[#584531]/40')} />
 }
 
 // ---- Badge de status -------------------------------------------
@@ -44,19 +44,19 @@ function DateRow({ label, planned, actual, late }: { label: string; planned: str
   const t = useTranslations('workflow')
   return (
     <div className="grid grid-cols-3 items-center text-xs py-1">
-      <span className="text-slate-400">{label}</span>
-      <span className="text-slate-300 tabular-nums">{formatDate(planned)}</span>
+      <span className="text-[#584531]">{label}</span>
+      <span className="text-[#3e2e1e] tabular-nums">{formatDate(planned)}</span>
       {actual ? (
-        <span className={cn('font-medium tabular-nums', late ? 'text-red-400' : 'text-emerald-400')}>
+        <span className={cn('font-medium tabular-nums', late ? 'text-[#584531]' : 'text-emerald-700')}>
           {formatDate(actual)}
           {late && (
-            <span className="ml-1 text-[10px] font-semibold uppercase tracking-wide text-red-500">
+            <span className="ml-1 text-[10px] font-semibold uppercase tracking-wide text-[#584531]">
               {t('lateLabel')}
             </span>
           )}
         </span>
       ) : (
-        <span className="text-slate-600 italic">-</span>
+        <span className="text-[#584531]/50 italic">-</span>
       )}
     </div>
   )
@@ -87,22 +87,22 @@ function WorkflowStepCard({
       <div className="flex flex-col items-center">
         <div
           className={cn(
-            'w-9 h-9 rounded-full flex items-center justify-center border-2 flex-shrink-0 z-10 relative',
-            step.status === 'CONCLUIDO' && 'bg-emerald-500/10 border-emerald-400',
+            'w-9 h-9 flex items-center justify-center border-2 flex-shrink-0 z-10 relative',
+            step.status === 'CONCLUIDO' && 'bg-emerald-700/10 border-emerald-700',
             step.status === 'EM_ANDAMENTO' && 'bg-brand-500/10 border-brand-400',
-            step.status === 'ATRASADO' && 'bg-red-500/10 border-red-400',
-            step.status === 'BLOQUEADO' && 'bg-orange-500/10 border-orange-400',
-            step.status === 'PENDENTE' && 'bg-slate-800 border-slate-600',
-            isCurrent && 'ring-2 ring-offset-2 ring-offset-dark ring-brand-500/50',
+            step.status === 'ATRASADO' && 'bg-[#584531]/10 border-[#584531]',
+            step.status === 'BLOQUEADO' && 'bg-[#3e2e1e]/10 border-[#3e2e1e]',
+            step.status === 'PENDENTE' && 'bg-[#dbcbba] border-[#584531]/40',
+            isCurrent && 'ring-2 ring-offset-2 ring-offset-[#dbcbba] ring-[#584531]/50',
           )}
         >
-          <span className="text-xs font-bold text-slate-300">{index + 1}</span>
+          <span className="text-xs font-bold text-[#584531]">{index + 1}</span>
         </div>
         {!isLast && (
           <div
             className={cn(
               'w-0.5 flex-1 mt-0.5',
-              step.status === 'CONCLUIDO' ? 'bg-emerald-500/40' : 'bg-slate-700/60',
+              step.status === 'CONCLUIDO' ? 'bg-emerald-700/40' : 'bg-slate-700/60',
             )}
           />
         )}
@@ -111,8 +111,8 @@ function WorkflowStepCard({
       {/* Conteúdo */}
       <div className={cn('flex-1 mb-4 border transition-colors',
         isCurrent
-          ? 'border-brand-500/40 bg-brand-500/5'
-          : 'border-slate-700/50 bg-dark-50',
+          ? 'border-[#584531]/35 bg-[#584531]/5'
+          : 'border-[#3e2e1e]/12 bg-white/40',
       )}>
         {/* Header */}
         <button
@@ -122,31 +122,31 @@ function WorkflowStepCard({
           <div className="flex items-center gap-3">
             <StepIcon status={step.status} />
             <div>
-              <h3 className={cn('text-sm font-semibold', isCurrent ? 'text-brand-300' : 'text-slate-100')}>
+              <h3 className={cn('text-sm font-semibold', isCurrent ? 'text-[#584531]' : 'text-[#3e2e1e]')}>
                 {step.title}
               </h3>
-              <p className="text-xs text-slate-500 mt-0.5">{step.responsible_party}</p>
+              <p className="text-xs text-[#584531]/60 mt-0.5">{step.responsible_party}</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <StatusBadge status={step.status} />
             {expanded ? (
-              <ChevronDown className="w-4 h-4 text-slate-500" />
+              <ChevronDown className="w-4 h-4 text-[#584531]/50" />
             ) : (
-              <ChevronRight className="w-4 h-4 text-slate-500" />
+              <ChevronRight className="w-4 h-4 text-[#584531]/50" />
             )}
           </div>
         </button>
 
         {/* Expanded content */}
         {expanded && (
-          <div className="px-4 pb-4 border-t border-slate-700/40 space-y-3 animate-fade-in">
-            <p className="text-xs text-slate-400 mt-3 leading-relaxed">{step.description}</p>
+          <div className="px-4 pb-4 border-t border-[#3e2e1e]/12 space-y-3 animate-fade-in">
+            <p className="text-xs text-[#584531] mt-3 leading-relaxed">{step.description}</p>
 
             {/* Datas */}
-            <div className="bg-dark-100 px-3 py-2.5">
+            <div className="bg-[#f0e8de] px-3 py-2.5">
               {/* Header */}
-              <div className="grid grid-cols-3 items-center text-[10px] font-semibold uppercase tracking-wide text-slate-500 pb-1.5 mb-1 border-b border-slate-700/50">
+              <div className="grid grid-cols-3 items-center text-[10px] font-semibold uppercase tracking-wide text-[#584531]/60 pb-1.5 mb-1 border-b border-[#3e2e1e]/12">
                 <span className="flex items-center gap-1"><CalendarDays className="w-3 h-3" /> {t('datesSection')}</span>
                 <span>{t('planned')}</span>
                 <span>{t('actual')}</span>
@@ -157,7 +157,7 @@ function WorkflowStepCard({
             {/* Documentos */}
             {step.documents.length > 0 && (
               <div>
-                <p className="text-xs font-medium text-slate-400 mb-1.5 flex items-center gap-1">
+                <p className="text-xs font-medium text-[#584531] mb-1.5 flex items-center gap-1">
                   <FileText className="w-3 h-3" /> {t('documentsSection')}
                 </p>
                 <DocumentViewer documents={step.documents} />
@@ -166,22 +166,22 @@ function WorkflowStepCard({
 
             {/* Referência externa */}
             {step.external_ref && (
-              <div className="flex items-center gap-2 text-xs text-slate-400 bg-dark-100 px-3 py-2">
-                <ExternalLink className="w-3 h-3 text-brand-400" />
-                <span>{t('reference')} <strong className="text-brand-300">{step.external_ref}</strong></span>
+              <div className="flex items-center gap-2 text-xs text-[#584531] bg-[#f0e8de] px-3 py-2">
+                <ExternalLink className="w-3 h-3 text-[#584531]" />
+                <span>{t('reference')} <strong className="text-[#3e2e1e]">{step.external_ref}</strong></span>
               </div>
             )}
 
             {/* Bloqueadores */}
             {step.blockers && step.blockers.length > 0 && (
-              <div className="border border-orange-500/30 bg-orange-500/5 px-3 py-2.5">
-                <p className="text-xs font-medium text-orange-400 flex items-center gap-1.5 mb-1.5">
+              <div className="border border-[#3e2e1e]/20 bg-[#3e2e1e]/5 px-3 py-2.5">
+                <p className="text-xs font-medium text-[#3e2e1e] flex items-center gap-1.5 mb-1.5">
                   <AlertTriangle className="w-3.5 h-3.5" /> {t('pendingBlockers')}
                 </p>
                 <ul className="space-y-1">
                   {step.blockers.map((b, i) => (
-                    <li key={i} className="text-xs text-orange-300/80 flex gap-2">
-                      <span className="text-orange-500 mt-0.5">•</span> {b}
+                    <li key={i} className="text-xs text-[#584531]/70 flex gap-2">
+                      <span className="text-[#584531] mt-0.5">•</span> {b}
                     </li>
                   ))}
                 </ul>
@@ -191,7 +191,7 @@ function WorkflowStepCard({
             {/* Notas */}
             {step.notes && (
               <div className="flex items-start gap-2 text-xs text-slate-400 italic">
-                <User className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                <User className="w-3 h-3 mt-0.5 flex-shrink-0 text-[#584531]/60" />
                 {step.notes}
               </div>
             )}
@@ -215,9 +215,9 @@ function ProgressBar({ steps }: { steps: WorkflowStep[] }) {
         <span>{t('stepsProgress', { done: concluded, total })}</span>
         <span className="font-semibold text-slate-200">{pct}%</span>
       </div>
-      <div className="h-2 bg-dark-100 rounded-full overflow-hidden">
+      <div className="h-2 bg-[#dbcbba] overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-brand-500 to-emerald-500 rounded-full transition-all duration-700"
+          className="h-full bg-gradient-to-r from-[#584531] to-emerald-600 transition-all duration-700"
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -230,8 +230,8 @@ export function WorkflowTimeline({ workflow }: { workflow: ExportWorkflow }) {
   const t = useTranslations('workflow')
   const overallColor = {
     EM_ANDAMENTO: 'text-brand-400',
-    CONCLUIDO: 'text-emerald-400',
-    ATRASADO: 'text-red-400',
+    CONCLUIDO: 'text-emerald-700',
+    ATRASADO: 'text-[#584531]',
     CANCELADO: 'text-slate-500',
   }[workflow.overall_status]
 
@@ -248,18 +248,18 @@ export function WorkflowTimeline({ workflow }: { workflow: ExportWorkflow }) {
       <div className="card space-y-4">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h2 className="font-display text-lg font-bold text-white">
+            <h2 className="font-display text-lg font-bold text-[#3e2e1e]">
               {workflow.negotiation.product_name}
             </h2>
-            <p className="text-sm text-slate-400 mt-0.5">
+            <p className="text-sm text-[#584531] mt-0.5">
               {workflow.negotiation.quantity_kg.toLocaleString('pt-BR')} kg •{' '}
-              <span className="text-brand-400 font-medium">{workflow.incoterm}</span> •{' '}
+              <span className="text-[#3e2e1e] font-medium">{workflow.incoterm}</span> •{' '}
               {workflow.negotiation.origin_port} → {workflow.negotiation.destination_port}
             </p>
           </div>
           <div className="text-right">
             <span className={cn('text-sm font-semibold', overallColor)}>{overallLabel}</span>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-[#584531]/60 mt-0.5">
               {t('estCompletion')} {formatDate(workflow.estimated_completion)}
             </p>
           </div>
@@ -269,26 +269,26 @@ export function WorkflowTimeline({ workflow }: { workflow: ExportWorkflow }) {
 
         {/* Partes */}
         <div className="grid grid-cols-2 gap-3 pt-1">
-          <div className="bg-dark-100 px-3 py-2">
-            <p className="text-xs text-slate-500 mb-0.5">{t('exporter')}</p>
-            <p className="text-sm font-medium text-slate-200">{workflow.exporter.company_name}</p>
-            <p className="text-xs text-slate-500">{workflow.exporter.country}</p>
+          <div className="bg-[#f0e8de] px-3 py-2">
+            <p className="text-xs text-[#584531]/60 mb-0.5">{t('exporter')}</p>
+            <p className="text-sm font-medium text-[#3e2e1e]">{workflow.exporter.company_name}</p>
+            <p className="text-xs text-[#584531]/60">{workflow.exporter.country}</p>
           </div>
-          <div className="bg-dark-100 px-3 py-2">
-            <p className="text-xs text-slate-500 mb-0.5">{t('importer')}</p>
-            <p className="text-sm font-medium text-slate-200">{workflow.importer.company_name}</p>
-            <p className="text-xs text-slate-500">{workflow.importer.country}</p>
+          <div className="bg-[#f0e8de] px-3 py-2">
+            <p className="text-xs text-[#584531]/60 mb-0.5">{t('importer')}</p>
+            <p className="text-sm font-medium text-[#3e2e1e]">{workflow.importer.company_name}</p>
+            <p className="text-xs text-[#584531]/60">{workflow.importer.country}</p>
           </div>
         </div>
       </div>
 
       {/* Legenda */}
       <div className="flex flex-wrap gap-3 items-center">
-        <span className="text-xs text-slate-500 font-medium">Legenda:</span>
+        <span className="text-xs text-[#584531]/60 font-medium">Legenda:</span>
         {(['CONCLUIDO', 'EM_ANDAMENTO', 'ATRASADO', 'BLOQUEADO', 'PENDENTE'] as const).map((s) => (
           <div key={s} className="flex items-center gap-1.5">
             <StepIcon status={s} size="sm" />
-            <span className="text-xs text-slate-400">{stepStatusLabel[s]}</span>
+            <span className="text-xs text-[#584531]">{stepStatusLabel[s]}</span>
           </div>
         ))}
       </div>

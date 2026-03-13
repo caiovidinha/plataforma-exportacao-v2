@@ -85,7 +85,7 @@ export default function MinhaContaPage() {
         {/* Contact info */}
         <section className="card space-y-4">
           <h2 className="section-title flex items-center gap-2">
-            <User className="w-4 h-4 text-brand-400" />
+            <User className="w-4 h-4 text-[#584531]" />
             {t('contactSection')}
           </h2>
 
@@ -112,7 +112,7 @@ export default function MinhaContaPage() {
         {/* Company info */}
         <section className="card space-y-4">
           <h2 className="section-title flex items-center gap-2">
-            <Building2 className="w-4 h-4 text-brand-400" />
+            <Building2 className="w-4 h-4 text-[#584531]" />
             {t('companySection')}
           </h2>
 
@@ -144,7 +144,7 @@ export default function MinhaContaPage() {
         {config.specificFields.length > 0 && (
           <section className="card space-y-4">
             <h2 className="section-title flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-brand-400" />
+            <Building2 className="w-4 h-4 text-[#584531]" />
               {t('specificSection', { entity: config.label })}
             </h2>
 
@@ -169,7 +169,7 @@ export default function MinhaContaPage() {
                     </select>
                   ) : field.type === 'checkbox' ? (
                     <label className="flex items-center gap-2 cursor-pointer">
-                      <input type="checkbox" className="rounded border-slate-600 bg-dark-100 text-brand-500" />
+                      <input type="checkbox" className="border-[#3e2e1e]/30 bg-white/60 text-[#584531]" />
                       <span className="text-sm text-slate-300">{field.hint ?? field.label}</span>
                     </label>
                   ) : (
@@ -189,7 +189,7 @@ export default function MinhaContaPage() {
         <div className="flex items-center gap-3">
           <button type="submit" className="btn-primary flex items-center gap-2">
             {saved ? (
-              <><CheckCircle2 className="w-4 h-4 text-emerald-400" /> {t('savedMsg')}</>
+              <><CheckCircle2 className="w-4 h-4 text-emerald-700" /> {t('savedMsg')}</>
             ) : (
               <><Save className="w-4 h-4" /> {t('saveBtn')}</>
             )}
@@ -205,7 +205,7 @@ export default function MinhaContaPage() {
         <section className="card space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="section-title flex items-center gap-2">
-              <User className="w-4 h-4 text-brand-400" />
+              <User className="w-4 h-4 text-[#584531]" />
               {t('teamSection')}
             </h2>
             <button
@@ -222,10 +222,10 @@ export default function MinhaContaPage() {
               const RoleIcon = ROLE_ICONS[member.entity_role]
               return (
                 <div key={member.id}
-                  className={cn('flex items-center justify-between py-2.5 px-3', member.active ? 'bg-dark-100' : 'opacity-50 bg-dark-100')}>
+                  className={cn('flex items-center justify-between py-2.5 px-3', member.active ? 'bg-[#f0e8de]' : 'opacity-50 bg-[#f0e8de]')}>
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center flex-shrink-0">
-                      <RoleIcon className="w-3.5 h-3.5 text-slate-300" />
+                    <div className="w-8 h-8 bg-[#3e2e1e]/10 flex items-center justify-center flex-shrink-0">
+                      <RoleIcon className="w-3.5 h-3.5 text-[#584531]" />
                     </div>
                     <div>
                       <p className="text-sm font-medium text-slate-200">
@@ -235,7 +235,7 @@ export default function MinhaContaPage() {
                       <p className="text-xs text-slate-500">{member.email}</p>
                     </div>
                   </div>
-                  <span className={cn('text-xs border px-2 py-0.5 rounded-full', ROLE_COLORS[member.entity_role])}>
+                  <span className={cn('text-xs border px-2 py-0.5', ROLE_COLORS[member.entity_role])}>
                     {t(`teamRoles.${member.entity_role}` as Parameters<typeof t>[0])}
                   </span>
                 </div>
@@ -248,21 +248,21 @@ export default function MinhaContaPage() {
       {/* Invite Modal */}
       {inviteOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-dark-200 border border-dark-50 shadow-2xl w-full max-w-md p-6 space-y-5">
+          <div className="bg-white border border-[#3e2e1e]/15 shadow-2xl w-full max-w-md p-6 space-y-5">
             <div className="flex items-center justify-between">
-              <h3 className="text-base font-semibold text-white flex items-center gap-2">
-                <UserPlus className="w-4 h-4 text-brand-400" /> {t('inviteTitle')}
+              <h3 className="text-base font-semibold text-[#3e2e1e] flex items-center gap-2">
+                <UserPlus className="w-4 h-4 text-[#584531]" /> {t('inviteTitle')}
               </h3>
               <button
                 onClick={() => { setInviteOpen(false); setInviteSent(false) }}
-                className="text-slate-400 hover:text-white text-xl leading-none"
+                className="text-[#584531]/50 hover:text-[#3e2e1e] text-xl leading-none"
               >&times;</button>
             </div>
 
             {inviteSent ? (
               <div className="flex items-center gap-3 py-6 justify-center">
-                <CheckCircle2 className="w-6 h-6 text-emerald-400" />
-                <p className="text-sm text-emerald-300 font-medium">{t('inviteSent', { email: inviteEmail })}</p>
+                <CheckCircle2 className="w-6 h-6 text-emerald-700" />
+                <p className="text-sm text-emerald-600 font-medium">{t('inviteSent', { email: inviteEmail })}</p>
               </div>
             ) : (
               <form onSubmit={handleInvite} className="space-y-4">

@@ -11,8 +11,8 @@ const montserrat = Montserrat({ subsets: ['latin'], variable: '--font-montserrat
 
 export const metadata: Metadata = {
   title: {
-    default: 'brazilXHUB',
-    template: '%s | brazilXHUB',
+    default: 'Brazil X Hub',
+    template: '%s | Brazil X Hub',
   },
   description: 'B2B export platform for the Brazil Nut supply chain.',
 }

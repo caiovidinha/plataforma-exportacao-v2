@@ -31,9 +31,9 @@ export default async function NovaNegociacaoPage({ searchParams }: Props) {
 
       <div>
         <h1 className="page-title">{t('novaPageTitle')}</h1>
-        <p className="text-sm text-slate-400 mt-1">
+        <p className="text-sm text-[#584531] mt-1">
           {t('novaFromOffer')}:{' '}
-          <span className="text-brand-300 font-medium">{offer.product.name}</span>
+          <span className="text-[#3e2e1e] font-medium">{offer.product.name}</span>
         </p>
       </div>
 

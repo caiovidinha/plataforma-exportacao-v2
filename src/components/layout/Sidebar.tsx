@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import {
@@ -13,8 +14,6 @@ import {
   Package,
   Settings,
   LogOut,
-  AlertTriangle,
-  Leaf,
   FileText,
   User,
   Truck,
@@ -25,7 +24,6 @@ import {
   ShieldCheck,
   Award,
   FlaskConical,
-  Home,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { featureFlags } from '@/lib/feature-flags'
@@ -36,7 +34,7 @@ const TRADING_ENTITIES: EntitySlug[] = ['exportador', 'importador']
 
 // Entity icon map for the user footer badge
 const ENTITY_ICONS: Record<EntitySlug, React.ElementType> = {
-  exportador: Leaf,
+  exportador: Package,
   importador: ShoppingBag,
   transportadora: Truck,
   'companhia-navegacao': Ship,
@@ -67,7 +65,7 @@ export function Sidebar({
   const router = useRouter()
   const t = useTranslations()
   const isTrading = TRADING_ENTITIES.includes(entityType)
-  const EntityIcon = ENTITY_ICONS[entityType] ?? Leaf
+  const EntityIcon = ENTITY_ICONS[entityType] ?? Package
 
   // Locale-aware entity name using static keys so next-intl resolves correctly
   const entityName = ({
@@ -106,37 +104,24 @@ export function Sidebar({
   const nav = isTrading ? tradingNav : providerNav
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-64 bg-dark-50 border-r border-slate-700/50 flex flex-col z-40">
+    <aside className="fixed left-0 top-0 h-full w-64 flex flex-col z-40"
+      style={{ backgroundColor: '#2c1e12', borderRight: '1px solid rgba(219,203,186,0.12)' }}>
       {/* Logo - links back to landing page */}
       <Link
         href="/"
-        className="flex items-center gap-3 px-5 py-5 border-b border-slate-700/50 hover:bg-dark-100 transition-colors"
+        className="flex items-center gap-3 px-5 py-5 transition-all hover:brightness-110"
+        style={{ borderBottom: '1px solid rgba(219,203,186,0.12)' }}
+        onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.07)')}
+        onMouseLeave={e => (e.currentTarget.style.backgroundColor = '')}
       >
-        <div className="w-9 h-9 bg-brand-500 flex items-center justify-center flex-shrink-0">
-          <Leaf className="w-5 h-5 text-white" />
+        <div className="w-9 h-9 flex items-center justify-center flex-shrink-0">
+          <Image src="/img/logo-branca-icon.webp" alt="brazilXHUB" width={36} height={36} className="object-contain" />
         </div>
         <div>
-          <p className="font-display font-bold text-white text-sm leading-tight">{t('sidebar.brandName')}</p>
-          <p className="text-xs text-slate-400">{t('sidebar.brandTagline')}</p>
+          <p className="font-display font-bold text-[#ede5dc] text-sm leading-tight">{t('sidebar.brandName')}</p>
+          <p className="text-xs" style={{ color: 'rgba(219,203,186,0.55)' }}>{t('sidebar.brandTagline')}</p>
         </div>
       </Link>
-
-      {/* MAPA Warning – only for exportador without MAPA registration */}
-      {entityType === 'exportador' && !mapaRegistered && featureFlags.mapaRegistrationWarning && (
-        <Link
-          href="/cadastro/mapa"
-          className="mx-3 mt-3 flex items-start gap-2 bg-amber-500/10 border border-amber-500/30 p-3 hover:bg-amber-500/20 transition-colors group"
-        >
-          <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
-          <div>
-            <p className="text-xs font-semibold text-amber-300">{t('mapa.sidebarTitle')}</p>
-            <p className="text-xs text-amber-400/80 mt-0.5">
-              {t('mapa.sidebarDesc')}{' '}
-              <span className="underline group-hover:no-underline">{t('mapa.sidebarLink')}</span>
-            </p>
-          </div>
-        </Link>
-      )}
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto py-3 px-2">
@@ -147,11 +132,15 @@ export function Sidebar({
               key={href}
               href={href}
               className={cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors mb-0.5',
+                'flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-all mb-0.5',
                 active
-                  ? 'bg-brand-500/15 text-brand-300 border border-brand-500/20'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-dark-100',
+                  ? 'text-[#ede5dc]'
+                  : 'text-[#dbcbba]/60 hover:text-[#ede5dc] hover:bg-white/[0.06] hover:brightness-110',
               )}
+              style={active
+                ? { backgroundColor: 'rgba(237,229,220,0.12)', borderLeft: '2px solid #dbcbba', paddingLeft: '10px' }
+                : undefined
+              }
             >
               <Icon className="w-4 h-4 flex-shrink-0" />
               {label}
@@ -161,22 +150,24 @@ export function Sidebar({
       </nav>
 
       {/* User Footer */}
-      <div className="px-4 py-4 border-t border-slate-700/50">
+      <div className="px-4 py-4" style={{ borderTop: '1px solid rgba(219,203,186,0.12)' }}>
         {/* Entity badge */}
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-8 h-8 rounded-full bg-dark-100 border border-slate-600 flex items-center justify-center flex-shrink-0">
-            <EntityIcon className="w-4 h-4 text-brand-400" />
+          <div className="w-8 h-8 flex items-center justify-center flex-shrink-0"
+            style={{ backgroundColor: 'rgba(219,203,186,0.10)', border: '1px solid rgba(219,203,186,0.20)' }}>
+            <EntityIcon className="w-4 h-4 text-[#dbcbba]" />
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold text-white truncate">{userName || 'User'}</p>
-            <p className="text-xs text-slate-400 truncate">{companyName || roleLabel}</p>
+            <p className="text-xs font-semibold text-[#ede5dc] truncate">{userName || 'User'}</p>
+            <p className="text-xs truncate" style={{ color: 'rgba(219,203,186,0.55)' }}>{companyName || roleLabel}</p>
           </div>
         </div>
 
         {featureFlags.useMockData && (
-          <div className="flex items-center gap-1.5 mb-3 bg-violet-500/10 border border-violet-500/20 rounded px-2 py-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-            <span className="text-xs text-violet-300 font-medium">
+          <div className="flex items-center gap-1.5 mb-3 px-2 py-1"
+            style={{ backgroundColor: 'rgba(219,203,186,0.10)', border: '1px solid rgba(219,203,186,0.20)' }}>
+            <span className="w-1.5 h-1.5 bg-[#dbcbba]/70 animate-pulse" />
+            <span className="text-xs text-[#dbcbba]/70 font-medium">
               {t('sidebar.mockLabel', { role: entityName })}
             </span>
           </div>
@@ -184,13 +175,16 @@ export function Sidebar({
 
         <button
           onClick={() => router.push('/entrar')}
-          className="flex items-center gap-2 text-sm text-slate-400 hover:text-red-400 transition-colors w-full"
+          className="flex items-center gap-2 text-sm transition-colors w-full"
+          style={{ color: 'rgba(219,203,186,0.55)' }}
+          onMouseEnter={e => (e.currentTarget.style.color = '#ede5dc')}
+          onMouseLeave={e => (e.currentTarget.style.color = 'rgba(219,203,186,0.55)')}
         >
           <LogOut className="w-4 h-4" />
           {t('sidebar.logout')}
         </button>
 
-        <div className="mt-3 pt-3 border-t border-slate-700/50">
+        <div className="mt-3 pt-3" style={{ borderTop: '1px solid rgba(219,203,186,0.12)' }}>
           <LanguageSwitcher className="w-full" />
         </div>
       </div>

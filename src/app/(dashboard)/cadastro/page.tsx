@@ -62,35 +62,35 @@ export default function CadastroPage() {
     : t('subtitle')
 
   return (
-    <div className="p-6 space-y-8">
+    <div className="min-h-screen p-6 space-y-8">
       <div>
-        <h1 className="page-title">{t('title')}</h1>
-        <p className="text-sm text-slate-400 mt-1">{subtitle}</p>
+        <h1 className="page-title font-sans">{t('title')}</h1>
+        <p className="text-sm text-[#584531] mt-1 font-sans">{subtitle}</p>
       </div>
 
       {isExportador && !user.mapa_registered && (
-        <div className="bg-amber-400/10 border border-amber-400/30 p-4 flex items-start justify-between gap-4">
+        <div className="bg-amber-500/10 border border-amber-500/30 p-4 flex items-start justify-between gap-4">
           <div className="flex gap-3">
-            <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+            <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="text-sm text-slate-200 font-medium">{tMapa('bannerTitle')}</p>
-              <p className="text-xs text-slate-400 mt-0.5">{tMapa('bannerDesc')}</p>
+              <p className="text-sm text-[#3e2e1e] font-medium font-sans">{tMapa('bannerTitle')}</p>
+              <p className="text-xs text-[#584531] mt-0.5 font-sans">{tMapa('bannerDesc')}</p>
             </div>
           </div>
-          <Link href="/cadastro/mapa" className="btn-primary whitespace-nowrap flex-shrink-0 text-sm py-1.5">
+          <Link href="/cadastro/mapa" className="inline-flex items-center gap-2 bg-[#584531] hover:bg-[#3e2e1e] text-[#ede5dc] shadow-sm px-3 py-1 text-xs font-semibold transition-colors whitespace-nowrap flex-shrink-0">
             {tMapa('bannerBtn')}
           </Link>
         </div>
       )}
 
       {isTrading && (
-        <div className="bg-blue-500/10 border border-blue-500/20 p-4">
-          <p className="text-xs text-blue-300 leading-relaxed">
-            <strong className="font-semibold">{t('providerTipHeading')}</strong>{' '}
+        <div className="bg-[#584531]/8 border border-[#3e2e1e]/15 p-4">
+          <p className="text-xs text-[#584531] leading-relaxed font-sans">
+            <strong className="font-semibold text-[#3e2e1e]">{t('providerTipHeading')}</strong>{' '}
             {t('providerTipBody1')}{' '}
-            <Link href="/registro" className="underline hover:text-blue-200">/registro</Link>.{' '}
+            <Link href="/registro" className="underline hover:text-[#3e2e1e]">/registro</Link>.{' '}
             {t('providerTipBody2')}{' '}
-            <Link href="/servicos" className="underline hover:text-blue-200">{t('providerTipMarketplace')}</Link>.
+            <Link href="/servicos" className="underline hover:text-[#3e2e1e]">{t('providerTipMarketplace')}</Link>.
           </p>
         </div>
       )}
@@ -98,15 +98,15 @@ export default function CadastroPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
         {items.map(({ href, label, icon: Icon, desc }) => (
           <Link key={href} href={href}
-            className="card flex items-center gap-4 hover:border-slate-600 hover:bg-slate-800/60 transition-all group">
-            <div className="w-10 h-10 bg-brand-400/10 flex items-center justify-center flex-shrink-0">
-              <Icon className="w-5 h-5 text-brand-400" />
+            className="flex items-center gap-4 border border-[#3e2e1e]/25 bg-white/40 hover:border-[#584531]/60 hover:bg-white/70 transition-all group p-5">
+            <div className="w-10 h-10 bg-[#584531]/10 flex items-center justify-center flex-shrink-0 border border-[#584531]/25">
+              <Icon className="w-5 h-5 text-[#584531]" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-slate-100 group-hover:text-brand-300 transition-colors">{label}</p>
-              <p className="text-xs text-slate-500 truncate mt-0.5">{desc}</p>
+              <p className="text-sm font-semibold text-[#3e2e1e] group-hover:text-[#1c1208] transition-colors font-sans">{label}</p>
+              <p className="text-xs text-[#584531]/70 truncate mt-0.5 font-sans">{desc}</p>
             </div>
-            <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-brand-400 transition-colors flex-shrink-0" />
+            <ChevronRight className="w-4 h-4 text-[#584531]/40 group-hover:text-[#584531] transition-colors flex-shrink-0" />
           </Link>
         ))}
       </div>

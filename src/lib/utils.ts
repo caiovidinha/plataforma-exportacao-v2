@@ -46,9 +46,9 @@ export function incotermLabel(incoterm: 'FOB' | 'CIF') {
 export const stepStatusColors = {
   PENDENTE: 'text-slate-400 bg-slate-400/10 border-slate-400/30',
   EM_ANDAMENTO: 'text-brand-400 bg-brand-400/10 border-brand-400/30',
-  CONCLUIDO: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/30',
-  ATRASADO: 'text-red-400 bg-red-400/10 border-red-400/30',
-  BLOQUEADO: 'text-orange-400 bg-orange-400/10 border-orange-400/30',
+  CONCLUIDO: 'text-emerald-700 bg-emerald-700/10 border-emerald-700/30',
+  ATRASADO: 'text-[#584531] bg-[#584531]/10 border-[#584531]/30',
+  BLOQUEADO: 'text-[#3e2e1e] bg-[#3e2e1e]/10 border-[#3e2e1e]/30',
 } as const
 
 export const stepStatusLabel = {

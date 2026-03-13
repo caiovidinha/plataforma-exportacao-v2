@@ -9,12 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Override slate with warm espresso/tan tones derived from banner palette
+        // Slate: light values (100/200) now dark brown for readable text on beige bg
         slate: {
           50:  '#faf3ea',
-          100: '#f0dcc8',
-          200: '#dfc0a0',
-          300: '#c9a07a',
+          100: '#3e2e1e',  // primary text on light bg (was light cream)
+          200: '#584531',  // secondary text on light bg (was light tan)
+          300: '#7a5e45',
           400: '#ab7d52',
           500: '#8c5e38',
           600: '#6b4426',
@@ -37,11 +37,12 @@ const config: Config = {
           900: '#623718',
           950: '#371b09',
         },
+        // Dark: remapped to light beige scale so bg-dark-* gives warm card backgrounds
         dark: {
-          DEFAULT: '#1c1208',
-          50:  '#261810',
-          100: '#301e12',
-          200: '#3e281a',
+          DEFAULT: '#dbcbba',  // body bg
+          50:  '#f0e8de',      // card / panel bg
+          100: '#ede5dc',      // hover bg
+          200: '#e4d9cf',      // deeper hover
         },
       },
       fontFamily: {
