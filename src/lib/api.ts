@@ -17,6 +17,7 @@ import type {
   ServiceProvider,
   InsurancePolicy,
   MapaNotice,
+  Exporter,
   PaginatedResponse,
 } from '@/types'
 
@@ -86,6 +87,27 @@ export async function getOffer(id: string): Promise<Offer> {
     return o as Offer
   }
   const { data } = await api.get<Offer>(`/offers/${id}`)
+  return data
+}
+
+export async function getExporterByCompanyName(companyName: string): Promise<Exporter | null> {
+  if (featureFlags.useMockData) {
+    await delay()
+    const exp = (mockData.exporters as Exporter[]).find((e) => e.company_name === companyName)
+    return exp ?? null
+  }
+  const { data } = await api.get<Exporter[]>('/exporters', { params: { company_name: companyName } })
+  return data[0] ?? null
+}
+
+export async function getExporter(id: string): Promise<Exporter> {
+  if (featureFlags.useMockData) {
+    await delay()
+    const exp = (mockData.exporters as Exporter[]).find((e) => e.id === id)
+    if (!exp) throw new Error('Exportador não encontrado')
+    return exp as Exporter
+  }
+  const { data } = await api.get<Exporter>(`/exporters/${id}`)
   return data
 }
 

@@ -452,10 +452,20 @@ export interface Exporter {
   company_name: string
   cnpj: string
   country: string
+  state?: string
+  city?: string
   mapa_registered: boolean
   mapa_registration_code?: string
   contact_email: string
   contact_phone: string
+  website?: string
+  description?: string
+  founded_year?: number
+  employees_range?: string
+  annual_export_volume_tons?: number
+  main_products?: string[]
+  certifications?: string[]
+  main_destinations?: string[]
   active: boolean
   created_at: string
 }

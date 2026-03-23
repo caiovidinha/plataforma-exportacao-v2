@@ -1,8 +1,8 @@
-import { getOffer, getProduct } from '@/lib/api'
+import { getOffer, getProduct, getExporterByCompanyName } from '@/lib/api'
 import { FichaTecnica } from '@/components/ficha-tecnica/FichaTecnica'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Star, MapPin, Ship, Calendar, MessageSquare, AlertTriangle } from 'lucide-react'
+import { ArrowLeft, Star, MapPin, Ship, Calendar, MessageSquare, AlertTriangle, ChevronRight } from 'lucide-react'
 import { formatNumber, incotermLabel } from '@/lib/utils'
 import { getTranslations } from 'next-intl/server'
 
@@ -17,6 +17,7 @@ export default async function OfertaDetailPage({ params }: Props) {
   }
 
   const product = await getProduct(offer.product.id)
+  const exporter = await getExporterByCompanyName(offer.exporter.company_name)
   const t = await getTranslations('vitrine')
 
   return (
@@ -40,7 +41,7 @@ export default async function OfertaDetailPage({ params }: Props) {
                   {offer.exporter.company_name.charAt(0)}
                 </span>
               </div>
-              <div>
+              <div className="flex-1">
                 <p className="text-sm font-medium text-[#3e2e1e]">{offer.exporter.company_name}</p>
                 <div className="flex items-center gap-2 text-xs text-[#584531]">
                   <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
@@ -51,10 +52,19 @@ export default async function OfertaDetailPage({ params }: Props) {
                 </div>
               </div>
               {!offer.exporter.mapa_registered && (
-                <div className="ml-auto flex items-center gap-1.5 text-xs text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2.5 py-1.5">
+                <div className="flex items-center gap-1.5 text-xs text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2.5 py-1.5">
                   <AlertTriangle className="w-3.5 h-3.5" />
                   {t('exporterNoMapa')}
                 </div>
+              )}
+              {exporter && (
+                <Link
+                  href={`/vitrine/empresa/${exporter.id}?from=${offer.id}`}
+                  className="flex items-center gap-1 text-xs font-semibold text-[#584531] hover:text-[#3e2e1e] transition-colors ml-auto"
+                >
+                  {t('viewCompany')}
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </Link>
               )}
             </div>
           </div>

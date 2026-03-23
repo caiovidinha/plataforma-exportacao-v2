@@ -76,8 +76,8 @@
         }
       ],
       "images": [
-        "https://placehold.co/800x600/d4891f/ffffff?text=Castanha+do+Brasil",
-        "https://placehold.co/800x600/b86e15/ffffff?text=Embalagem+25kg"
+        "/img/offer-castanha-crua.webp",
+        "/img/offer-castanha-organica.webp"
       ],
       "certifications": ["Orgânico IBD", "Fair Trade", "Rainforest Alliance"],
       "created_by": "usr_001",
@@ -93,7 +93,7 @@
         "id": "prod_001",
         "name": "Castanha-do-Brasil Crua In Natura",
         "description": "Colhida de florestas nativas do Amazonas",
-        "images": ["https://placehold.co/400x300/d4891f/ffffff?text=Castanha"],
+        "images": ["/img/offer-castanha-crua.webp"],
         "packaging": "Sacos de polipropileno 25kg"
       },
       "exporter": {
@@ -121,7 +121,7 @@
         "id": "prod_001",
         "name": "Castanha-do-Brasil Orgânica IBD",
         "description": "Certificada orgânica pela IBD, safra 2025",
-        "images": ["https://placehold.co/400x300/96541 3/ffffff?text=Organica"],
+        "images": ["/img/offer-castanha-organica.webp"],
         "packaging": "Big bags 500kg"
       },
       "exporter": {
@@ -150,7 +150,7 @@
         "id": "prod_001",
         "name": "Castanha-do-Brasil Premium - Orgânica Fair Trade",
         "description": "Lote premium certificado orgânico IBD e Fair Trade, colhido em reservas extrativistas do Acre. Laudo MAPA aprovado, aflatoxina < 4 ppb, umidade 3,2%. Rastreabilidade total da floresta ao porto. Ideal para marcas premium europeias e norte-americanas.",
-        "images": ["https://placehold.co/600x400/92400e/ffffff?text=Premium+Castanha"],
+        "images": ["/img/offer-castanha-premium.webp"],
         "packaging": "Big bags 500 kg com liner interno EVOH"
       },
       "exporter": {
@@ -267,8 +267,8 @@
           "planned_date": "2025-11-12",
           "actual_date": "2025-11-11",
           "documents": [
-            { "id": "doc_001", "type": "OUTROS", "name": "Contrato Principal de Compra e Venda", "status": "ASSINADO", "url": "/mock/contrato-principal.pdf", "emitted_by": "Plataforma", "emitted_at": "2025-11-11T10:00:00Z" },
-            { "id": "doc_002", "type": "OUTROS", "name": "Contrato com Corretora de Câmbio", "status": "ASSINADO", "url": "/mock/contrato-cambio.pdf", "emitted_by": "Plataforma", "emitted_at": "2025-11-11T10:30:00Z" }
+            { "id": "doc_001", "type": "OUTROS", "name": "Contrato Principal de Compra e Venda", "status": "ASSINADO", "url": "/mock-doc.pdf", "emitted_by": "Plataforma", "emitted_at": "2025-11-11T10:00:00Z" },
+            { "id": "doc_002", "type": "OUTROS", "name": "Contrato com Corretora de Câmbio", "status": "ASSINADO", "url": "/mock-doc.pdf", "emitted_by": "Plataforma", "emitted_at": "2025-11-11T10:30:00Z" }
           ],
           "notes": "Todos os contratos assinados digitalmente via Gov.br"
         },
@@ -283,7 +283,7 @@
           "planned_date": "2025-11-20",
           "actual_date": "2025-11-19",
           "documents": [
-            { "id": "doc_003", "type": "NF", "name": "Nota Fiscal NF-e 12345", "status": "EMITIDO", "url": "/mock/nf-12345.pdf", "emitted_by": "Castanheira Export Ltda.", "emitted_at": "2025-11-19T08:00:00Z" }
+            { "id": "doc_003", "type": "NF", "name": "Nota Fiscal NF-e 12345", "status": "EMITIDO", "url": "/mock-doc.pdf", "emitted_by": "Castanheira Export Ltda.", "emitted_at": "2025-11-19T08:00:00Z" }
           ]
         },
         {
@@ -297,9 +297,9 @@
           "planned_date": "2025-11-25",
           "actual_date": "2025-11-26",
           "documents": [
-            { "id": "doc_004", "type": "INVOICE", "name": "Invoice #INV-2025-001", "status": "ASSINADO", "url": "/mock/invoice-001.pdf", "emitted_by": "Plataforma", "emitted_at": "2025-11-26T09:00:00Z" },
-            { "id": "doc_005", "type": "PACKING_LIST", "name": "Packing List #PL-2025-001", "status": "ASSINADO", "url": "/mock/packing-list-001.pdf", "emitted_by": "Plataforma", "emitted_at": "2025-11-26T09:30:00Z" },
-            { "id": "doc_006", "type": "CERT_ORIGEM", "name": "Certificado de Origem Form A", "status": "EMITIDO", "url": "/mock/cert-origem-001.pdf", "emitted_by": "FIEPA", "emitted_at": "2025-11-27T11:00:00Z" }
+            { "id": "doc_004", "type": "INVOICE", "name": "Invoice #INV-2025-001", "status": "ASSINADO", "url": "/mock-doc.pdf", "emitted_by": "Plataforma", "emitted_at": "2025-11-26T09:00:00Z" },
+            { "id": "doc_005", "type": "PACKING_LIST", "name": "Packing List #PL-2025-001", "status": "ASSINADO", "url": "/mock-doc.pdf", "emitted_by": "Plataforma", "emitted_at": "2025-11-26T09:30:00Z" },
+            { "id": "doc_006", "type": "CERT_ORIGEM", "name": "Certificado de Origem Form A", "status": "EMITIDO", "url": "/mock-doc.pdf", "emitted_by": "FIEPA", "emitted_at": "2025-11-27T11:00:00Z" }
           ],
           "notes": "Pequeno atraso de 1 dia na entrada no REDEX"
         },
@@ -542,8 +542,49 @@
   ],
 
   "exporters": [
-    { "id": "exp_001", "company_name": "Castanheira Export Ltda.", "cnpj": "12.345.678/0001-90", "country": "BR", "mapa_registered": false, "contact_email": "carlos@castanheiraexport.com.br", "contact_phone": "+55 91 99999-1234", "active": true, "created_at": "2024-01-15T10:00:00Z" },
-    { "id": "exp_002", "company_name": "AmazonNuts Export S.A.", "cnpj": "98.765.432/0001-11", "country": "BR", "mapa_registered": true, "mapa_registration_code": "MAPA-EXP-2024-001122", "contact_email": "comercial@amazonnuts.com.br", "contact_phone": "+55 91 98888-5678", "active": true, "created_at": "2023-06-20T08:00:00Z" }
+    {
+      "id": "exp_001",
+      "company_name": "Castanheira Export Ltda.",
+      "cnpj": "12.345.678/0001-90",
+      "country": "BR",
+      "state": "Pará",
+      "city": "Belém",
+      "mapa_registered": false,
+      "contact_email": "carlos@castanheiraexport.com.br",
+      "contact_phone": "+55 91 99999-1234",
+      "website": "https://castanheiraexport.com.br",
+      "description": "Empresa familiar especializada na exportação de castanha-do-Brasil in natura, com mais de 15 anos de experiência no mercado amazônico. Trabalhamos diretamente com comunidades extrativistas do Pará.",
+      "founded_year": 2009,
+      "employees_range": "10-50",
+      "annual_export_volume_tons": 400,
+      "main_products": ["Castanha-do-Brasil Crua", "Castanha-do-Brasil Desidratada"],
+      "certifications": ["Fair Trade"],
+      "main_destinations": ["Alemanha", "Holanda", "EUA"],
+      "active": true,
+      "created_at": "2024-01-15T10:00:00Z"
+    },
+    {
+      "id": "exp_002",
+      "company_name": "AmazonNuts Export S.A.",
+      "cnpj": "98.765.432/0001-11",
+      "country": "BR",
+      "state": "Pará",
+      "city": "Marabá",
+      "mapa_registered": true,
+      "mapa_registration_code": "MAPA-EXP-2024-001122",
+      "contact_email": "comercial@amazonnuts.com.br",
+      "contact_phone": "+55 91 98888-5678",
+      "website": "https://amazonnuts.com.br",
+      "description": "Líder na exportação de castanhas orgânicas certificadas da Amazônia. Cadeia 100% rastreável, do extrativismo sustentável ao embarque nos principais portos brasileiros. Atendemos marcas premium na Europa e América do Norte.",
+      "founded_year": 2005,
+      "employees_range": "50-200",
+      "annual_export_volume_tons": 1200,
+      "main_products": ["Castanha-do-Brasil Orgânica", "Castanha-do-Brasil Premium Fair Trade", "Óleo de Castanha"],
+      "certifications": ["Orgânico IBD", "Fair Trade", "Rainforest Alliance", "FSSC 22000"],
+      "main_destinations": ["Alemanha", "Holanda", "Reino Unido", "Espanha", "EUA", "Japão"],
+      "active": true,
+      "created_at": "2023-06-20T08:00:00Z"
+    }
   ],
 
   "importers": [
