@@ -157,19 +157,28 @@ export default async function LandingPage() {
 
       {/* ── HOW IT WORKS ── */}
       <section id="como-funciona" className="relative w-full overflow-hidden">
+        {/* Imagem de fundo */}
         <Image
           src="/img/banner-sec.webp"
           alt=""
-          width={2560}
-          height={1200}
-          className="w-full h-auto block opacity-60"
+          fill
+          className="object-cover opacity-60 pointer-events-none select-none"
         />
-        <div className="absolute inset-0"/>
-        <div className="absolute inset-0 flex items-center">
-          <div className="relative z-10 w-full max-w-5xl mx-auto px-6 py-24 space-y-12">
+        {/* Conteúdo em fluxo normal */}
+        <div className="relative z-10 w-full max-w-5xl mx-auto px-6 py-24 space-y-12">
           <div className="text-center space-y-2">
             <h2 className="font-display text-[2.4rem] font-bold text-[#ede5dc]">{t('howWorksSectionTitle')}</h2>
             <p className="text-[#ede5dc] text-sm max-w-lg mx-auto">{t('howWorksSectionSubtitle')}</p>
+          </div>
+          {/* Vídeo centralizado */}
+          <div className="relative w-full max-w-xl mx-auto aspect-video shadow-2xl ring-1 ring-white/10">
+            <iframe
+              src="https://www.youtube.com/embed/DSyAje9OG7g?rel=0&modestbranding=1"
+              title="Brazil X Hub"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full"
+            />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {STEPS.map((s) => (
@@ -183,7 +192,6 @@ export default async function LandingPage() {
                 </div>
               </div>
             ))}
-          </div>
           </div>
         </div>
       </section>
