@@ -1,8 +1,9 @@
 import { getOffer, getProduct, getExporterByCompanyName } from '@/lib/api'
 import { FichaTecnica } from '@/components/ficha-tecnica/FichaTecnica'
+import { OrderBox } from '@/components/pedidos/OrderBox'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Star, MapPin, Ship, Calendar, MessageSquare, AlertTriangle, ChevronRight } from 'lucide-react'
+import { ArrowLeft, Star, MapPin, Ship, Calendar, AlertTriangle, ChevronRight } from 'lucide-react'
 import { formatNumber, incotermLabel } from '@/lib/utils'
 import { getTranslations } from 'next-intl/server'
 
@@ -76,7 +77,7 @@ export default async function OfertaDetailPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Painel lateral de negociação */}
+        {/* Painel lateral de compra */}
         <div className="space-y-4">
           <div className="card space-y-3 sticky top-6">
             <h3 className="section-title">{t('offerDetails')}</h3>
@@ -120,23 +121,22 @@ export default async function OfertaDetailPage({ params }: Props) {
               </div>
             </div>
 
-            {/* Total estimado */}
-            <div className="bg-[#584531]/10 border border-[#584531]/20 px-3 py-2.5">
-              <p className="text-xs text-[#584531] mb-0.5">{t('estimatedTotal')}</p>
-              <p className="font-display font-bold text-[#3e2e1e] text-lg">
-                USD {formatNumber(offer.available_quantity_kg * offer.price_per_kg_usd)}
-              </p>
-            </div>
-
-            <Link
-              href={`/negociacao/nova?offer=${offer.id}`}
-              className="btn-primary w-full justify-center"
-            >
-              <MessageSquare className="w-4 h-4" /> {t('startNegotiation')}
-            </Link>
-            <p className="text-xs text-[#584531]/60 text-center">
-              {t('negotiationNote')}
-            </p>
+            {/* Compra a preço fixo */}
+            <OrderBox
+              offerId={offer.id}
+              pricePerKgUsd={offer.price_per_kg_usd}
+              availableQuantityKg={offer.available_quantity_kg}
+              paymentNote={t('paymentNote')}
+              labels={{
+                quantityLabel: t('quantityLabel'),
+                estimatedTotal: t('estimatedTotal'),
+                placeOrder: t('placeOrder'),
+                ordering: t('ordering'),
+                orderCreated: t('orderCreated'),
+                orderNote: t('orderNote'),
+                maxAvailable: t('maxAvailable'),
+              }}
+            />
           </div>
         </div>
       </div>

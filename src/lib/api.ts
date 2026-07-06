@@ -11,7 +11,10 @@ import type {
   Product,
   Offer,
   Match,
-  Negotiation,
+  Order,
+  OrderStatus,
+  Incoterm,
+  SaleModality,
   ExportWorkflow,
   Liquidation,
   ServiceProvider,
@@ -79,6 +82,57 @@ export async function getOffers(): Promise<PaginatedResponse<Offer>> {
   return data
 }
 
+export interface CreateOfferInput {
+  product_id: string
+  available_quantity_kg: number
+  price_per_kg_usd: number
+  incoterm: Incoterm
+  origin_port: string
+  destination_ports: string[]
+  delivery_days: number
+  harvest_year: number
+  sale_modality: SaleModality
+}
+
+/** Exportador publica uma nova oferta de produto na vitrine. */
+export async function createOffer(input: CreateOfferInput): Promise<Offer> {
+  if (featureFlags.useMockData) {
+    await delay()
+    const product = (mockData.products as Product[]).find((p) => p.id === input.product_id)
+    const user = mockData.user as UserProfile
+    return {
+      id: `off_${Date.now()}`,
+      product: {
+        id: input.product_id,
+        name: product?.name ?? 'Produto',
+        description: product?.description ?? '',
+        images: product?.images ?? [],
+        packaging: product?.packaging ?? '',
+      },
+      exporter: {
+        id: user.id,
+        company_name: user.company_name,
+        country: user.country,
+        rating: 5,
+        mapa_registered: user.mapa_registered,
+      },
+      available_quantity_kg: input.available_quantity_kg,
+      price_per_kg_usd: input.price_per_kg_usd,
+      incoterm: input.incoterm,
+      origin_port: input.origin_port,
+      destination_ports: input.destination_ports,
+      delivery_days: input.delivery_days,
+      harvest_year: input.harvest_year,
+      sale_modality: input.sale_modality,
+      status: 'ATIVA',
+      created_at: new Date().toISOString(),
+      expires_at: new Date(Date.now() + 1000 * 60 * 60 * 24 * 120).toISOString(),
+    }
+  }
+  const { data } = await api.post<Offer>('/offers', input)
+  return data
+}
+
 export async function getOffer(id: string): Promise<Offer> {
   if (featureFlags.useMockData) {
     await delay()
@@ -121,24 +175,95 @@ export async function getMatches(): Promise<Match[]> {
   return data
 }
 
-// ---- Negociações -----------------------------------------------
-export async function getNegotiations(): Promise<Negotiation[]> {
+// ---- Pedidos (Orders) ------------------------------------------
+export async function getOrders(): Promise<Order[]> {
   if (featureFlags.useMockData) {
     await delay()
-    return mockData.negotiations as Negotiation[]
+    return (mockData.orders ?? []) as Order[]
   }
-  const { data } = await api.get<Negotiation[]>('/negotiations')
+  const { data } = await api.get<Order[]>('/orders')
   return data
 }
 
-export async function getNegotiation(id: string): Promise<Negotiation> {
+export async function getOrder(id: string): Promise<Order> {
   if (featureFlags.useMockData) {
     await delay()
-    const n = mockData.negotiations.find((n) => n.id === id)
-    if (!n) throw new Error('Negociação não encontrada')
-    return n as Negotiation
+    const o = (mockData.orders as Order[]).find((o) => o.id === id)
+    if (!o) throw new Error('Pedido não encontrado')
+    return o
   }
-  const { data } = await api.get<Negotiation>(`/negotiations/${id}`)
+  const { data } = await api.get<Order>(`/orders/${id}`)
+  return data
+}
+
+/** Payload mínimo para criar um pedido a partir de uma oferta. */
+export interface CreateOrderInput {
+  offer_id: string
+  quantity_kg: number
+}
+
+/**
+ * Cria um pedido a preço fixo. No backend real, dispara o evento
+ * `order.created` (Kafka) e aguarda a confirmação do exportador.
+ */
+export async function createOrder(input: CreateOrderInput): Promise<Order> {
+  if (featureFlags.useMockData) {
+    await delay()
+    const offer = (mockData.offers as Offer[]).find((o) => o.id === input.offer_id)
+    if (!offer) throw new Error('Oferta não encontrada')
+    const now = new Date().toISOString()
+    return {
+      id: `ord_${Date.now()}`,
+      offer_id: offer.id,
+      product_id: offer.product.id,
+      product_name: offer.product.name,
+      exporter: offer.exporter,
+      importer: {
+        id: (mockData.user as UserProfile).id,
+        company_name: (mockData.user as UserProfile).company_name,
+        country: (mockData.user as UserProfile).country,
+        rating: 5,
+        mapa_registered: (mockData.user as UserProfile).mapa_registered,
+      },
+      quantity_kg: input.quantity_kg,
+      price_per_kg_usd: offer.price_per_kg_usd,
+      total_usd: +(offer.price_per_kg_usd * input.quantity_kg).toFixed(2),
+      incoterm: offer.incoterm,
+      transport_mode: 'MARITIMO',
+      origin_port: offer.origin_port,
+      destination_port: offer.destination_ports[0] ?? '',
+      payment_conditions: '30% adiantado, 70% contra apresentação do BL',
+      delivery_days: offer.delivery_days,
+      status: 'AGUARDANDO_CONFIRMACAO',
+      created_at: now,
+    }
+  }
+  const { data } = await api.post<Order>('/orders', input)
+  return data
+}
+
+/**
+ * Exportador aceita o pedido → backend emite `order.confirmed` e o
+ * workflow-service cria o ExportWorkflow (`workflow.started`).
+ */
+export async function confirmOrder(id: string): Promise<Order> {
+  if (featureFlags.useMockData) {
+    await delay()
+    const o = await getOrder(id)
+    return { ...o, status: 'CONFIRMADO' as OrderStatus, confirmed_at: new Date().toISOString() }
+  }
+  const { data } = await api.post<Order>(`/orders/${id}/confirm`)
+  return data
+}
+
+/** Exportador recusa o pedido → backend emite `order.rejected`. */
+export async function rejectOrder(id: string, reason?: string): Promise<Order> {
+  if (featureFlags.useMockData) {
+    await delay()
+    const o = await getOrder(id)
+    return { ...o, status: 'RECUSADO' as OrderStatus, rejection_reason: reason }
+  }
+  const { data } = await api.post<Order>(`/orders/${id}/reject`, { reason })
   return data
 }
 

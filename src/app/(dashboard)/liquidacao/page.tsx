@@ -208,7 +208,7 @@ export default async function LiquidacaoPage() {
       <div>
         <h1 className="page-title">{t('pageTitle')}</h1>
         <p className="text-sm text-slate-400 mt-1">
-          Workflow: {activeWorkflow.negotiation.product_name} •{' '}
+          Workflow: {activeWorkflow.order.product_name} •{' '}
           <span className="text-[#584531] font-medium">{liquidation.incoterm}</span>
         </p>
       </div>

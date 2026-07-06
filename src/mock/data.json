@@ -205,35 +205,46 @@
     }
   ],
 
-  "negotiations": [
+  "orders": [
     {
-      "id": "neg_001",
-      "match_id": "match_001",
+      "id": "ord_001",
+      "offer_id": "off_001",
+      "product_id": "prod_001",
+      "product_name": "Castanha-do-Brasil Crua In Natura",
       "exporter": { "id": "usr_001", "company_name": "Castanheira Export Ltda.", "country": "BR", "rating": 4.7, "mapa_registered": false },
       "importer": { "id": "usr_imp_001", "company_name": "NaturKern GmbH", "country": "DE", "rating": 4.8, "mapa_registered": false },
-      "deal": {
-        "product_id": "prod_001",
-        "product_name": "Castanha-do-Brasil Crua In Natura",
-        "quantity_kg": 15000,
-        "price_per_kg_usd": 4.75,
-        "total_usd": 71250,
-        "payment_conditions": "30% adiantado, 70% contra apresentação do BL",
-        "delivery_days": 35,
-        "delivery_deadline": "2026-02-28",
-        "transport_mode": "MARITIMO",
-        "incoterm": "FOB",
-        "origin_port": "Porto de Belém (PA)",
-        "destination_port": "Porto de Hamburg"
-      },
-      "status": "ACORDO_FECHADO",
-      "messages": [
-        { "id": "msg_001", "negotiation_id": "neg_001", "sender_id": "usr_imp_001", "sender_name": "Hans Müller (NaturKern GmbH)", "content": "Bom dia! Estamos interessados em 15.000 kg. Pode confirmar disponibilidade para embarque em fevereiro?", "created_at": "2025-11-06T09:00:00Z" },
-        { "id": "msg_002", "negotiation_id": "neg_001", "sender_id": "usr_001", "sender_name": "Carlos Mendonça (Castanheira Export)", "content": "Bom dia Hans! Confirmamos disponibilidade. Podemos garantir embarque até 28/02. Qual a condição de pagamento preferida?", "created_at": "2025-11-06T10:15:00Z" },
-        { "id": "msg_003", "negotiation_id": "neg_001", "sender_id": "usr_imp_001", "sender_name": "Hans Müller (NaturKern GmbH)", "content": "Propomos 30% adiantado e 70% contra apresentação do BL. Aceita USD 4,75/kg?", "created_at": "2025-11-06T11:30:00Z" },
-        { "id": "msg_004", "negotiation_id": "neg_001", "sender_id": "usr_001", "sender_name": "Carlos Mendonça (Castanheira Export)", "content": "Aceito USD 4,75/kg com essas condições. Vamos fechar o contrato?", "created_at": "2025-11-06T14:00:00Z" }
-      ],
+      "quantity_kg": 15000,
+      "price_per_kg_usd": 4.85,
+      "total_usd": 72750,
+      "incoterm": "FOB",
+      "transport_mode": "MARITIMO",
+      "origin_port": "Porto de Belém (PA)",
+      "destination_port": "Porto de Hamburg",
+      "payment_conditions": "30% adiantado, 70% contra apresentação do BL",
+      "delivery_days": 30,
+      "status": "EM_EXPORTACAO",
       "created_at": "2025-11-06T08:30:00Z",
-      "agreed_at": "2025-11-07T09:00:00Z"
+      "confirmed_at": "2025-11-07T09:00:00Z",
+      "workflow_id": "wf_001"
+    },
+    {
+      "id": "ord_002",
+      "offer_id": "off_003",
+      "product_id": "prod_001",
+      "product_name": "Castanha-do-Brasil Premium - Orgânica Fair Trade",
+      "exporter": { "id": "usr_002", "company_name": "AmazonNuts Export S.A.", "country": "BR", "rating": 4.9, "mapa_registered": true },
+      "importer": { "id": "usr_imp_002", "company_name": "Selezione Nocci Srl", "country": "IT", "rating": 4.6, "mapa_registered": false },
+      "quantity_kg": 25000,
+      "price_per_kg_usd": 5.80,
+      "total_usd": 145000,
+      "incoterm": "CIF",
+      "transport_mode": "MARITIMO",
+      "origin_port": "Porto de Santos (SP)",
+      "destination_port": "Rotterdam",
+      "payment_conditions": "30% adiantado, 70% contra apresentação do BL",
+      "delivery_days": 28,
+      "status": "AGUARDANDO_CONFIRMACAO",
+      "created_at": "2026-03-01T14:00:00Z"
     }
   ],
 
@@ -241,7 +252,8 @@
     {
       "id": "wf_001",
       "contract_id": "ctr_001",
-      "negotiation": {
+      "order_id": "ord_001",
+      "order": {
         "product_name": "Castanha-do-Brasil Crua In Natura",
         "quantity_kg": 15000,
         "incoterm": "FOB",

@@ -162,43 +162,44 @@ export interface Match {
   created_at: string
 }
 
-// ---- Negociação --------------------------------------------
-export interface NegotiationMessage {
-  id: string
-  negotiation_id: string
-  sender_id: string
-  sender_name: string
-  content: string
-  created_at: string
-}
+// ---- Pedido (Order) ----------------------------------------
+// Substitui o antigo fluxo de negociação por chat: compra a preço
+// fixo com confirmação do exportador (aceitar/recusar, sem barganha).
+export type OrderStatus =
+  | 'AGUARDANDO_CONFIRMACAO'
+  | 'CONFIRMADO'
+  | 'RECUSADO'
+  | 'EM_EXPORTACAO'
+  | 'CONCLUIDO'
+  | 'CANCELADO'
 
-export interface NegotiationDeal {
+export interface Order {
+  id: string
+  offer_id: string
   product_id: string
   product_name: string
-  quantity_kg: number
-  price_per_kg_usd: number
-  total_usd: number
-  payment_conditions: string
-  delivery_days: number
-  delivery_deadline: string
-  transport_mode: TransportMode
-  incoterm: Incoterm
-  origin_port: string
-  destination_port: string
-}
-
-export type NegotiationStatus = 'ABERTA' | 'ACORDO_PENDENTE' | 'ACORDO_FECHADO' | 'CANCELADA'
-
-export interface Negotiation {
-  id: string
-  match_id: string
   exporter: OfferParty
   importer: OfferParty
-  deal: NegotiationDeal
-  status: NegotiationStatus
-  messages: NegotiationMessage[]
+  /** Quantidade solicitada pelo importador */
+  quantity_kg: number
+  /** Preço fixo herdado da oferta (sem barganha) */
+  price_per_kg_usd: number
+  total_usd: number
+  incoterm: Incoterm
+  transport_mode: TransportMode
+  origin_port: string
+  destination_port: string
+  /** Condições de pagamento fixas herdadas da oferta */
+  payment_conditions: string
+  delivery_days: number
+  status: OrderStatus
   created_at: string
-  agreed_at?: string
+  /** Preenchido quando o exportador aceita o pedido */
+  confirmed_at?: string
+  /** Motivo, caso o exportador recuse */
+  rejection_reason?: string
+  /** Workflow de exportação disparado ao confirmar */
+  workflow_id?: string
 }
 
 // ---- Contrato / Assinatura --------------------------------
@@ -224,7 +225,7 @@ export interface ContractSignatory {
 
 export interface Contract {
   id: string
-  negotiation_id: string
+  order_id: string
   type: ContractType
   pdf_url: string
   status: ContractStatus
@@ -303,7 +304,8 @@ export type WorkflowOverallStatus = 'EM_ANDAMENTO' | 'CONCLUIDO' | 'ATRASADO' | 
 export interface ExportWorkflow {
   id: string
   contract_id: string
-  negotiation: Pick<NegotiationDeal, 'product_name' | 'quantity_kg' | 'incoterm' | 'origin_port' | 'destination_port'>
+  order_id: string
+  order: Pick<Order, 'product_name' | 'quantity_kg' | 'incoterm' | 'origin_port' | 'destination_port'>
   exporter: OfferParty
   importer: OfferParty
   steps: WorkflowStep[]

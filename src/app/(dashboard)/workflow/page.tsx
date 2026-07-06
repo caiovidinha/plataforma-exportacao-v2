@@ -59,11 +59,11 @@ export default async function WorkflowPage() {
                     <span className="badge text-brand-400 border-brand-400/30 bg-brand-400/10">{w.incoterm}</span>
                   </div>
                   <h3 className="text-sm font-semibold text-[#3e2e1e] group-hover:text-[#1c1208] truncate">
-                    {w.negotiation.product_name}
+                    {w.order.product_name}
                   </h3>
                   <p className="text-xs text-slate-400 mt-0.5">
-                    {w.negotiation.quantity_kg.toLocaleString('pt-BR')} kg •{' '}
-                    {w.negotiation.origin_port} → {w.negotiation.destination_port}
+                    {w.order.quantity_kg.toLocaleString('pt-BR')} kg •{' '}
+                    {w.order.origin_port} → {w.order.destination_port}
                   </p>
                   <p className="text-xs text-slate-500 mt-1">
                     {t('currentStep')} <strong className="text-slate-300">{currentStep?.title ?? '-'}</strong>

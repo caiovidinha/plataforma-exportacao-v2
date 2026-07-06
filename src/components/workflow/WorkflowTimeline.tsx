@@ -249,12 +249,12 @@ export function WorkflowTimeline({ workflow }: { workflow: ExportWorkflow }) {
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <h2 className="font-display text-lg font-bold text-[#3e2e1e]">
-              {workflow.negotiation.product_name}
+              {workflow.order.product_name}
             </h2>
             <p className="text-sm text-[#584531] mt-0.5">
-              {workflow.negotiation.quantity_kg.toLocaleString('pt-BR')} kg •{' '}
+              {workflow.order.quantity_kg.toLocaleString('pt-BR')} kg •{' '}
               <span className="text-[#3e2e1e] font-medium">{workflow.incoterm}</span> •{' '}
-              {workflow.negotiation.origin_port} → {workflow.negotiation.destination_port}
+              {workflow.order.origin_port} → {workflow.order.destination_port}
             </p>
           </div>
           <div className="text-right">

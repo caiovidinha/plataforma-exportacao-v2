@@ -8,15 +8,8 @@ import {
   Leaf,
   AlertTriangle,
   ChevronRight,
-  Truck,
-  Ship,
-  FileCheck,
-  DollarSign,
-  Microscope,
-  Shield,
   Building,
   Users,
-  Award,
 } from 'lucide-react'
 
 export default function CadastroPage() {
@@ -25,8 +18,6 @@ export default function CadastroPage() {
   const { entityType, user } = useMockSession()
 
   const isExportador = entityType === 'exportador'
-  const isImportador = entityType === 'importador'
-  const isTrading = isExportador || isImportador
 
   const exporterItems = [
     { href: '/cadastro/produtos',  label: t('products'),       icon: Package, desc: t('productsDesc') },
@@ -39,27 +30,9 @@ export default function CadastroPage() {
     { href: '/minha-conta',        label: t('importerProfile'),icon: Building, desc: t('importerProfileDesc') },
   ]
 
-  const adminItems = [
-    { href: '/cadastro/exportadores',    label: t('exporters'),      icon: Users,      desc: t('exportersDesc') },
-    { href: '/cadastro/importadores',    label: t('importers'),      icon: Building,   desc: t('importersDesc') },
-    { href: '/cadastro/produtos',        label: t('products'),       icon: Package,    desc: t('productsDesc') },
-    { href: '/cadastro/transportadoras', label: t('transporters'),   icon: Truck,      desc: t('transportersDesc') },
-    { href: '/cadastro/navegacao',       label: t('shippingLines'),  icon: Ship,       desc: t('shippingLinesDesc') },
-    { href: '/cadastro/despachantes',    label: t('brokers'),        icon: FileCheck,  desc: t('brokersDesc') },
-    { href: '/cadastro/corretoras',      label: t('exchangeHouses'), icon: DollarSign, desc: t('exchangeHousesDesc') },
-    { href: '/cadastro/terminais',       label: t('terminals'),      icon: Package,    desc: t('terminalsDesc') },
-    { href: '/cadastro/certificadoras',  label: t('certifiers'),     icon: Award,      desc: t('certifiersDesc') },
-    { href: '/cadastro/laboratorios',    label: t('labs'),           icon: Microscope, desc: t('labsDesc') },
-    { href: '/cadastro/seguradoras',     label: t('insurers'),       icon: Shield,     desc: t('insurersDesc') },
-  ]
+  const items = isExportador ? exporterItems : importerItems
 
-  const items = isExportador ? exporterItems : isImportador ? importerItems : adminItems
-
-  const subtitle = isExportador
-    ? t('exporterSubtitle')
-    : isImportador
-    ? t('importerSubtitle')
-    : t('subtitle')
+  const subtitle = isExportador ? t('exporterSubtitle') : t('importerSubtitle')
 
   return (
     <div className="min-h-screen p-6 space-y-8">
@@ -80,18 +53,6 @@ export default function CadastroPage() {
           <Link href="/cadastro/mapa" className="inline-flex items-center gap-2 bg-[#584531] hover:bg-[#3e2e1e] text-[#ede5dc] shadow-sm px-3 py-1 text-xs font-semibold transition-colors whitespace-nowrap flex-shrink-0">
             {tMapa('bannerBtn')}
           </Link>
-        </div>
-      )}
-
-      {isTrading && (
-        <div className="bg-[#584531]/8 border border-[#3e2e1e]/15 p-4">
-          <p className="text-xs text-[#584531] leading-relaxed font-sans">
-            <strong className="font-semibold text-[#3e2e1e]">{t('providerTipHeading')}</strong>{' '}
-            {t('providerTipBody1')}{' '}
-            <Link href="/registro" className="underline hover:text-[#3e2e1e]">/registro</Link>.{' '}
-            {t('providerTipBody2')}{' '}
-            <Link href="/servicos" className="underline hover:text-[#3e2e1e]">{t('providerTipMarketplace')}</Link>.
-          </p>
         </div>
       )}
 

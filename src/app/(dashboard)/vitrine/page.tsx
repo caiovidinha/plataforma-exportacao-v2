@@ -1,12 +1,12 @@
+'use client'
+
+import { useEffect, useMemo, useState } from 'react'
 import { getOffers } from '@/lib/api'
-import { Ship, Package, Star, MapPin, Calendar, TrendingUp } from 'lucide-react'
+import { Ship, Package, Star, MapPin, Calendar, TrendingUp, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { cn, formatNumber } from '@/lib/utils'
-import { getTranslations } from 'next-intl/server'
 import { useTranslations } from 'next-intl'
 import type { Offer } from '@/types'
-
-export const metadata = { title: 'Vitrine de Ofertas' }
 
 function OfferCard({ offer }: { offer: Offer }) {
   const t = useTranslations('vitrine')
@@ -130,54 +130,96 @@ function OfferCard({ offer }: { offer: Offer }) {
   )
 }
 
-export default async function VitrinePage() {
-  const { data: offers } = await getOffers()
-  const t = await getTranslations('vitrine')
-  // Featured offers come first, then the rest
-  const sortedOffers = [...offers].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
+export default function VitrinePage() {
+  const t = useTranslations('vitrine')
+  const [offers, setOffers] = useState<Offer[]>([])
+  const [loading, setLoading] = useState(true)
+
+  // Filtros funcionais
+  const [search, setSearch] = useState('')
+  const [incoterm, setIncoterm] = useState('')
+  const [originPort, setOriginPort] = useState('')
+  const [harvest, setHarvest] = useState('')
+
+  useEffect(() => {
+    getOffers()
+      .then((res) => setOffers(res.data))
+      .finally(() => setLoading(false))
+  }, [])
+
+  // Opções derivadas dos dados reais
+  const originPorts = useMemo(
+    () => Array.from(new Set(offers.map((o) => o.origin_port))).sort(),
+    [offers],
+  )
+  const harvestYears = useMemo(
+    () => Array.from(new Set(offers.map((o) => o.harvest_year))).sort((a, b) => b - a),
+    [offers],
+  )
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    return offers
+      .filter((o) => {
+        if (q && !(`${o.product.name} ${o.product.description}`.toLowerCase().includes(q))) return false
+        if (incoterm && o.incoterm !== incoterm) return false
+        if (originPort && o.origin_port !== originPort) return false
+        if (harvest && String(o.harvest_year) !== harvest) return false
+        return true
+      })
+      .sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
+  }, [offers, search, incoterm, originPort, harvest])
 
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="page-title">{t('pageTitle')}</h1>
-          <p className="text-sm text-[#584531] mt-1">{t('offersCount', { count: sortedOffers.length })}</p>
+          <p className="text-sm text-[#584531] mt-1">{t('offersCount', { count: filtered.length })}</p>
         </div>
         <Link href="/vitrine/nova" className="btn-primary">
           <TrendingUp className="w-4 h-4" /> {t('newOffer')}
         </Link>
       </div>
 
-      {/* Filtros */}
+      {/* Filtros funcionais */}
       <div className="card flex flex-wrap gap-3">
-        <input className="input w-48" placeholder={t('searchPlaceholder')} />
-        <select className="input w-36">
+        <input
+          className="input w-48"
+          placeholder={t('searchPlaceholder')}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <select className="input w-36" value={incoterm} onChange={(e) => setIncoterm(e.target.value)}>
           <option value="">{t('filterIncoterm')}</option>
           <option value="FOB">FOB</option>
           <option value="CIF">CIF</option>
         </select>
-        <select className="input w-40">
+        <select className="input w-52" value={originPort} onChange={(e) => setOriginPort(e.target.value)}>
           <option value="">{t('filterOriginPort')}</option>
-          <option value="belem">Porto de Belém</option>
-          <option value="santos">Porto de Santos</option>
+          {originPorts.map((p) => (
+            <option key={p} value={p}>{p}</option>
+          ))}
         </select>
-        <select className="input w-36">
+        <select className="input w-36" value={harvest} onChange={(e) => setHarvest(e.target.value)}>
           <option value="">{t('filterHarvest')}</option>
-          <option value="2025">2025</option>
-          <option value="2024">2024</option>
+          {harvestYears.map((y) => (
+            <option key={y} value={y}>{y}</option>
+          ))}
         </select>
       </div>
 
-      {/* Todas as ofertas em lista vertical */}
-      {sortedOffers.length > 0 && (
+      {loading ? (
+        <div className="flex items-center justify-center gap-2 py-16 text-sm text-[#584531]">
+          <Loader2 className="w-4 h-4 animate-spin" /> …
+        </div>
+      ) : filtered.length > 0 ? (
         <div className="space-y-4">
-          {sortedOffers.map((offer) => (
+          {filtered.map((offer) => (
             <OfferCard key={offer.id} offer={offer} />
           ))}
         </div>
-      )}
-
-      {sortedOffers.length === 0 && (
+      ) : (
         <div className="text-center py-16">
           <Package className="w-12 h-12 mx-auto text-slate-600 mb-3" />
           <p className="text-slate-400">{t('noOffers')}</p>
