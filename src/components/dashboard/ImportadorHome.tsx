@@ -35,9 +35,9 @@ export function ImportadorHome({ user }: { user: MockUser }) {
 
   return (
     <div className="space-y-8">
-      {/* Banner */}
-      <section className="bg-[#584531] px-6 py-10">
-        <div className="max-w-5xl mx-auto space-y-3">
+      {/* Banner - "quebra" o padding do wrapper para o fundo ir até a borda da tela */}
+      <section className="w-screen relative left-1/2 -translate-x-1/2 bg-[#584531] py-10">
+        <div className="px-[12%] space-y-3">
           <p className="text-xs font-semibold uppercase tracking-widest text-[#ede5dc]/60">{t('eyebrow')}</p>
           <h1 className="font-display text-2xl sm:text-3xl font-bold text-[#ede5dc]">
             {t('greeting', { name: user.name.split(' ')[0] })}
@@ -49,7 +49,17 @@ export function ImportadorHome({ user }: { user: MockUser }) {
         </div>
       </section>
 
-      <div className="max-w-5xl mx-auto px-6 space-y-8">
+      <div className="p-6 space-y-8">
+        {/* Atalho pedidos */}
+        <Link href="/pedidos" className="card flex items-center gap-3 hover:border-[#3e2e1e]/30 transition-all">
+          <ClipboardList className="w-5 h-5 text-[#584531]" />
+          <div className="flex-1">
+            <p className="text-sm font-semibold text-[#3e2e1e]">{t('myOrdersTitle')}</p>
+            <p className="text-xs text-[#584531]">{t('myOrdersDesc')}</p>
+          </div>
+          <Ship className="w-4 h-4 text-[#584531]/40" />
+        </Link>
+
         {/* Stats compactos */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {user.stats.map((stat) => (
@@ -87,23 +97,13 @@ export function ImportadorHome({ user }: { user: MockUser }) {
           {loading && <p className="text-sm text-[#584531]/60 py-6 text-center">{t('loading')}</p>}
 
           {!loading && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
               {listings.map((listing) => (
                 <ListingCard key={listing.id} listing={listing} variant="grid" />
               ))}
             </div>
           )}
         </div>
-
-        {/* Atalho pedidos */}
-        <Link href="/pedidos" className="card flex items-center gap-3 hover:border-[#3e2e1e]/30 transition-all">
-          <ClipboardList className="w-5 h-5 text-[#584531]" />
-          <div className="flex-1">
-            <p className="text-sm font-semibold text-[#3e2e1e]">{t('myOrdersTitle')}</p>
-            <p className="text-xs text-[#584531]">{t('myOrdersDesc')}</p>
-          </div>
-          <Ship className="w-4 h-4 text-[#584531]/40" />
-        </Link>
       </div>
     </div>
   )

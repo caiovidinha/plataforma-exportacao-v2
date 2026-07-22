@@ -20,26 +20,26 @@ const ICONS: Record<string, ElementType> = {
 const STEP_COUNT = 5
 
 const DIAL_CODES = [
-  { code: '+55', label: '+55 🇧🇷 Brasil' },
-  { code: '+1',  label: '+1 🇺🇸 EUA/Canadá' },
-  { code: '+44', label: '+44 🇬🇧 Reino Unido' },
-  { code: '+49', label: '+49 🇩🇪 Alemanha' },
-  { code: '+33', label: '+33 🇫🇷 França' },
-  { code: '+31', label: '+31 🇳🇱 Países Baixos' },
-  { code: '+34', label: '+34 🇪🇸 Espanha' },
-  { code: '+351', label: '+351 🇵🇹 Portugal' },
-  { code: '+41', label: '+41 🇨🇭 Suíça' },
-  { code: '+39', label: '+39 🇮🇹 Itália' },
-  { code: '+81', label: '+81 🇯🇵 Japão' },
-  { code: '+86', label: '+86 🇨🇳 China' },
-  { code: '+52', label: '+52 🇲🇽 México' },
-  { code: '+54', label: '+54 🇦🇷 Argentina' },
-  { code: '+56', label: '+56 🇨🇱 Chile' },
-  { code: '+57', label: '+57 🇨🇴 Colômbia' },
-  { code: '+91', label: '+91 🇮🇳 Índia' },
-  { code: '+65', label: '+65 🇸🇬 Singapura' },
-  { code: '+971', label: '+971 🇦🇪 Emirados' },
-  { code: '+7',  label: '+7 🇷🇺 Rússia' },
+  { code: '+55', country: 'Brasil' },
+  { code: '+1', country: 'EUA/Canadá' },
+  { code: '+44', country: 'Reino Unido' },
+  { code: '+49', country: 'Alemanha' },
+  { code: '+33', country: 'França' },
+  { code: '+31', country: 'Países Baixos' },
+  { code: '+34', country: 'Espanha' },
+  { code: '+351', country: 'Portugal' },
+  { code: '+41', country: 'Suíça' },
+  { code: '+39', country: 'Itália' },
+  { code: '+81', country: 'Japão' },
+  { code: '+86', country: 'China' },
+  { code: '+52', country: 'México' },
+  { code: '+54', country: 'Argentina' },
+  { code: '+56', country: 'Chile' },
+  { code: '+57', country: 'Colômbia' },
+  { code: '+91', country: 'Índia' },
+  { code: '+65', country: 'Singapura' },
+  { code: '+971', country: 'Emirados' },
+  { code: '+7', country: 'Rússia' },
 ]
 
 const INPUT_CLS = 'w-full bg-white/60 border border-[#3e2e1e]/20 px-3 py-2 text-sm text-[#3e2e1e] placeholder:text-[#584531]/40 focus:outline-none focus:ring-2 focus:ring-[#584531]/30 focus:border-[#584531] transition'
@@ -288,17 +288,18 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
               </div>
               <div>
                 <label className={LABEL_CLS}>{t('phoneLabel')}</label>
-                <div className="flex">
+                <div className="flex bg-white/60 border border-[#3e2e1e]/20 focus-within:ring-2 focus-within:ring-[#584531]/30 focus-within:border-[#584531] transition">
                   <select
-                    className={cn(INPUT_CLS, 'w-auto flex-shrink-0 border-r-0 pr-2')}
+                    className="w-20 flex-shrink-0 bg-transparent border-0 border-r border-[#3e2e1e]/15 pl-2 pr-1 py-2 text-sm text-[#3e2e1e] focus:outline-none focus:ring-0 truncate"
                     value={empresa.phone_prefix}
                     onChange={(e) => updateEmpresa('phone_prefix', e.target.value)}
                   >
                     {DIAL_CODES.map((d) => (
-                      <option key={d.code} value={d.code}>{d.label}</option>
+                      <option key={d.code} value={d.code}>{d.code} · {d.country}</option>
                     ))}
                   </select>
-                  <input className={cn(INPUT_CLS, 'flex-1')} type="tel" placeholder="(XX) X XXXX-XXXX"
+                  <input className="flex-1 min-w-0 bg-transparent border-0 px-3 py-2 text-sm text-[#3e2e1e] placeholder:text-[#584531]/40 focus:outline-none"
+                         type="tel" placeholder="(XX) X XXXX-XXXX"
                          value={empresa.contact_phone} onChange={(e) => updateEmpresa('contact_phone', e.target.value)} />
                 </div>
               </div>

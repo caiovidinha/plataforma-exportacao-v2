@@ -10,8 +10,6 @@ import {
   ShoppingBag,
   ClipboardList,
   GitBranch,
-  DollarSign,
-  BarChart2,
   Settings,
   LogOut,
   User,
@@ -24,12 +22,11 @@ interface MarketplaceHeaderProps {
   companyName?: string
 }
 
+// Liquidação e Inteligência de Mercado são exclusivas do exportador
 const SECONDARY_NAV = [
   { href: '/vitrine',     labelKey: 'offers',       icon: ShoppingBag },
   { href: '/pedidos',     labelKey: 'orders',       icon: ClipboardList },
   { href: '/workflow',    labelKey: 'workflow',     icon: GitBranch },
-  { href: '/liquidacao',  labelKey: 'settlement',   icon: DollarSign },
-  { href: '/mercado',     labelKey: 'market',       icon: BarChart2 },
   { href: '/cadastro',    labelKey: 'registrations',icon: Settings },
   { href: '/minha-conta', labelKey: 'myAccount',    icon: User },
 ] as const
@@ -48,7 +45,7 @@ export function MarketplaceHeader({ userName = '', companyName = '' }: Marketpla
   return (
     <header className="fixed top-0 left-0 right-0 z-40 bg-[#ede5dc] shadow-sm">
       {/* Linha principal */}
-      <div className="flex items-center gap-4 px-5 py-2.5 border-b border-[#3e2e1e]/10">
+      <div className="flex items-center gap-4 px-[12%] py-2.5 border-b border-[#3e2e1e]/10">
         <Link href="/dashboard" className="flex items-center flex-shrink-0">
           <Image src="/img/logo-cor.webp" alt="Brazil X Hub" width={96} height={32} className="object-contain h-8 w-auto" />
         </Link>
@@ -85,7 +82,7 @@ export function MarketplaceHeader({ userName = '', companyName = '' }: Marketpla
       </div>
 
       {/* Linha secundária de navegação */}
-      <nav className="flex items-center gap-1 px-5 overflow-x-auto bg-white">
+      <nav className="flex items-center gap-1 px-[12%] overflow-x-auto bg-white">
         {SECONDARY_NAV.map(({ href, labelKey, icon: Icon }) => {
           const active = pathname === href || pathname.startsWith(href)
           return (

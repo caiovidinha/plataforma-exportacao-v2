@@ -3,6 +3,7 @@
 import { useMockSession } from '@/lib/mock-session'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { MarketplaceHeader } from '@/components/layout/MarketplaceHeader'
+import { ImportadorFooter } from '@/components/layout/ImportadorFooter'
 import { MockEntitySwitcher } from '@/components/dev/MockEntitySwitcher'
 import { featureFlags } from '@/lib/feature-flags'
 import { ENTITY_CONFIG } from '@/lib/entity-config'
@@ -12,11 +13,16 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
   if (entityType === 'importador') {
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen flex flex-col overflow-x-hidden">
         <MarketplaceHeader userName={user.name} companyName={user.company_name} />
-        <main className="min-h-screen pt-[104px]">
-          {children}
+        <main className="flex-1 pt-[104px]">
+          {/* Compensa o p-6 (24px) que as páginas de conteúdo já aplicam,
+              para que o total fique sempre em 12%, alinhado ao header. */}
+          <div className="px-[calc(12%-24px)]">
+            {children}
+          </div>
         </main>
+        <ImportadorFooter />
         {featureFlags.useMockData && <MockEntitySwitcher />}
       </div>
     )

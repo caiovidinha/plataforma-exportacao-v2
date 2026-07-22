@@ -15,9 +15,9 @@ interface ListingCardProps {
 export function ListingCard({ listing, variant = 'list' }: ListingCardProps) {
   const t = useTranslations('vitrine')
   const statusLabel = {
-    ATIVA: { label: t('statusAvailable'), cls: 'text-emerald-700 bg-emerald-700/10 border-emerald-700/30' },
-    VENDIDA: { label: t('statusSold'), cls: 'text-slate-400 bg-slate-400/10 border-slate-400/30' },
-    EXPIRADA: { label: t('statusExpired'), cls: 'text-[#3e2e1e] bg-[#3e2e1e]/10 border-[#3e2e1e]/30' },
+    ATIVA: { label: t('statusAvailable'), cls: 'text-white bg-emerald-600 border-emerald-700' },
+    VENDIDA: { label: t('statusSold'), cls: 'text-white bg-slate-500 border-slate-600' },
+    EXPIRADA: { label: t('statusExpired'), cls: 'text-[#ede5dc] bg-[#3e2e1e] border-[#3e2e1e]' },
   }[listing.status]
 
   if (variant === 'grid') {
