@@ -9,12 +9,10 @@ import mockData from '@/mock/data.json'
 import type {
   UserProfile,
   Product,
-  Offer,
-  Match,
-  Negotiation,
+  Listing,
+  Order,
   ExportWorkflow,
   Liquidation,
-  ServiceProvider,
   InsurancePolicy,
   MapaNotice,
   Exporter,
@@ -69,24 +67,24 @@ export async function getProduct(id: string): Promise<Product> {
   return data
 }
 
-// ---- Ofertas (Vitrine) -----------------------------------------
-export async function getOffers(): Promise<PaginatedResponse<Offer>> {
+// ---- Anúncios (Vitrine) -----------------------------------------
+export async function getListings(): Promise<PaginatedResponse<Listing>> {
   if (featureFlags.useMockData) {
     await delay()
-    return { data: mockData.offers as Offer[], total: mockData.offers.length, page: 1, limit: 20, total_pages: 1 }
+    return { data: mockData.listings as Listing[], total: mockData.listings.length, page: 1, limit: 20, total_pages: 1 }
   }
-  const { data } = await api.get<PaginatedResponse<Offer>>('/offers')
+  const { data } = await api.get<PaginatedResponse<Listing>>('/listings')
   return data
 }
 
-export async function getOffer(id: string): Promise<Offer> {
+export async function getListing(id: string): Promise<Listing> {
   if (featureFlags.useMockData) {
     await delay()
-    const o = mockData.offers.find((o) => o.id === id)
-    if (!o) throw new Error('Oferta não encontrada')
-    return o as Offer
+    const l = mockData.listings.find((l) => l.id === id)
+    if (!l) throw new Error('Anúncio não encontrado')
+    return l as Listing
   }
-  const { data } = await api.get<Offer>(`/offers/${id}`)
+  const { data } = await api.get<Listing>(`/listings/${id}`)
   return data
 }
 
@@ -111,34 +109,25 @@ export async function getExporter(id: string): Promise<Exporter> {
   return data
 }
 
-// ---- Matches ---------------------------------------------------
-export async function getMatches(): Promise<Match[]> {
+// ---- Pedidos -----------------------------------------------------
+// Compra a preço fixo: o importador pede, o exportador aceita/recusa.
+export async function getOrders(): Promise<Order[]> {
   if (featureFlags.useMockData) {
     await delay()
-    return mockData.matches as Match[]
+    return mockData.orders as Order[]
   }
-  const { data } = await api.get<Match[]>('/matches')
+  const { data } = await api.get<Order[]>('/orders')
   return data
 }
 
-// ---- Negociações -----------------------------------------------
-export async function getNegotiations(): Promise<Negotiation[]> {
+export async function getOrder(id: string): Promise<Order> {
   if (featureFlags.useMockData) {
     await delay()
-    return mockData.negotiations as Negotiation[]
+    const o = mockData.orders.find((o) => o.id === id)
+    if (!o) throw new Error('Pedido não encontrado')
+    return o as Order
   }
-  const { data } = await api.get<Negotiation[]>('/negotiations')
-  return data
-}
-
-export async function getNegotiation(id: string): Promise<Negotiation> {
-  if (featureFlags.useMockData) {
-    await delay()
-    const n = mockData.negotiations.find((n) => n.id === id)
-    if (!n) throw new Error('Negociação não encontrada')
-    return n as Negotiation
-  }
-  const { data } = await api.get<Negotiation>(`/negotiations/${id}`)
+  const { data } = await api.get<Order>(`/orders/${id}`)
   return data
 }
 
@@ -172,17 +161,6 @@ export async function getLiquidation(workflowId: string): Promise<Liquidation> {
     return liq
   }
   const { data } = await api.get<Liquidation>(`/liquidation/${workflowId}`)
-  return data
-}
-
-// ---- Prestadores de Serviço ------------------------------------
-export async function getServiceProviders(type?: string): Promise<ServiceProvider[]> {
-  if (featureFlags.useMockData) {
-    await delay()
-    const providers = mockData.service_providers as ServiceProvider[]
-    return type ? providers.filter((p) => p.type === type) : providers
-  }
-  const { data } = await api.get<ServiceProvider[]>('/service-providers', { params: { type } })
   return data
 }
 

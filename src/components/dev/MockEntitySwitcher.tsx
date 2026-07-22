@@ -5,8 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useMockSession } from '@/lib/mock-session'
 import { ENTITY_CONFIG, ENTITY_SLUGS } from '@/lib/entity-config'
 import {
-  Globe, Building2, Truck, Ship, FileCheck,
-  DollarSign, Warehouse, Shield, BadgeCheck, Microscope,
+  Globe, Building2,
   ChevronDown, X, SlidersHorizontal,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -14,8 +13,7 @@ import { useTranslations } from 'next-intl'
 import type { ElementType } from 'react'
 
 const ICONS: Record<string, ElementType> = {
-  Globe, Building2, Truck, Ship, FileCheck,
-  DollarSign, Warehouse, Shield, BadgeCheck, Microscope,
+  Globe, Building2,
 }
 
 export function MockEntitySwitcher() {

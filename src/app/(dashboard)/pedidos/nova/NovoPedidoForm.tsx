@@ -5,42 +5,43 @@ import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { formatNumber } from '@/lib/utils'
 import { Ship, MapPin, Package, Star, Loader2 } from 'lucide-react'
-import type { Offer } from '@/types'
+import type { Listing } from '@/types'
 
-// Maps offer IDs to existing mock negotiations for demo purposes
-const OFFER_TO_NEG: Record<string, string> = {
-  off_001: 'neg_001',
+// Mapeia anúncios para pedidos mockados já existentes, para fins de demo
+const LISTING_TO_ORDER: Record<string, string> = {
+  list_001: 'ord_001',
+  list_002: 'ord_002',
+  list_003: 'ord_003',
 }
 
-export function StartNegotiationForm({ offer }: { offer: Offer }) {
-  const t = useTranslations('negociacao')
+export function NovoPedidoForm({ listing }: { listing: Listing }) {
+  const t = useTranslations('pedidos')
   const router = useRouter()
 
-  const [qty, setQty] = useState(offer.available_quantity_kg)
-  const [destPort, setDestPort] = useState(offer.destination_ports[0] ?? '')
-  const [payment, setPayment] = useState('30_70_bl')
+  const [qty, setQty] = useState(listing.available_quantity_kg)
+  const [destPort, setDestPort] = useState(listing.destination_ports[0] ?? '')
   const [loading, setLoading] = useState(false)
 
-  const total = qty * offer.price_per_kg_usd
+  const total = qty * listing.price_per_kg_usd
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
-    // Simulate API call delay
+    // Simula o envio do pedido a preço fixo para confirmação do exportador
     await new Promise((r) => setTimeout(r, 800))
-    const negId = OFFER_TO_NEG[offer.id]
-    router.push(negId ? `/negociacao/${negId}` : '/negociacao')
+    const orderId = LISTING_TO_ORDER[listing.id]
+    router.push(orderId ? `/pedidos/${orderId}` : '/pedidos')
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      {/* Offer summary card */}
+      {/* Listing summary card */}
       <div className="card bg-white/40 space-y-3">
-        <h3 className="text-xs font-semibold text-[#584531] uppercase tracking-wide">{t('novaOfferSummary')}</h3>
+        <h3 className="text-xs font-semibold text-[#584531] uppercase tracking-wide">{t('novaListingSummary')}</h3>
         <div className="flex items-start gap-4">
           <div className="w-16 h-16 overflow-hidden bg-dark-100 flex-shrink-0">
-            {offer.product.images?.[0] ? (
-              <img src={offer.product.images[0]} alt={offer.product.name} className="w-full h-full object-cover" />
+            {listing.product.images?.[0] ? (
+              <img src={listing.product.images[0]} alt={listing.product.name} className="w-full h-full object-cover" />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
                 <Package className="w-6 h-6 text-slate-600" />
@@ -48,24 +49,25 @@ export function StartNegotiationForm({ offer }: { offer: Offer }) {
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-[#3e2e1e] leading-snug">{offer.product.name}</p>
+            <p className="text-sm font-semibold text-[#3e2e1e] leading-snug">{listing.product.name}</p>
             <div className="flex items-center gap-2 mt-1 text-xs text-[#584531]">
               <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
-              <span>{offer.exporter.rating}</span>
+              <span>{listing.exporter.rating}</span>
               <span className="text-[#584531]/40">•</span>
-              <span>{offer.exporter.company_name}</span>
+              <span>{listing.exporter.company_name}</span>
             </div>
             <div className="flex items-center gap-3 mt-2">
-              <span className="text-[#3e2e1e] font-bold text-sm">USD {offer.price_per_kg_usd.toFixed(2)}/kg</span>
+              <span className="text-[#3e2e1e] font-bold text-sm">USD {listing.price_per_kg_usd.toFixed(2)}/kg</span>
               <span className="text-[#584531]/70 text-xs flex items-center gap-1">
-                <Ship className="w-3 h-3" /> {offer.incoterm}
+                <Ship className="w-3 h-3" /> {listing.incoterm}
               </span>
               <span className="text-[#584531]/70 text-xs flex items-center gap-1">
-                <MapPin className="w-3 h-3" /> {offer.origin_port}
+                <MapPin className="w-3 h-3" /> {listing.origin_port}
               </span>
             </div>
           </div>
         </div>
+        <p className="text-xs text-[#584531]/70 leading-relaxed">{t('novaFixedPriceNotice')}</p>
       </div>
 
       {/* Quantity */}
@@ -75,13 +77,13 @@ export function StartNegotiationForm({ offer }: { offer: Offer }) {
           type="number"
           className="input w-full"
           value={qty}
-          min={1}
-          max={offer.available_quantity_kg}
+          min={0}
+          max={listing.available_quantity_kg}
           step={100}
           onChange={(e) => setQty(Number(e.target.value))}
           required
         />
-        <p className="text-xs text-[#584531]/60">{t('novaQtyHint', { max: formatNumber(offer.available_quantity_kg) })}</p>
+        <p className="text-xs text-[#584531]/60">{t('novaQtyHint', { max: formatNumber(listing.available_quantity_kg) })}</p>
       </div>
 
       {/* Destination port */}
@@ -94,25 +96,9 @@ export function StartNegotiationForm({ offer }: { offer: Offer }) {
           required
         >
           <option value="" disabled>{t('novaPickDest')}</option>
-          {offer.destination_ports.map((p) => (
+          {listing.destination_ports.map((p) => (
             <option key={p} value={p}>{p}</option>
           ))}
-        </select>
-      </div>
-
-      {/* Payment conditions */}
-      <div className="space-y-1.5">
-        <label className="text-xs font-medium text-[#584531]">{t('novaPaymentLabel')}</label>
-        <select
-          className="input w-full"
-          value={payment}
-          onChange={(e) => setPayment(e.target.value)}
-          required
-        >
-          <option value="" disabled>{t('novaPickPayment')}</option>
-          <option value="30_70_bl">{t('novaPayment1')}</option>
-          <option value="lc">{t('novaPayment2')}</option>
-          <option value="tt">{t('novaPayment3')}</option>
         </select>
       </div>
 
@@ -142,7 +128,7 @@ export function StartNegotiationForm({ offer }: { offer: Offer }) {
           {loading ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
-              {t('novaStarting')}
+              {t('novaSending')}
             </>
           ) : (
             t('novaConfirmBtn')

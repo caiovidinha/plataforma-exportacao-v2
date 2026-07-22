@@ -43,7 +43,7 @@ export function incotermLabel(incoterm: 'FOB' | 'CIF') {
   return map[incoterm]
 }
 
-export const stepStatusColors = {
+export const stageStatusColors = {
   PENDENTE: 'text-slate-400 bg-slate-400/10 border-slate-400/30',
   EM_ANDAMENTO: 'text-brand-400 bg-brand-400/10 border-brand-400/30',
   CONCLUIDO: 'text-emerald-700 bg-emerald-700/10 border-emerald-700/30',
@@ -51,7 +51,7 @@ export const stepStatusColors = {
   BLOQUEADO: 'text-[#3e2e1e] bg-[#3e2e1e]/10 border-[#3e2e1e]/30',
 } as const
 
-export const stepStatusLabel = {
+export const stageStatusLabel = {
   PENDENTE: 'Pendente',
   EM_ANDAMENTO: 'Em andamento',
   CONCLUIDO: 'Concluído',

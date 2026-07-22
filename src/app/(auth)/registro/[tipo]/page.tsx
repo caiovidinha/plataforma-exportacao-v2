@@ -1,13 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { notFound } from 'next/navigation'
 import {
-  Globe, Building2, Truck, Ship, FileCheck,
-  DollarSign, Warehouse, Shield, BadgeCheck, Microscope,
+  Globe, Building2,
   ChevronRight, ChevronLeft, CheckCircle, Loader2,
-  Eye, EyeOff, X,
+  Eye, EyeOff, X, ShieldCheck, Ship,
 } from 'lucide-react'
 import { getEntityConfig } from '@/lib/entity-config'
 import { cn, formatCNPJ } from '@/lib/utils'
@@ -15,11 +14,10 @@ import { useTranslations } from 'next-intl'
 import type { ElementType } from 'react'
 
 const ICONS: Record<string, ElementType> = {
-  Globe, Building2, Truck, Ship, FileCheck,
-  DollarSign, Warehouse, Shield, BadgeCheck, Microscope,
+  Globe, Building2,
 }
 
-const STEP_COUNT = 4
+const STEP_COUNT = 5
 
 const DIAL_CODES = [
   { code: '+55', label: '+55 🇧🇷 Brasil' },
@@ -125,13 +123,12 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
   const cfg = cfgOrNull  // non-null, safe for closure capture
 
   const t = useTranslations('registro')
-  const STEPS = [t('stepCompany'), t('stepDetails'), t('stepAccess'), t('stepConfirm')]
+  const STEPS = [t('stepCompany'), t('stepDetails'), t('stepAccess'), t('stepConfirm'), t('stepRiskEstimate')]
 
   const router = useRouter()
   const Icon = ICONS[cfg.icon] ?? Globe
 
   const [step, setStep] = useState(0)
-  const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
 
   // Step 0 - Empresa
@@ -151,6 +148,21 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
   const [acessoError, setAcessoError] = useState('')
   const [showPwd, setShowPwd] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
+
+  // Step 4 - Análise de risco + estimativa de rota de frete
+  const [analyzing, setAnalyzing] = useState(false)
+  const [analysisDone, setAnalysisDone] = useState(false)
+
+  useEffect(() => {
+    if (step !== 4) return
+    setAnalyzing(true)
+    const timer = setTimeout(() => {
+      setAnalyzing(false)
+      setAnalysisDone(true)
+    }, 1800)
+    return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step])
 
   function updateEmpresa(key: string, val: string) {
     setEmpresa((p) => ({ ...p, [key]: val }))
@@ -190,10 +202,7 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
     setStep((s) => s + 1)
   }
 
-  async function handleSubmit() {
-    setSubmitting(true)
-    await new Promise((r) => setTimeout(r, 1200))
-    setSubmitting(false)
+  function handleFinish() {
     setDone(true)
     setTimeout(() => router.push('/dashboard'), 2500)
   }
@@ -217,6 +226,14 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
   }
 
   const pwdStrength = getPasswordStrength(acesso.password)
+
+  // Estimativa mockada da rota de frete, com base nos dados informados
+  const routeOrigin = tipo === 'exportador' && specifics['origem_uf']
+    ? `Porto mais próximo de ${specifics['origem_uf']}`
+    : 'Porto de Santos (SP)'
+  const routeDestination = tipo === 'importador' && specifics['target_port']
+    ? specifics['target_port']
+    : 'Rotterdam'
 
   return (
     <div className="w-full max-w-lg space-y-6">
@@ -435,6 +452,38 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
             </div>
           </>
         )}
+
+        {/* ---- Step 4: Análise de risco + estimativa de rota de frete ---- */}
+        {step === 4 && (
+          <>
+            <h2 className="text-sm font-semibold text-[#3e2e1e] mb-4">{t('riskEstimateTitle')}</h2>
+            {analyzing && (
+              <div className="flex flex-col items-center justify-center gap-3 py-10">
+                <Loader2 className="w-8 h-8 text-[#584531] animate-spin" />
+                <p className="text-xs text-[#584531]/70">{t('analyzingText')}</p>
+              </div>
+            )}
+            {analysisDone && (
+              <div className="space-y-3">
+                <div className="flex items-start gap-3 bg-emerald-600/10 border border-emerald-600/25 px-3 py-2.5">
+                  <ShieldCheck className="w-5 h-5 text-emerald-700 flex-shrink-0" />
+                  <div>
+                    <p className="text-xs font-semibold text-emerald-800">{t('riskLevelLabel')}: {t('riskLevelLow')}</p>
+                    <p className="text-[11px] text-[#584531]/70 mt-0.5">{t('riskLevelDesc')}</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 bg-[#584531]/10 border border-[#3e2e1e]/20 px-3 py-2.5">
+                  <Ship className="w-5 h-5 text-[#584531] flex-shrink-0" />
+                  <div>
+                    <p className="text-xs font-semibold text-[#3e2e1e]">{t('routeEstimateLabel')}</p>
+                    <p className="text-[11px] text-[#584531]/80 mt-0.5">{routeOrigin} → {routeDestination}</p>
+                    <p className="text-[11px] text-[#584531]/70 mt-1">{t('routeDaysLabel')}: ~28 {t('daysUnit')} · {t('routeCostLabel')}: USD 1.850</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        )}
       </div>
 
       {/* Navigation */}
@@ -452,15 +501,15 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
         {step < STEP_COUNT - 1 ? (
           <button className="inline-flex items-center gap-2 bg-[#584531] hover:bg-[#3e2e1e] text-[#ede5dc] font-semibold px-4 py-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                   disabled={!canAdvance()} onClick={handleNext}>
-            {t('btnNext')} <ChevronRight className="w-4 h-4 ml-1" />
+            {step === STEP_COUNT - 2
+              ? <>{t('btnAnalyze')} <ChevronRight className="w-4 h-4 ml-1" /></>
+              : <>{t('btnNext')} <ChevronRight className="w-4 h-4 ml-1" /></>
+            }
           </button>
         ) : (
           <button className="inline-flex items-center gap-2 bg-[#584531] hover:bg-[#3e2e1e] text-[#ede5dc] font-semibold px-4 py-2 transition-colors disabled:opacity-60 disabled:cursor-not-allowed text-sm"
-                  disabled={submitting} onClick={handleSubmit}>
-            {submitting
-              ? <><Loader2 className="w-4 h-4 animate-spin mr-1" /> {t('btnRegistering')}</>
-              : <><CheckCircle className="w-4 h-4 mr-1" /> {t('btnFinalize')}</>
-            }
+                  disabled={!analysisDone} onClick={handleFinish}>
+            <CheckCircle className="w-4 h-4 mr-1" /> {t('btnGoDashboard')}
           </button>
         )}
       </div>

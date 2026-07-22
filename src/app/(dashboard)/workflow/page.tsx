@@ -5,7 +5,7 @@ import { cn, formatDate } from '@/lib/utils'
 import type { WorkflowOverallStatus } from '@/types'
 import { getTranslations } from 'next-intl/server'
 
-export const metadata = { title: 'Workflow Logístico' }
+export const metadata = { title: 'Workflow' }
 
 const statusVisual: Record<WorkflowOverallStatus, { icon: React.ElementType; cls: string }> = {
   EM_ANDAMENTO: { icon: Clock,        cls: 'text-brand-400 bg-brand-400/10 border-brand-400/30' },
@@ -44,9 +44,9 @@ export default async function WorkflowPage() {
           {workflows.map((w) => {
             const vis = statusVisual[w.overall_status]
             const label = statusLabels[w.overall_status]
-            const concluded = w.steps.filter((s) => s.status === 'CONCLUIDO').length
-            const pct = Math.round((concluded / w.steps.length) * 100)
-            const currentStep = w.steps.find((s) => s.code === w.current_step_code)
+            const concluded = w.stages.filter((s) => s.status === 'CONCLUIDO').length
+            const pct = Math.round((concluded / w.stages.length) * 100)
+            const currentStage = w.stages.find((s) => s.stage === w.current_stage)
 
             return (
               <Link key={w.id} href={`/workflow/${w.id}`}
@@ -59,20 +59,20 @@ export default async function WorkflowPage() {
                     <span className="badge text-brand-400 border-brand-400/30 bg-brand-400/10">{w.incoterm}</span>
                   </div>
                   <h3 className="text-sm font-semibold text-[#3e2e1e] group-hover:text-[#1c1208] truncate">
-                    {w.negotiation.product_name}
+                    {w.order.product_name}
                   </h3>
                   <p className="text-xs text-slate-400 mt-0.5">
-                    {w.negotiation.quantity_kg.toLocaleString('pt-BR')} kg •{' '}
-                    {w.negotiation.origin_port} → {w.negotiation.destination_port}
+                    {w.order.quantity_kg.toLocaleString('pt-BR')} kg •{' '}
+                    {w.order.origin_port} → {w.order.destination_port}
                   </p>
                   <p className="text-xs text-slate-500 mt-1">
-                    {t('currentStep')} <strong className="text-slate-300">{currentStep?.title ?? '-'}</strong>
+                    {t('currentStep')} <strong className="text-slate-300">{currentStage?.title ?? '-'}</strong>
                   </p>
                 </div>
 
                 <div className="md:w-48 flex flex-col justify-between">
                   <div className="flex items-center justify-between text-xs text-slate-400 mb-1.5">
-                    <span>{t('stepsCount', { done: concluded, total: w.steps.length })}</span>
+                    <span>{t('stepsCount', { done: concluded, total: w.stages.length })}</span>
                     <span className="font-semibold text-slate-200">{pct}%</span>
                   </div>
                   <div className="h-2 bg-[#dbcbba] overflow-hidden mb-2">

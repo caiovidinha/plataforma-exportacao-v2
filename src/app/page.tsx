@@ -21,16 +21,8 @@ export default async function LandingPage() {
   ]
 
   const ENTITIES = [
-    { label: t('entityExporters'),      desc: t('entityExportersDesc'),      slug: 'exportador' },
-    { label: t('entityImporters'),      desc: t('entityImportersDesc'),      slug: 'importador' },
-    { label: t('entityCarriers'),       desc: t('entityCarriersDesc'),       slug: 'transportadora' },
-    { label: t('entityShippingLines'),  desc: t('entityShippingLinesDesc'),  slug: 'companhia-navegacao' },
-    { label: t('entityBrokers'),        desc: t('entityBrokersDesc'),        slug: 'despachante' },
-    { label: t('entityExchangeHouses'), desc: t('entityExchangeHousesDesc'), slug: 'corretora' },
-    { label: t('entityTerminals'),      desc: t('entityTerminalsDesc'),      slug: 'terminal' },
-    { label: t('entityInsurers'),       desc: t('entityInsurersDesc'),       slug: 'seguradora' },
-    { label: t('entityCertifiers'),     desc: t('entityCertifiersDesc'),     slug: 'certificadora' },
-    { label: t('entityLabs'),           desc: t('entityLabsDesc'),           slug: 'laboratorio' },
+    { label: t('entityExporters'), desc: t('entityExportersDesc'), slug: 'exportador' },
+    { label: t('entityImporters'), desc: t('entityImportersDesc'), slug: 'importador' },
   ]
 
   const STEPS = [
@@ -203,7 +195,7 @@ export default async function LandingPage() {
             <h2 className="font-display text-[2.4rem] font-bold text-[#584531]">{t('whoUsesSectionTitle')}</h2>
             <p className="text-[#584531] text-sm">{t('whoUsesSectionSubtitle')}</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
             {ENTITIES.map(({ label, desc, slug }) => (
               <Link key={slug} href={`/registro/${slug}`}
                 className="bg-[#ede5dc] flex flex-col hover:brightness-105 transition-all cursor-pointer">
