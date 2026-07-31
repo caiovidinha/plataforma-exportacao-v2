@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { CheckCircle, ExternalLink, FileText, AlertTriangle, ChevronRight } from 'lucide-react'
+import { formatMapaProtocol, isValidMapaProtocol } from '@/lib/validators'
 
 const STEPS = [
   { num: 1, title: 'Acesse o Portal MAPA', desc: 'Entre em www.gov.br/mapa e localize o SISCOMEX Importação/Exportação.' },
@@ -15,9 +16,15 @@ export default function MapaCadastroPage() {
   const router = useRouter()
   const [confirmed, setConfirmed] = useState(false)
   const [number, setNumber] = useState('')
+  const [error, setError] = useState('')
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (number && !isValidMapaProtocol(number)) {
+      setError('Protocolo incompleto - formato esperado: 00000.000000/0000-00')
+      return
+    }
+    setError('')
     setConfirmed(true)
   }
 
@@ -102,8 +109,9 @@ export default function MapaCadastroPage() {
           </p>
           <div>
             <label className="label" htmlFor="protocol">Número do Protocolo MAPA</label>
-            <input id="protocol" className="input" placeholder="Ex.: 21000.123456/2024"
-                   value={number} onChange={(e) => setNumber(e.target.value)} />
+            <input id="protocol" className="input" placeholder="Ex.: 21000.123456/2024-01"
+                   value={number} onChange={(e) => setNumber(formatMapaProtocol(e.target.value))} />
+            {error && <p className="text-xs text-red-600 mt-1.5">{error}</p>}
           </div>
           <button type="submit" className="btn-primary w-full justify-center">
             Salvar Protocolo <ChevronRight className="w-4 h-4 ml-1" />

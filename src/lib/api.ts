@@ -17,6 +17,9 @@ import type {
   MapaNotice,
   Exporter,
   PaginatedResponse,
+  FreightQuote,
+  InsuranceQuote,
+  OrderSimulation,
 } from '@/types'
 
 const api = axios.create({
@@ -195,6 +198,71 @@ export async function getExchangeRates(): Promise<Record<string, number>> {
   }
   const { data } = await api.get<Record<string, number>>('/exchange-rates')
   return data
+}
+
+export async function getExchangeRatesWithMeta(): Promise<{ rates: Record<string, number>; updated_at: string }> {
+  if (featureFlags.useMockData) {
+    await delay()
+    const { updated_at, ...rates } = mockData.exchange_rates
+    return { rates, updated_at }
+  }
+  const { data } = await api.get<{ rates: Record<string, number>; updated_at: string }>('/exchange-rates')
+  return data
+}
+
+// ---- Simulação de compra (frete + seguro + câmbio) -------------
+// Frete e seguro não são escolhidos pelo comprador: Cia de Navegação e
+// Seguradora são parceiros fixos contratados diretamente pela plataforma
+// (ver src/lib/partners.ts). O "roster" abaixo é só o critério interno
+// usado para designar automaticamente qual parceiro atende cada pedido
+// (determinístico, sem Math.random) - nunca é exposto como opção de escolha.
+export async function simulateOrder(listing: Listing, quantityKg: number): Promise<OrderSimulation> {
+  await delay(500)
+
+  const rates = await getExchangeRates()
+  const exchangeRate = rates.USD ?? 5.7
+  const productUsd = quantityKg * listing.price_per_kg_usd
+
+  // Variação determinística por anúncio, sem aleatoriedade real
+  const hash = Array.from(listing.id).reduce((acc, c) => acc + c.charCodeAt(0), 0)
+  const variance = (hash % 10) / 100
+
+  const carrierRoster = [
+    { name: 'MSC', ratePerKg: 0.19, speedDelta: -3 },
+    { name: 'Maersk', ratePerKg: 0.23, speedDelta: -8 },
+    { name: 'Hapag-Lloyd', ratePerKg: 0.16, speedDelta: 5 },
+  ]
+  const carrier = carrierRoster[hash % carrierRoster.length]
+  const freight: FreightQuote = {
+    id: `fq_${listing.id}`,
+    carrier_name: carrier.name,
+    transport_mode: 'MARITIMO',
+    transit_days: Math.max(14, listing.delivery_days + carrier.speedDelta),
+    price_usd: Math.round(quantityKg * (carrier.ratePerKg + variance)),
+  }
+
+  const insurerRoster: { name: string; type: InsuranceQuote['type']; rate: number }[] = [
+    { name: 'Seguradora Atlântica Cargas', type: 'MERCADORIA', rate: 0.004 },
+    { name: 'Porto Seguro Comércio Exterior', type: 'MERCADORIA', rate: 0.0055 },
+  ]
+  const insurer = insurerRoster[hash % insurerRoster.length]
+  const coverageUsd = Math.round(productUsd * 1.1)
+  const insurance: InsuranceQuote = {
+    id: `iq_${listing.id}`,
+    insurer_name: insurer.name,
+    type: insurer.type,
+    coverage_usd: coverageUsd,
+    premium_brl: Math.round(coverageUsd * exchangeRate * insurer.rate),
+  }
+
+  return {
+    listing_id: listing.id,
+    quantity_kg: quantityKg,
+    product_usd: productUsd,
+    freight,
+    insurance,
+    exchange_rate: exchangeRate,
+  }
 }
 
 export default api

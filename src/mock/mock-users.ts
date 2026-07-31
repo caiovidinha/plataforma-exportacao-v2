@@ -33,7 +33,7 @@ export const MOCK_USERS: Record<EntitySlug, MockUser> = {
     name: 'Carlos Mendonça',
     email: 'carlos@castanheiraexport.com.br',
     company_name: 'Castanheira Export Ltda.',
-    cnpj: '12.345.678/0001-90',
+    cnpj: '12.345.678/0001-95',
     country: 'BR',
     city: 'Manaus, AM',
     mapa_registered: false,

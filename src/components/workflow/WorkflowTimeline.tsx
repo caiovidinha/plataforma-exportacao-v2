@@ -25,8 +25,14 @@ import {
 } from 'lucide-react'
 import { cn, formatDate, stageStatusColors, stageStatusLabel } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
+import toast from 'react-hot-toast'
 import { DocumentViewer } from '@/components/ui/DocumentViewer'
+import { PartnerTrackingPanel } from '@/components/workflow/PartnerTrackingPanel'
 import { getPartner } from '@/lib/partners'
+import { useMockStore } from '@/lib/mock-store'
+import { useMockSession } from '@/lib/mock-session'
+import { STAGE_ACTIONS, type WorkflowAction } from '@/lib/workflow-actions'
+import type { EntitySlug } from '@/lib/entity-config'
 import type { ExportWorkflow, WorkflowStageDefinition, WorkflowStageStatus, PartnerType } from '@/types'
 
 const PARTNER_ICONS: Record<PartnerType, React.ElementType> = {
@@ -38,6 +44,15 @@ const PARTNER_ICONS: Record<PartnerType, React.ElementType> = {
   LOGISTICA: Truck,
   CERTIFICADORA: BadgeCheck,
   LABORATORIO: Microscope,
+}
+
+const ACTION_ICONS: Record<WorkflowAction['icon'], React.ElementType> = {
+  FileText,
+  Truck,
+  FileCheck,
+  Microscope,
+  Ship,
+  DollarSign,
 }
 
 // ---- Ícone por status ------------------------------------------
@@ -110,19 +125,64 @@ function WorkflowStageCard({
   index,
   isLast,
   isCurrent,
+  workflowId,
+  entityType,
 }: {
   stage: WorkflowStageDefinition
   index: number
   isLast: boolean
   isCurrent: boolean
+  workflowId: string
+  entityType: EntitySlug
 }) {
   const [expanded, setExpanded] = useState(
     stage.status === 'EM_ANDAMENTO' || stage.status === 'ATRASADO' || stage.status === 'BLOQUEADO',
   )
+  const [actionLoading, setActionLoading] = useState<string | null>(null)
 
   const late = !!(stage.actual_date && stage.planned_date && stage.actual_date > stage.planned_date)
   const t = useTranslations('workflow')
   const isRecusada = stage.stage === 'MERCADORIA_RECUSADA'
+
+  const { user } = useMockSession()
+  const emitDocument = useMockStore((s) => s.emitDocument)
+  const logPartnerActivity = useMockStore((s) => s.logPartnerActivity)
+  const advanceStage = useMockStore((s) => s.advanceStage)
+
+  const canAct = entityType === 'exportador' && isCurrent && stage.status === 'EM_ANDAMENTO' && !isRecusada
+  const actions = STAGE_ACTIONS[stage.stage] ?? []
+
+  async function runAction(action: WorkflowAction) {
+    setActionLoading(action.id)
+    await new Promise((r) => setTimeout(r, 500))
+    if (action.kind === 'emit_document') {
+      emitDocument(workflowId, stage.id, { type: action.docType, name: action.docName, emittedBy: user.company_name })
+      logPartnerActivity(workflowId, {
+        partner: action.partner,
+        stage: stage.stage,
+        message: action.activityMessage,
+        status: 'CONCLUIDO',
+      })
+      toast.success(t('actionDocEmitted', { name: action.docName }))
+    } else {
+      logPartnerActivity(workflowId, {
+        partner: action.partner,
+        stage: stage.stage,
+        message: action.message,
+        status: action.status,
+      })
+      toast.success(t('actionLogged'))
+    }
+    setActionLoading(null)
+  }
+
+  async function handleAdvance() {
+    setActionLoading('__advance')
+    await new Promise((r) => setTimeout(r, 500))
+    advanceStage(workflowId)
+    toast.success(t('stageAdvanced'))
+    setActionLoading(null)
+  }
 
   return (
     <div className="flex gap-4">
@@ -235,6 +295,44 @@ function WorkflowStageCard({
                 {stage.notes}
               </div>
             )}
+
+            {/* Ações do exportador - só na etapa atual, em andamento */}
+            {canAct && (
+              <div className="border-t border-[#3e2e1e]/12 pt-3 space-y-2">
+                <p className="text-xs font-medium text-[#584531]">{t('actionsSection')}</p>
+                <div className="flex flex-wrap gap-2">
+                  {actions.map((action) => {
+                    const Icon = ACTION_ICONS[action.icon]
+                    return (
+                      <button
+                        key={action.id}
+                        type="button"
+                        onClick={() => runAction(action)}
+                        disabled={actionLoading !== null}
+                        className="btn-ghost text-xs py-1.5"
+                      >
+                        <Icon className="w-3.5 h-3.5" />
+                        {actionLoading === action.id ? t('actionRunning') : action.label}
+                      </button>
+                    )
+                  })}
+                  <button
+                    type="button"
+                    onClick={handleAdvance}
+                    disabled={actionLoading !== null}
+                    className="btn-primary text-xs py-1.5"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    {actionLoading === '__advance' ? t('actionRunning') : t('advanceStageBtn')}
+                  </button>
+                </div>
+              </div>
+            )}
+            {!canAct && isCurrent && entityType === 'importador' && stage.status === 'EM_ANDAMENTO' && (
+              <p className="text-xs text-[#584531]/60 italic border-t border-[#3e2e1e]/12 pt-3">
+                {t('waitingExporterNote')}
+              </p>
+            )}
           </div>
         )}
       </div>
@@ -298,8 +396,15 @@ function OutcomeBanner({ workflow }: { workflow: ExportWorkflow }) {
 }
 
 // ---- Componente principal --------------------------------------
-export function WorkflowTimeline({ workflow }: { workflow: ExportWorkflow }) {
+export function WorkflowTimeline({ workflow: initialWorkflow }: { workflow: ExportWorkflow }) {
   const t = useTranslations('workflow')
+  // Lê do store para refletir ações (emitir doc, avançar etapa) em tempo
+  // real e persistir entre páginas/reload; cai no valor vindo do server
+  // component (SSR inicial) enquanto o store ainda não hidratou.
+  const workflow = useMockStore((s) => s.getWorkflow(initialWorkflow.id)) ?? initialWorkflow
+  // Componente já é client - lê a role diretamente da sessão mock em vez
+  // de exigir um wrapper client na página apenas para repassar a prop.
+  const { entityType } = useMockSession()
   const overallColor = {
     EM_ANDAMENTO: 'text-brand-400',
     CONCLUIDO: 'text-emerald-700',
@@ -356,6 +461,8 @@ export function WorkflowTimeline({ workflow }: { workflow: ExportWorkflow }) {
 
       <OutcomeBanner workflow={workflow} />
 
+      <PartnerTrackingPanel workflow={workflow} />
+
       {/* Legenda */}
       <div className="flex flex-wrap gap-3 items-center">
         <span className="text-xs text-[#584531]/60 font-medium">{t('legendLabel')}</span>
@@ -376,6 +483,8 @@ export function WorkflowTimeline({ workflow }: { workflow: ExportWorkflow }) {
             index={i}
             isLast={i === workflow.stages.length - 1}
             isCurrent={stage.stage === workflow.current_stage}
+            workflowId={workflow.id}
+            entityType={entityType}
           />
         ))}
       </div>

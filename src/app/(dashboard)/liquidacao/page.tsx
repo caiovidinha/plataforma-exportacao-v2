@@ -4,6 +4,7 @@ import { cn, formatCurrency } from '@/lib/utils'
 import type { LiquidationFOB, LiquidationCIF } from '@/types'
 import { useTranslations } from 'next-intl'
 import { getTranslations } from 'next-intl/server'
+import { ExchangeRateWidget } from '@/components/ui/ExchangeRateWidget'
 
 export const metadata = { title: 'Liquidação' }
 
@@ -212,6 +213,8 @@ export default async function LiquidacaoPage() {
           <span className="text-[#584531] font-medium">{liquidation.incoterm}</span>
         </p>
       </div>
+
+      <ExchangeRateWidget />
 
       {liquidation.incoterm === 'FOB'
         ? <LiquidacaoFOB data={liquidation as LiquidationFOB} />

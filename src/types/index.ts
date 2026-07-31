@@ -184,6 +184,19 @@ export interface Order {
   status: OrderStatus
   created_at: string
   confirmed_at?: string
+  /** Resumo da simulação de compra (frete/seguro/câmbio) escolhida no checkout */
+  simulation_summary?: OrderSimulationSummary
+}
+
+export interface OrderSimulationSummary {
+  carrier_name: string
+  transit_days: number
+  freight_usd: number
+  insurer_name: string
+  insurance_type: InsuranceType
+  insurance_premium_brl: number
+  exchange_rate: number
+  total_usd: number
 }
 
 // ---- Contrato / Assinatura --------------------------------
@@ -283,6 +296,20 @@ export interface WorkflowStageDefinition {
 
 export type WorkflowOverallStatus = 'EM_ANDAMENTO' | 'CONCLUIDO' | 'ATRASADO' | 'CANCELADO'
 
+// ---- Log de atividades dos parceiros ------------------------
+// Alimenta o painel de acompanhamento (ex.: Despachante, Cia de Navegação)
+// e é gerado tanto por ações do exportador quanto automaticamente.
+export type PartnerActivityStatus = 'INFO' | 'ACAO_NECESSARIA' | 'CONCLUIDO'
+
+export interface PartnerActivityEvent {
+  id: string
+  partner: PartnerType
+  stage: WorkflowStage
+  message: string
+  at: string
+  status: PartnerActivityStatus
+}
+
 export interface ExportWorkflow {
   id: string
   order_id: string
@@ -295,6 +322,7 @@ export interface ExportWorkflow {
   overall_status: WorkflowOverallStatus
   created_at: string
   estimated_completion: string
+  activity_log?: PartnerActivityEvent[]
 }
 
 // ---- Liquidação -------------------------------------------
@@ -363,6 +391,38 @@ export interface InsurancePolicy {
   valid_from: string
   valid_until: string
   policy_document_url?: string
+}
+
+// ---- Simulação de compra (pré-checkout) --------------------
+// Cotações de frete e seguro mostradas antes da confirmação do pedido,
+// similar a um resumo de compra de passagens - garante que o comprador
+// veja o custo total (produto + frete + seguro) antes de fechar negócio.
+export interface FreightQuote {
+  id: string
+  carrier_name: string
+  transport_mode: TransportMode
+  transit_days: number
+  price_usd: number
+}
+
+export interface InsuranceQuote {
+  id: string
+  insurer_name: string
+  type: InsuranceType
+  coverage_usd: number
+  premium_brl: number
+}
+
+export interface OrderSimulation {
+  listing_id: string
+  quantity_kg: number
+  product_usd: number
+  /** Transportadora e seguradora são parceiros fixos da plataforma - a
+   * definição de quem atende o pedido é automática, não uma escolha do
+   * comprador. */
+  freight: FreightQuote
+  insurance: InsuranceQuote
+  exchange_rate: number
 }
 
 // ---- Inteligência de Mercado ------------------------------

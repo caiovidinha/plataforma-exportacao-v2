@@ -4,8 +4,9 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import toast from 'react-hot-toast'
-import { Ship, MapPin, Package, CheckCircle2, XCircle, Clock, Ban, GitBranch } from 'lucide-react'
+import { Ship, MapPin, Package, CheckCircle2, XCircle, Clock, Ban, GitBranch, Eye } from 'lucide-react'
 import { cn, formatDate } from '@/lib/utils'
+import { useMockStore } from '@/lib/mock-store'
 import type { Order, OrderStatus } from '@/types'
 import type { EntitySlug } from '@/lib/entity-config'
 
@@ -21,22 +22,30 @@ const STATUS_CFG: Record<OrderStatus, { icon: React.ElementType; cls: string; la
   CANCELADO:              { icon: Ban,          cls: 'text-slate-400 bg-slate-400/10 border-slate-400/30',      labelKey: 'statusCancelled' },
 }
 
-export function OrderBox({ order, entityType }: Props) {
+export function OrderBox({ order: initialOrder, entityType }: Props) {
   const t = useTranslations('pedidos')
-  const [status, setStatus] = useState<OrderStatus>(order.status)
   const [loading, setLoading] = useState<'accept' | 'reject' | null>(null)
 
-  const cfg = STATUS_CFG[status]
-  const canDecide = entityType === 'exportador' && status === 'AGUARDANDO_CONFIRMACAO'
+  // O store é a fonte da verdade após a hidratação inicial (mesmo padrão
+  // usado pelo mock-session): ações de aceitar/recusar persistem entre
+  // páginas e reloads via localStorage.
+  const order = useMockStore((s) => s.getOrder(initialOrder.id)) ?? initialOrder
+  const workflow = useMockStore((s) => s.getWorkflowByOrderId(order.id))
+  const confirmOrder = useMockStore((s) => s.confirmOrder)
+  const rejectOrder = useMockStore((s) => s.rejectOrder)
+
+  const cfg = STATUS_CFG[order.status]
+  const canDecide = entityType === 'exportador' && order.status === 'AGUARDANDO_CONFIRMACAO'
+  const workflowHref = workflow ? `/workflow/${workflow.id}` : '/workflow'
 
   async function handleDecision(decision: 'accept' | 'reject') {
     setLoading(decision)
     await new Promise((r) => setTimeout(r, 600))
     if (decision === 'accept') {
-      setStatus('CONFIRMADO')
+      confirmOrder(order.id)
       toast.success(t('acceptToast'))
     } else {
-      setStatus('RECUSADO')
+      rejectOrder(order.id)
       toast.error(t('rejectToast'))
     }
     setLoading(null)
@@ -93,8 +102,26 @@ export function OrderBox({ order, entityType }: Props) {
             </div>
           )}
         </div>
+
+        {order.simulation_summary && (
+          <div className="grid grid-cols-3 gap-3 pt-2 border-t border-[#3e2e1e]/10">
+            <div>
+              <p className="text-xs text-[#584531]/60">{t('simCarrierLabel')}</p>
+              <p className="text-sm font-medium text-[#3e2e1e]">{order.simulation_summary.carrier_name}</p>
+            </div>
+            <div>
+              <p className="text-xs text-[#584531]/60">{t('simInsurerLabel')}</p>
+              <p className="text-sm font-medium text-[#3e2e1e]">{order.simulation_summary.insurer_name}</p>
+            </div>
+            <div>
+              <p className="text-xs text-[#584531]/60">{t('simExchangeLabel')}</p>
+              <p className="text-sm font-medium text-[#3e2e1e]">R$ {order.simulation_summary.exchange_rate.toFixed(2)}</p>
+            </div>
+          </div>
+        )}
       </div>
 
+      {/* Exportador: decisão pendente */}
       {canDecide && (
         <div className="flex gap-3">
           <button
@@ -114,12 +141,24 @@ export function OrderBox({ order, entityType }: Props) {
         </div>
       )}
 
-      {status === 'CONFIRMADO' && (
-        <Link href="/workflow" className="card flex items-center gap-3 hover:border-[#3e2e1e]/30 transition-all">
+      {/* Exportador confirmado: painel de ações (emitir NF, avançar etapa, etc.) */}
+      {order.status === 'CONFIRMADO' && entityType === 'exportador' && (
+        <Link href={workflowHref} className="card flex items-center gap-3 hover:border-[#3e2e1e]/30 transition-all">
           <GitBranch className="w-5 h-5 text-[#584531]" />
           <div className="flex-1">
-            <p className="text-sm font-semibold text-[#3e2e1e]">{t('workflowStartedTitle')}</p>
-            <p className="text-xs text-[#584531]">{t('workflowStartedDesc')}</p>
+            <p className="text-sm font-semibold text-[#3e2e1e]">{t('goToWorkflowBtn')}</p>
+            <p className="text-xs text-[#584531]">{t('goToWorkflowDesc')}</p>
+          </div>
+        </Link>
+      )}
+
+      {/* Importador confirmado: painel de acompanhamento (somente leitura) */}
+      {order.status === 'CONFIRMADO' && entityType === 'importador' && (
+        <Link href={workflowHref} className="card flex items-center gap-3 hover:border-[#3e2e1e]/30 transition-all">
+          <Eye className="w-5 h-5 text-[#584531]" />
+          <div className="flex-1">
+            <p className="text-sm font-semibold text-[#3e2e1e]">{t('importerTrackingTitle')}</p>
+            <p className="text-xs text-[#584531]">{t('importerTrackingDesc')}</p>
           </div>
         </Link>
       )}

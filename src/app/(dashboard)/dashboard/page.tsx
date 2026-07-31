@@ -17,6 +17,7 @@ import {
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { ImportadorHome } from '@/components/dashboard/ImportadorHome'
+import { ExchangeRateWidget } from '@/components/ui/ExchangeRateWidget'
 
 const ICON_MAP: Record<string, React.ElementType> = {
   GitBranch,
@@ -121,6 +122,8 @@ export default function DashboardPage() {
             )
           })}
         </div>
+
+        <ExchangeRateWidget />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="card">

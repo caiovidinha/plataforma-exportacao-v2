@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl'
 import { ArrowRight, ClipboardList, Ship, Sparkles } from 'lucide-react'
 import { getListings } from '@/lib/api'
 import { ListingCard } from '@/components/vitrine/ListingCard'
+import { ExchangeRateWidget } from '@/components/ui/ExchangeRateWidget'
 import type { Listing } from '@/types'
 import type { MockUser } from '@/mock/mock-users'
 
@@ -69,6 +70,8 @@ export function ImportadorHome({ user }: { user: MockUser }) {
             </div>
           ))}
         </div>
+
+        <ExchangeRateWidget />
 
         {/* Categorias / atalhos */}
         <div className="flex flex-wrap gap-2">

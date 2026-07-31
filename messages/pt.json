@@ -83,6 +83,9 @@
     "companyName": "Empresa / Razão Social",
     "cnpj": "CNPJ",
     "cnpjPlaceholder": "00.000.000/0001-00",
+    "errInvalidEmail": "Informe um e-mail válido.",
+    "errInvalidPhone": "Telefone inválido.",
+    "errInvalidCnpj": "CNPJ inválido - confira os dígitos verificadores.",
     "cityState": "Cidade / Estado",
     "country": "País",
     "saveBtn": "Salvar alterações",
@@ -200,7 +203,8 @@
     "signInGov": "Entrar com Gov.br",
     "noAccount": "Não tem conta?",
     "registerFree": "Cadastre-se gratuitamente",
-    "errorFillFields": "Preencha e-mail e senha."
+    "errorFillFields": "Preencha e-mail e senha.",
+    "errorInvalidEmail": "Informe um e-mail válido."
   },
   "registro": {
     "pageTitle": "Bem-vindo à Brazil X Hub!",
@@ -216,6 +220,11 @@
     "companyDataTitle": "Dados da Empresa",
     "companyNameLabel": "Razão Social / Nome da Empresa",
     "cnpjLabel": "CNPJ",
+    "errInvalidCnpj": "CNPJ inválido - confira os dígitos verificadores.",
+    "errInvalidPhone": "Telefone inválido.",
+    "errInvalidUrl": "Informe uma URL válida (ex.: https://suaempresa.com).",
+    "errInvalidNcm": "Cada NCM deve ter 8 dígitos (ex.: 0801.21.00), separados por vírgula.",
+    "errInvalidEmail": "Informe um e-mail válido.",
     "phoneLabel": "Telefone",
     "websiteLabel": "Website",
     "detailsTitle": "Detalhes de {type}",
@@ -314,7 +323,18 @@
     "outcomeRejectedTitle": "Mercadoria recusada",
     "outcomeRejectedDesc": "Quebra de contrato acionada; cobertura de seguro em análise com a seguradora e o jurídico.",
     "outcomePaidTitle": "Pagamento recebido",
-    "outcomePaidDesc": "Câmbio liquidado e valores creditados ao exportador."
+    "outcomePaidDesc": "Câmbio liquidado e valores creditados ao exportador.",
+    "actionsSection": "Ações",
+    "actionRunning": "Processando…",
+    "advanceStageBtn": "Avançar Etapa",
+    "waitingExporterNote": "Aguardando ação do exportador nesta etapa.",
+    "actionDocEmitted": "{name} emitido com sucesso.",
+    "actionLogged": "Atividade registrada.",
+    "stageAdvanced": "Etapa avançada com sucesso.",
+    "partnerTrackingTitle": "Acompanhamento de Despachante e Cia de Navegação",
+    "partnerNoActivity": "Nenhuma atividade registrada ainda.",
+    "loadingWorkflow": "Carregando workflow…",
+    "workflowNotFound": "Workflow não encontrado."
   },
   "ficha": {
     "tabGeneral": "Geral",
@@ -391,6 +411,10 @@
     "saveBtn": "Salvar",
     "editBtn": "Editar",
     "deleteBtn": "Excluir",
+    "errRequired": "Campo obrigatório.",
+    "errInvalidFormat": "Formato inválido.",
+    "errMin": "Valor mínimo: {min}.",
+    "errMax": "Valor máximo: {max}.",
     "selectOption": "Selecionar…"
   },
   "entities": {
@@ -402,7 +426,10 @@
   "devtools": {
     "simulateEntity": "Simular Entidade",
     "loggedAs": "Logado como",
-    "activeBadge": "ativo"
+    "activeBadge": "ativo",
+    "resetDemoBtn": "Reiniciar Demonstração",
+    "resetConfirm": "Isso vai apagar todo o progresso de pedidos e workflows salvo neste navegador e voltar ao estado inicial do mock. Continuar?",
+    "resetToast": "Demonstração reiniciada."
   },
   "importadorHome": {
     "eyebrow": "Marketplace",
@@ -517,7 +544,32 @@
     "acceptToast": "Pedido aceito! Workflow de exportação iniciado.",
     "rejectToast": "Pedido recusado.",
     "workflowStartedTitle": "Workflow iniciado",
-    "workflowStartedDesc": "Acompanhe as etapas da exportação em tempo real."
+    "workflowStartedDesc": "Acompanhe as etapas da exportação em tempo real.",
+    "simCarrierLabel": "Transportadora",
+    "simInsurerLabel": "Seguradora",
+    "simExchangeLabel": "Câmbio na simulação",
+    "goToWorkflowBtn": "Gerenciar Workflow",
+    "goToWorkflowDesc": "Emita documentos e acompanhe os parceiros responsáveis por cada etapa.",
+    "importerTrackingTitle": "Acompanhamento do Pedido",
+    "importerTrackingDesc": "Acompanhe etapas, documentos e parceiros envolvidos em tempo real.",
+    "novaStepForm": "Detalhes do Pedido",
+    "novaStepSimulacao": "Simulação de Compra",
+    "novaBackToForm": "Voltar",
+    "novaNextBtn": "Continuar para Simulação",
+    "simTitle": "Simulação de Compra",
+    "simSubtitle": "Escolha a transportadora e o seguro antes de confirmar o pedido.",
+    "simFreightTitle": "Transportadora Designada",
+    "simInsuranceTitle": "Seguro Incluído",
+    "simTransitDays": "{days} dias de trânsito",
+    "simCoverage": "Cobertura de USD {value}",
+    "simAutoAssignedNote": "Frete e seguro são contratados automaticamente pela plataforma junto aos parceiros fixos (Cia de Navegação e Seguradora) - não é necessário escolher.",
+    "simBreakdownTitle": "Resumo de Custos",
+    "simProductLabel": "Produto",
+    "simFreightLabel": "Frete",
+    "simInsuranceLabel": "Seguro",
+    "simExchangeRateLabel": "Taxa de câmbio (USD)",
+    "simTotalLabel": "Total Estimado",
+    "simConfirmBtn": "Confirmar Pedido"
   },
   "mercado": {
     "pageTitle": "Inteligência de Mercado",
@@ -561,6 +613,10 @@
     "aflatoxinRejected": "Análise reprovada - entre em contato com o importador.",
     "awaitingSwiftCif": "Aguardando envio do SWIFT pelo importador para a corretora de câmbio.",
     "paymentSettled": "Pagamento liquidado em {date} (D+2 após SWIFT)"
+  },
+  "cambio": {
+    "title": "Câmbio",
+    "loading": "Carregando taxas…"
   },
   "partners": {
     "JURIDICO": "Jurídico",

@@ -5,7 +5,7 @@
     "email": "carlos@castanheiraexport.com.br",
     "role": "EXPORTADOR",
     "company_name": "Castanheira Export Ltda.",
-    "cnpj": "12.345.678/0001-90",
+    "cnpj": "12.345.678/0001-95",
     "country": "BR",
     "mapa_registered": false,
     "created_at": "2024-01-15T10:00:00Z",
@@ -522,7 +522,7 @@
     {
       "id": "exp_001",
       "company_name": "Castanheira Export Ltda.",
-      "cnpj": "12.345.678/0001-90",
+      "cnpj": "12.345.678/0001-95",
       "country": "BR",
       "state": "Pará",
       "city": "Belém",
@@ -543,7 +543,7 @@
     {
       "id": "exp_002",
       "company_name": "AmazonNuts Export S.A.",
-      "cnpj": "98.765.432/0001-11",
+      "cnpj": "98.765.432/0001-98",
       "country": "BR",
       "state": "Pará",
       "city": "Marabá",

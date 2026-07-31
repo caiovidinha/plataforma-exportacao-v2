@@ -10,6 +10,7 @@ import {
 } from 'lucide-react'
 import { getEntityConfig } from '@/lib/entity-config'
 import { cn, formatCNPJ } from '@/lib/utils'
+import { isValidCNPJ, formatPhoneBR, isValidPhoneBR, isValidPhoneIntl, isValidUrl, isValidEmail, isValidNCMList } from '@/lib/validators'
 import { useTranslations } from 'next-intl'
 import type { ElementType } from 'react'
 
@@ -175,14 +176,19 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
   }
 
   function canAdvance(): boolean {
-    if (step === 0) return !!empresa.company_name && !!empresa.cnpj
+    if (step === 0) {
+      if (!empresa.company_name || !empresa.cnpj) return false
+      // CNPJ com dígito verificador só se aplica a exportador (importador usa VAT/Tax ID livre)
+      if (!cfg.cnpjLabel && !isValidCNPJ(empresa.cnpj)) return false
+      return true
+    }
     if (step === 1) {
       // Required specifics
       return cfg.specificFields.filter((f) => f.required).every((f) => !!specifics[f.key])
     }
     if (step === 2) {
       const { score, reqs } = getPasswordStrength(acesso.password)
-      return !!acesso.email && reqs.length && score >= 3 && acesso.password === acesso.confirm
+      return isValidEmail(acesso.email) && reqs.length && score >= 3 && acesso.password === acesso.confirm
     }
     return true
   }
@@ -285,6 +291,9 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
                 <input className={INPUT_CLS} placeholder={cfg.cnpjLabel ? 'VAT / Tax ID' : 'XX.XXX.XXX/XXXX-XX'}
                        value={empresa.cnpj}
                        onChange={(e) => updateEmpresa('cnpj', cfg.cnpjLabel ? e.target.value : formatCNPJ(e.target.value))} />
+                {!cfg.cnpjLabel && empresa.cnpj && !isValidCNPJ(empresa.cnpj) && (
+                  <p className="mt-1 text-xs text-red-600">{t('errInvalidCnpj')}</p>
+                )}
               </div>
               <div>
                 <label className={LABEL_CLS}>{t('phoneLabel')}</label>
@@ -300,13 +309,23 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
                   </select>
                   <input className="flex-1 min-w-0 bg-transparent border-0 px-3 py-2 text-sm text-[#3e2e1e] placeholder:text-[#584531]/40 focus:outline-none"
                          type="tel" placeholder="(XX) X XXXX-XXXX"
-                         value={empresa.contact_phone} onChange={(e) => updateEmpresa('contact_phone', e.target.value)} />
+                         value={empresa.contact_phone}
+                         onChange={(e) => updateEmpresa('contact_phone',
+                           empresa.phone_prefix === '+55' ? formatPhoneBR(e.target.value) : e.target.value)} />
                 </div>
+                {empresa.contact_phone && (
+                  empresa.phone_prefix === '+55'
+                    ? !isValidPhoneBR(empresa.contact_phone) && <p className="mt-1 text-xs text-red-600">{t('errInvalidPhone')}</p>
+                    : !isValidPhoneIntl(empresa.contact_phone) && <p className="mt-1 text-xs text-red-600">{t('errInvalidPhone')}</p>
+                )}
               </div>
               <div>
                 <label className={LABEL_CLS}>{t('websiteLabel')}</label>
                 <input className={INPUT_CLS} placeholder="https://..."
                        value={empresa.website} onChange={(e) => updateEmpresa('website', e.target.value)} />
+                {empresa.website && !isValidUrl(empresa.website) && (
+                  <p className="mt-1 text-xs text-red-600">{t('errInvalidUrl')}</p>
+                )}
               </div>
             </div>
           </>
@@ -324,6 +343,9 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
                   </label>
                   <FieldInput fieldKey={f.key} def={f} value={specifics[f.key] ?? ''}
                               onChange={(v) => updateSpecific(f.key, v)} />
+                  {f.key === 'ncm_codes' && specifics[f.key] && !isValidNCMList(specifics[f.key]) && (
+                    <p className="mt-1 text-xs text-red-600">{t('errInvalidNcm')}</p>
+                  )}
                   {f.hint && <p className="mt-1 text-xs text-[#584531]/60">{f.hint}</p>}
                 </div>
               ))}
@@ -340,6 +362,9 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
                 <label className={LABEL_CLS}>{t('corporateEmailLabel')} <span className="text-red-600">*</span></label>
                 <input className={INPUT_CLS} type="email"
                        value={acesso.email} onChange={(e) => updateAcesso('email', e.target.value)} />
+                {acesso.email && !isValidEmail(acesso.email) && (
+                  <p className="mt-1 text-xs text-red-600">{t('errInvalidEmail')}</p>
+                )}
               </div>
 
               {/* Password with strength meter */}
