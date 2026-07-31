@@ -1,31 +1,19 @@
 import Link from 'next/link'
 import { ENTITY_CONFIG, ENTITY_SLUGS } from '@/lib/entity-config'
-import {
-  Globe, Building2, Truck, Ship, FileCheck,
-  DollarSign, Warehouse, Shield, BadgeCheck, Microscope,
-} from 'lucide-react'
+import { Globe, Building2 } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 import type { ElementType } from 'react'
 
 export const metadata = { title: 'Cadastro - O que você é?' }
 
 const ICONS: Record<string, ElementType> = {
-  Globe, Building2, Truck, Ship, FileCheck,
-  DollarSign, Warehouse, Shield, BadgeCheck, Microscope,
+  Globe, Building2,
 }
 
 // Maps slug → description key in the "entities" namespace
 const DESC_KEY: Record<string, string> = {
-  exportador:             'exportadorDesc',
-  importador:             'importadorDesc',
-  transportadora:         'transportadoraDesc',
-  'companhia-navegacao':  'companhia-navegacaoDesc',
-  despachante:            'despachantDesc',
-  corretora:              'corretoraDesc',
-  terminal:               'terminalDesc',
-  seguradora:             'seguradoraDesc',
-  certificadora:          'certificadoraDesc',
-  laboratorio:            'laboratorioDesc',
+  exportador: 'exportadorDesc',
+  importador: 'importadorDesc',
 }
 
 export default async function RegistroPage() {

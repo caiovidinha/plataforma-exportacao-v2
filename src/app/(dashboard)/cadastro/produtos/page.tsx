@@ -5,10 +5,10 @@ export const metadata = { title: 'Produtos' }
 
 const fields = [
   { key: 'name',         label: 'Nome do Produto',  required: true, span: 'full' as const },
-  { key: 'ncm_code',     label: 'NCM',              required: true },
+  { key: 'ncm_code',     label: 'NCM',              required: true, format: 'ncm' as const },
   { key: 'organic',      label: 'Orgânico',         type: 'select' as const, options: ['true','false'] },
   { key: 'origin_state', label: 'Estado de Origem', type: 'select' as const, options: ['AC','AM','PA','RO','RR','AP','TO'] },
-  { key: 'moisture_percent', label: 'Teor de Umidade (%)', type: 'number' as const },
+  { key: 'moisture_percent', label: 'Teor de Umidade (%)', type: 'number' as const, min: 0, max: 100 },
   { key: 'description',  label: 'Descrição',        type: 'textarea' as const, span: 'full' as const },
 ]
 

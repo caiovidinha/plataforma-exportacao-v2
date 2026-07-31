@@ -1,22 +1,32 @@
 // ============================================================
-// Tipos globais da Plataforma de Exportação v2
+// Tipos globais da Plataforma de Exportação v2 (marketplace)
 // ============================================================
 
 // ---- Utilitários -------------------------------------------
 export type Role = 'EXPORTADOR' | 'IMPORTADOR' | 'ADMIN'
-export type EntityRole = 
-  | 'EXPORTADOR'
-  | 'IMPORTADOR'
-  | 'TRANSPORTADORA'
-  | 'COMPANHIA_NAVEGACAO'
-  | 'DESPACHANTE'
-  | 'CORRETORA'
-  | 'TERMINAL_ALFANDEGARIO'
-  | 'SEGURADORA'
-  | 'CERTIFICADORA'
-  | 'LABORATORIO'
 export type Incoterm = 'FOB' | 'CIF'
 export type TransportMode = 'MARITIMO' | 'AEREO'
+
+// ---- Parceiros fixos do backend ------------------------------
+// Contratados diretamente pela plataforma - nunca se cadastram, nunca
+// aparecem como conta. São exibidos só como "quem está atuando" em
+// cada etapa do workflow.
+export type PartnerType =
+  | 'JURIDICO'
+  | 'SEGURADORA'
+  | 'CORRETORA_CAMBIO'
+  | 'CIA_NAVEGACAO'
+  | 'DESPACHANTE'
+  | 'LOGISTICA'
+  | 'CERTIFICADORA'
+  | 'LABORATORIO'
+
+export interface Partner {
+  type: PartnerType
+  name: string
+  description: string
+  icon: string
+}
 
 // ---- Multi-user entity membership --------------------------
 /** Roles a user can have within a single entity/company account */
@@ -40,8 +50,8 @@ export interface UserProfile {
   name: string
   email: string
   role: Role
-  /** Extended 10-type entity role */
-  entity_type?: EntityRole
+  /** Exportador ou importador - os únicos 2 tipos de conta */
+  entity_type?: 'EXPORTADOR' | 'IMPORTADOR'
   /** UUID of the entity/company account this user belongs to */
   entity_id?: string
   company_name: string
@@ -122,11 +132,8 @@ export interface Product {
   updated_at: string
 }
 
-// ---- Oferta / Match ----------------------------------------
-export type OfferStatus = 'ATIVA' | 'NEGOCIANDO' | 'VENDIDA' | 'EXPIRADA'
-export type SaleModality = 'SPOT' | 'CONTRATO_LONGO_PRAZO'
-
-export interface OfferParty {
+// ---- Contraparte (exportador/importador) exibida em listagens ----
+export interface PartyRef {
   id: string
   company_name: string
   country: string
@@ -134,10 +141,15 @@ export interface OfferParty {
   mapa_registered: boolean
 }
 
-export interface Offer {
+// ---- Anúncio (vitrine) --------------------------------------
+// Preço fixo, sem estado de negociação - o comprador faz um pedido,
+// o exportador aceita ou recusa.
+export type ListingStatus = 'ATIVA' | 'VENDIDA' | 'EXPIRADA'
+
+export interface Listing {
   id: string
   product: Pick<Product, 'id' | 'name' | 'description' | 'images' | 'packaging'>
-  exporter: OfferParty
+  exporter: PartyRef
   available_quantity_kg: number
   price_per_kg_usd: number
   incoterm: Incoterm
@@ -145,71 +157,55 @@ export interface Offer {
   destination_ports: string[]
   delivery_days: number
   harvest_year: number
-  sale_modality: SaleModality
-  status: OfferStatus
+  status: ListingStatus
   created_at: string
   expires_at: string
   featured?: boolean
 }
 
-export type MatchStatus = 'PENDENTE' | 'ACEITO' | 'RECUSADO' | 'CONTRATADO'
+// ---- Pedido ---------------------------------------------------
+// Compra a preço fixo. O importador pede, o exportador confirma
+// (aceita/recusa). Ao confirmar, dispara o ExportWorkflow.
+export type OrderStatus = 'AGUARDANDO_CONFIRMACAO' | 'CONFIRMADO' | 'RECUSADO' | 'CANCELADO'
 
-export interface Match {
+export interface Order {
   id: string
-  offer: Offer
-  importer: OfferParty
-  status: MatchStatus
-  created_at: string
-}
-
-// ---- Negociação --------------------------------------------
-export interface NegotiationMessage {
-  id: string
-  negotiation_id: string
-  sender_id: string
-  sender_name: string
-  content: string
-  created_at: string
-}
-
-export interface NegotiationDeal {
-  product_id: string
+  listing_id: string
   product_name: string
+  exporter: PartyRef
+  importer: PartyRef
   quantity_kg: number
   price_per_kg_usd: number
   total_usd: number
-  payment_conditions: string
-  delivery_days: number
-  delivery_deadline: string
-  transport_mode: TransportMode
   incoterm: Incoterm
   origin_port: string
   destination_port: string
+  transport_mode: TransportMode
+  status: OrderStatus
+  created_at: string
+  confirmed_at?: string
+  /** Resumo da simulação de compra (frete/seguro/câmbio) escolhida no checkout */
+  simulation_summary?: OrderSimulationSummary
 }
 
-export type NegotiationStatus = 'ABERTA' | 'ACORDO_PENDENTE' | 'ACORDO_FECHADO' | 'CANCELADA'
-
-export interface Negotiation {
-  id: string
-  match_id: string
-  exporter: OfferParty
-  importer: OfferParty
-  deal: NegotiationDeal
-  status: NegotiationStatus
-  messages: NegotiationMessage[]
-  created_at: string
-  agreed_at?: string
+export interface OrderSimulationSummary {
+  carrier_name: string
+  transit_days: number
+  freight_usd: number
+  insurer_name: string
+  insurance_type: InsuranceType
+  insurance_premium_brl: number
+  exchange_rate: number
+  total_usd: number
 }
 
 // ---- Contrato / Assinatura --------------------------------
 export type ContractType =
-  | 'PRINCIPAL'
-  | 'CAMBIO'
-  | 'DESPACHANTE'
-  | 'TERMINAL'
-  | 'TRANSPORTADORA'
-  | 'LABORATORIO'
+  | 'EXPORTACAO'
   | 'SEGURO'
+  | 'FRETE'
+  | 'DESPACHANTE'
+  | 'CAMBIO'
 
 export type ContractStatus = 'PENDENTE_ASSINATURA' | 'ASSINADO' | 'CANCELADO'
 
@@ -224,7 +220,7 @@ export interface ContractSignatory {
 
 export interface Contract {
   id: string
-  negotiation_id: string
+  order_id: string
   type: ContractType
   pdf_url: string
   status: ContractStatus
@@ -233,24 +229,25 @@ export interface Contract {
   signed_at?: string
 }
 
-// ---- Workflow Logístico ------------------------------------
-export type WorkflowStepStatus =
+// ---- Workflow do Pedido -------------------------------------
+// Etapas fixas definidas pelo fluxo da plataforma: Cadastro -> Negócio
+// -> Mercadoria pronta -> Mercadoria no Porto -> Mercadoria Liberada
+// -> Pagamento (ou Mercadoria Recusada, ramo alternativo).
+export type WorkflowStage =
+  | 'CADASTRO'
+  | 'NEGOCIO'
+  | 'MERCADORIA_PRONTA'
+  | 'MERCADORIA_PORTO'
+  | 'MERCADORIA_LIBERADA'
+  | 'PAGAMENTO'
+  | 'MERCADORIA_RECUSADA'
+
+export type WorkflowStageStatus =
   | 'PENDENTE'
   | 'EM_ANDAMENTO'
   | 'CONCLUIDO'
   | 'ATRASADO'
   | 'BLOQUEADO'
-
-export type WorkflowStepCode =
-  | 'ASSINATURA_CONTRATOS'
-  | 'EMISSAO_NF_ARMAZENAGEM'
-  | 'ENTRADA_REDEX'
-  | 'TERMINAL_PESAGEM_ESTUFAGEM'
-  | 'FISCALIZACAO_MAPA'
-  | 'CERTIFICADO_FITOSSANITARIO'
-  | 'ENTRADA_SISCOMEX_DUE'
-  | 'EMBARQUE_NAVIO_BL'
-  | 'CHEGADA_PORTO_DESTINO'
 
 export type DocumentType =
   | 'NF'
@@ -282,36 +279,50 @@ export interface WorkflowDocument {
   emitted_at?: string
 }
 
-export interface WorkflowStep {
+export interface WorkflowStageDefinition {
   id: string
-  order: number
-  code: WorkflowStepCode
+  stage: WorkflowStage
   title: string
   description: string
-  status: WorkflowStepStatus
-  responsible_party: string
+  /** Parceiros fixos atuando nesta etapa (exibidos como badges, não navegáveis) */
+  responsible_partners: PartnerType[]
+  status: WorkflowStageStatus
   planned_date: string
   actual_date?: string
   documents: WorkflowDocument[]
   notes?: string
-  external_ref?: string
   blockers?: string[]
 }
 
 export type WorkflowOverallStatus = 'EM_ANDAMENTO' | 'CONCLUIDO' | 'ATRASADO' | 'CANCELADO'
 
+// ---- Log de atividades dos parceiros ------------------------
+// Alimenta o painel de acompanhamento (ex.: Despachante, Cia de Navegação)
+// e é gerado tanto por ações do exportador quanto automaticamente.
+export type PartnerActivityStatus = 'INFO' | 'ACAO_NECESSARIA' | 'CONCLUIDO'
+
+export interface PartnerActivityEvent {
+  id: string
+  partner: PartnerType
+  stage: WorkflowStage
+  message: string
+  at: string
+  status: PartnerActivityStatus
+}
+
 export interface ExportWorkflow {
   id: string
-  contract_id: string
-  negotiation: Pick<NegotiationDeal, 'product_name' | 'quantity_kg' | 'incoterm' | 'origin_port' | 'destination_port'>
-  exporter: OfferParty
-  importer: OfferParty
-  steps: WorkflowStep[]
-  current_step_code: WorkflowStepCode
+  order_id: string
+  order: Pick<Order, 'product_name' | 'quantity_kg' | 'incoterm' | 'origin_port' | 'destination_port'>
+  exporter: PartyRef
+  importer: PartyRef
+  stages: WorkflowStageDefinition[]
+  current_stage: WorkflowStage
   incoterm: Incoterm
   overall_status: WorkflowOverallStatus
   created_at: string
   estimated_completion: string
+  activity_log?: PartnerActivityEvent[]
 }
 
 // ---- Liquidação -------------------------------------------
@@ -359,54 +370,6 @@ export interface LiquidationCIF {
 
 export type Liquidation = LiquidationFOB | LiquidationCIF
 
-// ---- Prestadores de Serviço -------------------------------
-export type ServiceProviderType =
-  | 'SEGURADORA'
-  | 'TRANSPORTADORA'
-  | 'COMPANHIA_NAVEGACAO'
-  | 'DESPACHANTE'
-  | 'CORRETORA'
-  | 'TERMINAL_ALFANDEGARIO'
-  | 'CERTIFICADORA'
-  | 'LABORATORIO'
-
-export interface ServiceProvider {
-  id: string
-  type: ServiceProviderType
-  company_name: string
-  cnpj: string
-  country: string
-  city: string
-  ports_covered?: string[]
-  coverage_area?: string
-  currency_pairs?: string[]
-  exchange_rate_usd?: number
-  fixed_fee_brl?: number
-  mapa_accredited?: boolean
-  rating: number
-  reviews_count: number
-  active: boolean
-}
-
-export type ServiceContractStatus =
-  | 'PENDENTE'
-  | 'CONTRATADO'
-  | 'EM_ANDAMENTO'
-  | 'CONCLUIDO'
-  | 'CANCELADO'
-
-export interface ServiceContract {
-  id: string
-  workflow_id: string
-  provider_id: string
-  provider: ServiceProvider
-  type: ServiceProviderType
-  status: ServiceContractStatus
-  value_brl: number
-  signed_at?: string
-  contract_url?: string
-}
-
 // ---- Seguros ----------------------------------------------
 export type InsuranceType =
   | 'SAFRA'
@@ -430,6 +393,38 @@ export interface InsurancePolicy {
   policy_document_url?: string
 }
 
+// ---- Simulação de compra (pré-checkout) --------------------
+// Cotações de frete e seguro mostradas antes da confirmação do pedido,
+// similar a um resumo de compra de passagens - garante que o comprador
+// veja o custo total (produto + frete + seguro) antes de fechar negócio.
+export interface FreightQuote {
+  id: string
+  carrier_name: string
+  transport_mode: TransportMode
+  transit_days: number
+  price_usd: number
+}
+
+export interface InsuranceQuote {
+  id: string
+  insurer_name: string
+  type: InsuranceType
+  coverage_usd: number
+  premium_brl: number
+}
+
+export interface OrderSimulation {
+  listing_id: string
+  quantity_kg: number
+  product_usd: number
+  /** Transportadora e seguradora são parceiros fixos da plataforma - a
+   * definição de quem atende o pedido é automática, não uma escolha do
+   * comprador. */
+  freight: FreightQuote
+  insurance: InsuranceQuote
+  exchange_rate: number
+}
+
 // ---- Inteligência de Mercado ------------------------------
 export interface MapaNotice {
   id: string
@@ -446,7 +441,7 @@ export interface MarketIntelligence {
   mapa_notices: MapaNotice[]
 }
 
-// ---- Entidades CRUD ----------------------------------------
+// ---- Entidades CRUD (só exportador/importador têm conta) ----
 export interface Exporter {
   id: string
   company_name: string
@@ -480,58 +475,6 @@ export interface Importer {
   contact_phone: string
   active: boolean
   created_at: string
-}
-
-export interface CustomsBroker {
-  id: string
-  company_name: string
-  cnpj: string
-  siscomex_accreditation: string
-  fixed_fee_brl: number
-  city: string
-  contact_email: string
-  active: boolean
-}
-
-export interface ShippingCompany {
-  id: string
-  company_name: string
-  cnpj: string
-  origin_ports: string[]
-  destination_ports: string[]
-  contact_email: string
-  active: boolean
-}
-
-export interface CustomsTerminal {
-  id: string
-  company_name: string
-  cnpj: string
-  location: string
-  port_code: string
-  services: string[]
-  contact_email: string
-  active: boolean
-}
-
-export interface Laboratory {
-  id: string
-  company_name: string
-  cnpj: string
-  location: string
-  mapa_accredited: boolean
-  mapa_accreditation_number?: string
-  tests_performed: string[]
-  contact_email: string
-  active: boolean
-}
-
-// ---- SISCOMEX / Certificados ------------------------------
-export interface SiscomexStatus {
-  due_number: string
-  status: 'REGISTRADA' | 'CONFERIDA' | 'LIBERADA' | 'EMBARCADA' | 'AVERBADA'
-  last_update: string
-  channel: 'VERDE' | 'AMARELO' | 'VERMELHO' | 'CINZA'
 }
 
 // ---- Resposta paginada ------------------------------------

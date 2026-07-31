@@ -5,21 +5,14 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Eye, EyeOff, Loader2, X, Shield, CheckCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { cn } from '@/lib/utils'
+import { cn, formatCPF } from '@/lib/utils'
+import { isValidCPF, isValidEmail } from '@/lib/validators'
 
 const INPUT_CLS = 'w-full bg-white/60 border border-[#3e2e1e]/20 px-3 py-2 text-xs text-[#3e2e1e] placeholder:text-[#584531]/40 focus:outline-none focus:ring-2 focus:ring-[#584531]/30 focus:border-[#584531] transition'
 const LABEL_CLS = 'block text-xs font-medium text-[#584531]/80 mb-1.5'
 
 // ── Gov.br Login Modal ────────────────────────────────────────────────────────
 type GovStage = 'cpf' | 'otp' | 'loading' | 'success'
-
-function formatCPF(v: string) {
-  const d = v.replace(/\D/g, '').slice(0, 11)
-  return d
-    .replace(/(\d{3})(\d)/, '$1.$2')
-    .replace(/(\d{3})(\d)/, '$1.$2')
-    .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
-}
 
 function GovBrModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: () => void }) {
   const [stage, setStage] = useState<GovStage>('cpf')
@@ -29,7 +22,7 @@ function GovBrModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: ()
 
   async function handleCpf(e: React.FormEvent) {
     e.preventDefault()
-    if (cpf.replace(/\D/g, '').length !== 11) { setError('CPF inválido.'); return }
+    if (!isValidCPF(cpf)) { setError('CPF inválido.'); return }
     setError('')
     setStage('otp')
   }
@@ -151,6 +144,7 @@ export default function EntrarPage() {
     e.preventDefault()
     setError('')
     if (!email || !password) { setError(t('errorFillFields')); return }
+    if (!isValidEmail(email)) { setError(t('errorInvalidEmail')); return }
     setLoading(true)
     await new Promise((r) => setTimeout(r, 800))
     router.push('/dashboard')

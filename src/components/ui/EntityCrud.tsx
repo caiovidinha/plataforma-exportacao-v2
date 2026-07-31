@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { Plus, Search, X, ChevronDown, ChevronUp } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { formatCNPJ } from '@/lib/utils'
+import { isValidCNPJ, formatNCM, isValidNCM, formatPhoneBR, isValidPhoneBR } from '@/lib/validators'
 
 export interface EntityField {
   key: string
@@ -11,6 +13,22 @@ export interface EntityField {
   options?: string[]
   required?: boolean
   span?: 'full' | 'half'
+  /** Aplica máscara + validação de formato conhecido nesse campo */
+  format?: 'cnpj' | 'ncm' | 'phone'
+  min?: number
+  max?: number
+}
+
+const FORMATTERS: Record<NonNullable<EntityField['format']>, (v: string) => string> = {
+  cnpj: formatCNPJ,
+  ncm: formatNCM,
+  phone: formatPhoneBR,
+}
+
+const FORMAT_VALIDATORS: Record<NonNullable<EntityField['format']>, (v: string) => boolean> = {
+  cnpj: isValidCNPJ,
+  ncm: isValidNCM,
+  phone: isValidPhoneBR,
 }
 
 export interface EntityCrudProps<T extends Record<string, unknown>> {
@@ -32,6 +50,7 @@ export function EntityCrud<T extends Record<string, unknown>>({
   const [editId, setEditId] = useState<string | null>(null)
   const [expanded, setExpanded] = useState<string | null>(null)
   const [form, setForm] = useState<Record<string, string>>({})
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({})
 
   const filtered = items.filter((it) =>
     String(it[displayKey] ?? '').toLowerCase().includes(search.toLowerCase()),
@@ -39,17 +58,44 @@ export function EntityCrud<T extends Record<string, unknown>>({
 
   function startNew() {
     setForm({})
+    setFormErrors({})
     setEditId(null)
     setOpen(true)
   }
 
   function startEdit(it: T) {
     setForm(Object.fromEntries(fields.map((f) => [f.key, String(it[f.key] ?? '')])))
+    setFormErrors({})
     setEditId(String(it.id ?? ''))
     setOpen(true)
   }
 
+  function validateForm(): Record<string, string> {
+    const errors: Record<string, string> = {}
+    for (const f of fields) {
+      const val = form[f.key] ?? ''
+      if (f.required && !val) {
+        errors[f.key] = t('errRequired')
+        continue
+      }
+      if (f.format && val && !FORMAT_VALIDATORS[f.format](val)) {
+        errors[f.key] = t('errInvalidFormat')
+        continue
+      }
+      if (f.type === 'number' && val !== '') {
+        const num = Number(val)
+        if (f.min !== undefined && num < f.min) errors[f.key] = t('errMin', { min: f.min })
+        if (f.max !== undefined && num > f.max) errors[f.key] = t('errMax', { max: f.max })
+      }
+    }
+    return errors
+  }
+
   function handleSave() {
+    const errors = validateForm()
+    setFormErrors(errors)
+    if (Object.keys(errors).length > 0) return
+
     if (editId) {
       setItems((prev) => prev.map((it) => (String(it.id) === editId ? { ...it, ...form } as T : it)))
     } else {
@@ -144,8 +190,14 @@ export function EntityCrud<T extends Record<string, unknown>>({
                     </select>
                   ) : (
                     <input className="input" type={f.type ?? 'text'} value={form[f.key] ?? ''}
-                           onChange={(e) => setForm((p) => ({ ...p, [f.key]: e.target.value }))} />
+                           min={f.min} max={f.max}
+                           onChange={(e) => {
+                             const raw = e.target.value
+                             const formatted = f.format ? FORMATTERS[f.format](raw) : raw
+                             setForm((p) => ({ ...p, [f.key]: formatted }))
+                           }} />
                   )}
+                  {formErrors[f.key] && <p className="text-xs text-red-500 mt-1">{formErrors[f.key]}</p>}
                 </div>
               ))}
             </div>

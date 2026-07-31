@@ -1,35 +1,51 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 import { useMockSession } from '@/lib/mock-session'
+import { useMockStore } from '@/lib/mock-store'
 import { ENTITY_CONFIG, ENTITY_SLUGS } from '@/lib/entity-config'
 import {
-  Globe, Building2, Truck, Ship, FileCheck,
-  DollarSign, Warehouse, Shield, BadgeCheck, Microscope,
-  ChevronDown, X, SlidersHorizontal,
+  Globe, Building2,
+  ChevronDown, X, SlidersHorizontal, RotateCcw,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import type { ElementType } from 'react'
 
 const ICONS: Record<string, ElementType> = {
-  Globe, Building2, Truck, Ship, FileCheck,
-  DollarSign, Warehouse, Shield, BadgeCheck, Microscope,
+  Globe, Building2,
 }
 
 export function MockEntitySwitcher() {
   const t = useTranslations('devtools')
   const [open, setOpen] = useState(false)
   const { entityType, user, setEntityType } = useMockSession()
+  const resetAll = useMockStore((s) => s.resetAll)
   const router = useRouter()
   const current = ENTITY_CONFIG[entityType]
   const Icon = ICONS[current.icon] ?? Globe
+
+  // O store de pedidos/workflows fica em localStorage (skipHydration: true)
+  // para não gerar mismatch de hidratação com o HTML vindo do servidor -
+  // hidrata manualmente aqui, uma vez, depois do primeiro paint.
+  useEffect(() => {
+    useMockStore.persist.rehydrate()
+  }, [])
 
   function handleSwitch(slug: typeof ENTITY_SLUGS[number]) {
     setEntityType(slug)
     setOpen(false)
     router.push('/dashboard')
+    router.refresh()
+  }
+
+  function handleReset() {
+    if (!window.confirm(t('resetConfirm'))) return
+    resetAll()
+    toast.success(t('resetToast'))
+    setOpen(false)
     router.refresh()
   }
 
@@ -88,6 +104,18 @@ export function MockEntitySwitcher() {
               )
             })}
           </div>
+
+          {/* Reset da demonstração */}
+          <button
+            onClick={handleReset}
+            className="w-full flex items-center gap-2 px-4 py-2.5 text-left transition-colors"
+            style={{ borderTop: '1px solid rgba(219,203,186,0.12)', backgroundColor: 'rgba(62,46,30,0.30)' }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(62,46,30,0.55)' }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(62,46,30,0.30)' }}
+          >
+            <RotateCcw className="w-3.5 h-3.5 text-[#dbcbba]/70 flex-shrink-0" />
+            <span className="text-xs font-medium text-[#dbcbba]">{t('resetDemoBtn')}</span>
+          </button>
         </div>
       )}
 

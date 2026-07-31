@@ -1,47 +1,46 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { notFound } from 'next/navigation'
 import {
-  Globe, Building2, Truck, Ship, FileCheck,
-  DollarSign, Warehouse, Shield, BadgeCheck, Microscope,
+  Globe, Building2,
   ChevronRight, ChevronLeft, CheckCircle, Loader2,
-  Eye, EyeOff, X,
+  Eye, EyeOff, X, ShieldCheck, Ship,
 } from 'lucide-react'
 import { getEntityConfig } from '@/lib/entity-config'
 import { cn, formatCNPJ } from '@/lib/utils'
+import { isValidCNPJ, formatPhoneBR, isValidPhoneBR, isValidPhoneIntl, isValidUrl, isValidEmail, isValidNCMList } from '@/lib/validators'
 import { useTranslations } from 'next-intl'
 import type { ElementType } from 'react'
 
 const ICONS: Record<string, ElementType> = {
-  Globe, Building2, Truck, Ship, FileCheck,
-  DollarSign, Warehouse, Shield, BadgeCheck, Microscope,
+  Globe, Building2,
 }
 
-const STEP_COUNT = 4
+const STEP_COUNT = 5
 
 const DIAL_CODES = [
-  { code: '+55', label: '+55 🇧🇷 Brasil' },
-  { code: '+1',  label: '+1 🇺🇸 EUA/Canadá' },
-  { code: '+44', label: '+44 🇬🇧 Reino Unido' },
-  { code: '+49', label: '+49 🇩🇪 Alemanha' },
-  { code: '+33', label: '+33 🇫🇷 França' },
-  { code: '+31', label: '+31 🇳🇱 Países Baixos' },
-  { code: '+34', label: '+34 🇪🇸 Espanha' },
-  { code: '+351', label: '+351 🇵🇹 Portugal' },
-  { code: '+41', label: '+41 🇨🇭 Suíça' },
-  { code: '+39', label: '+39 🇮🇹 Itália' },
-  { code: '+81', label: '+81 🇯🇵 Japão' },
-  { code: '+86', label: '+86 🇨🇳 China' },
-  { code: '+52', label: '+52 🇲🇽 México' },
-  { code: '+54', label: '+54 🇦🇷 Argentina' },
-  { code: '+56', label: '+56 🇨🇱 Chile' },
-  { code: '+57', label: '+57 🇨🇴 Colômbia' },
-  { code: '+91', label: '+91 🇮🇳 Índia' },
-  { code: '+65', label: '+65 🇸🇬 Singapura' },
-  { code: '+971', label: '+971 🇦🇪 Emirados' },
-  { code: '+7',  label: '+7 🇷🇺 Rússia' },
+  { code: '+55', country: 'Brasil' },
+  { code: '+1', country: 'EUA/Canadá' },
+  { code: '+44', country: 'Reino Unido' },
+  { code: '+49', country: 'Alemanha' },
+  { code: '+33', country: 'França' },
+  { code: '+31', country: 'Países Baixos' },
+  { code: '+34', country: 'Espanha' },
+  { code: '+351', country: 'Portugal' },
+  { code: '+41', country: 'Suíça' },
+  { code: '+39', country: 'Itália' },
+  { code: '+81', country: 'Japão' },
+  { code: '+86', country: 'China' },
+  { code: '+52', country: 'México' },
+  { code: '+54', country: 'Argentina' },
+  { code: '+56', country: 'Chile' },
+  { code: '+57', country: 'Colômbia' },
+  { code: '+91', country: 'Índia' },
+  { code: '+65', country: 'Singapura' },
+  { code: '+971', country: 'Emirados' },
+  { code: '+7', country: 'Rússia' },
 ]
 
 const INPUT_CLS = 'w-full bg-white/60 border border-[#3e2e1e]/20 px-3 py-2 text-sm text-[#3e2e1e] placeholder:text-[#584531]/40 focus:outline-none focus:ring-2 focus:ring-[#584531]/30 focus:border-[#584531] transition'
@@ -125,13 +124,12 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
   const cfg = cfgOrNull  // non-null, safe for closure capture
 
   const t = useTranslations('registro')
-  const STEPS = [t('stepCompany'), t('stepDetails'), t('stepAccess'), t('stepConfirm')]
+  const STEPS = [t('stepCompany'), t('stepDetails'), t('stepAccess'), t('stepConfirm'), t('stepRiskEstimate')]
 
   const router = useRouter()
   const Icon = ICONS[cfg.icon] ?? Globe
 
   const [step, setStep] = useState(0)
-  const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
 
   // Step 0 - Empresa
@@ -152,6 +150,21 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
   const [showPwd, setShowPwd] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
 
+  // Step 4 - Análise de risco + estimativa de rota de frete
+  const [analyzing, setAnalyzing] = useState(false)
+  const [analysisDone, setAnalysisDone] = useState(false)
+
+  useEffect(() => {
+    if (step !== 4) return
+    setAnalyzing(true)
+    const timer = setTimeout(() => {
+      setAnalyzing(false)
+      setAnalysisDone(true)
+    }, 1800)
+    return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step])
+
   function updateEmpresa(key: string, val: string) {
     setEmpresa((p) => ({ ...p, [key]: val }))
   }
@@ -163,14 +176,19 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
   }
 
   function canAdvance(): boolean {
-    if (step === 0) return !!empresa.company_name && !!empresa.cnpj
+    if (step === 0) {
+      if (!empresa.company_name || !empresa.cnpj) return false
+      // CNPJ com dígito verificador só se aplica a exportador (importador usa VAT/Tax ID livre)
+      if (!cfg.cnpjLabel && !isValidCNPJ(empresa.cnpj)) return false
+      return true
+    }
     if (step === 1) {
       // Required specifics
       return cfg.specificFields.filter((f) => f.required).every((f) => !!specifics[f.key])
     }
     if (step === 2) {
       const { score, reqs } = getPasswordStrength(acesso.password)
-      return !!acesso.email && reqs.length && score >= 3 && acesso.password === acesso.confirm
+      return isValidEmail(acesso.email) && reqs.length && score >= 3 && acesso.password === acesso.confirm
     }
     return true
   }
@@ -190,10 +208,7 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
     setStep((s) => s + 1)
   }
 
-  async function handleSubmit() {
-    setSubmitting(true)
-    await new Promise((r) => setTimeout(r, 1200))
-    setSubmitting(false)
+  function handleFinish() {
     setDone(true)
     setTimeout(() => router.push('/dashboard'), 2500)
   }
@@ -217,6 +232,14 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
   }
 
   const pwdStrength = getPasswordStrength(acesso.password)
+
+  // Estimativa mockada da rota de frete, com base nos dados informados
+  const routeOrigin = tipo === 'exportador' && specifics['origem_uf']
+    ? `Porto mais próximo de ${specifics['origem_uf']}`
+    : 'Porto de Santos (SP)'
+  const routeDestination = tipo === 'importador' && specifics['target_port']
+    ? specifics['target_port']
+    : 'Rotterdam'
 
   return (
     <div className="w-full max-w-lg space-y-6">
@@ -268,27 +291,41 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
                 <input className={INPUT_CLS} placeholder={cfg.cnpjLabel ? 'VAT / Tax ID' : 'XX.XXX.XXX/XXXX-XX'}
                        value={empresa.cnpj}
                        onChange={(e) => updateEmpresa('cnpj', cfg.cnpjLabel ? e.target.value : formatCNPJ(e.target.value))} />
+                {!cfg.cnpjLabel && empresa.cnpj && !isValidCNPJ(empresa.cnpj) && (
+                  <p className="mt-1 text-xs text-red-600">{t('errInvalidCnpj')}</p>
+                )}
               </div>
               <div>
                 <label className={LABEL_CLS}>{t('phoneLabel')}</label>
-                <div className="flex">
+                <div className="flex bg-white/60 border border-[#3e2e1e]/20 focus-within:ring-2 focus-within:ring-[#584531]/30 focus-within:border-[#584531] transition">
                   <select
-                    className={cn(INPUT_CLS, 'w-auto flex-shrink-0 border-r-0 pr-2')}
+                    className="w-20 flex-shrink-0 bg-transparent border-0 border-r border-[#3e2e1e]/15 pl-2 pr-1 py-2 text-sm text-[#3e2e1e] focus:outline-none focus:ring-0 truncate"
                     value={empresa.phone_prefix}
                     onChange={(e) => updateEmpresa('phone_prefix', e.target.value)}
                   >
                     {DIAL_CODES.map((d) => (
-                      <option key={d.code} value={d.code}>{d.label}</option>
+                      <option key={d.code} value={d.code}>{d.code} · {d.country}</option>
                     ))}
                   </select>
-                  <input className={cn(INPUT_CLS, 'flex-1')} type="tel" placeholder="(XX) X XXXX-XXXX"
-                         value={empresa.contact_phone} onChange={(e) => updateEmpresa('contact_phone', e.target.value)} />
+                  <input className="flex-1 min-w-0 bg-transparent border-0 px-3 py-2 text-sm text-[#3e2e1e] placeholder:text-[#584531]/40 focus:outline-none"
+                         type="tel" placeholder="(XX) X XXXX-XXXX"
+                         value={empresa.contact_phone}
+                         onChange={(e) => updateEmpresa('contact_phone',
+                           empresa.phone_prefix === '+55' ? formatPhoneBR(e.target.value) : e.target.value)} />
                 </div>
+                {empresa.contact_phone && (
+                  empresa.phone_prefix === '+55'
+                    ? !isValidPhoneBR(empresa.contact_phone) && <p className="mt-1 text-xs text-red-600">{t('errInvalidPhone')}</p>
+                    : !isValidPhoneIntl(empresa.contact_phone) && <p className="mt-1 text-xs text-red-600">{t('errInvalidPhone')}</p>
+                )}
               </div>
               <div>
                 <label className={LABEL_CLS}>{t('websiteLabel')}</label>
                 <input className={INPUT_CLS} placeholder="https://..."
                        value={empresa.website} onChange={(e) => updateEmpresa('website', e.target.value)} />
+                {empresa.website && !isValidUrl(empresa.website) && (
+                  <p className="mt-1 text-xs text-red-600">{t('errInvalidUrl')}</p>
+                )}
               </div>
             </div>
           </>
@@ -306,6 +343,9 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
                   </label>
                   <FieldInput fieldKey={f.key} def={f} value={specifics[f.key] ?? ''}
                               onChange={(v) => updateSpecific(f.key, v)} />
+                  {f.key === 'ncm_codes' && specifics[f.key] && !isValidNCMList(specifics[f.key]) && (
+                    <p className="mt-1 text-xs text-red-600">{t('errInvalidNcm')}</p>
+                  )}
                   {f.hint && <p className="mt-1 text-xs text-[#584531]/60">{f.hint}</p>}
                 </div>
               ))}
@@ -322,6 +362,9 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
                 <label className={LABEL_CLS}>{t('corporateEmailLabel')} <span className="text-red-600">*</span></label>
                 <input className={INPUT_CLS} type="email"
                        value={acesso.email} onChange={(e) => updateAcesso('email', e.target.value)} />
+                {acesso.email && !isValidEmail(acesso.email) && (
+                  <p className="mt-1 text-xs text-red-600">{t('errInvalidEmail')}</p>
+                )}
               </div>
 
               {/* Password with strength meter */}
@@ -435,6 +478,38 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
             </div>
           </>
         )}
+
+        {/* ---- Step 4: Análise de risco + estimativa de rota de frete ---- */}
+        {step === 4 && (
+          <>
+            <h2 className="text-sm font-semibold text-[#3e2e1e] mb-4">{t('riskEstimateTitle')}</h2>
+            {analyzing && (
+              <div className="flex flex-col items-center justify-center gap-3 py-10">
+                <Loader2 className="w-8 h-8 text-[#584531] animate-spin" />
+                <p className="text-xs text-[#584531]/70">{t('analyzingText')}</p>
+              </div>
+            )}
+            {analysisDone && (
+              <div className="space-y-3">
+                <div className="flex items-start gap-3 bg-emerald-600/10 border border-emerald-600/25 px-3 py-2.5">
+                  <ShieldCheck className="w-5 h-5 text-emerald-700 flex-shrink-0" />
+                  <div>
+                    <p className="text-xs font-semibold text-emerald-800">{t('riskLevelLabel')}: {t('riskLevelLow')}</p>
+                    <p className="text-[11px] text-[#584531]/70 mt-0.5">{t('riskLevelDesc')}</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 bg-[#584531]/10 border border-[#3e2e1e]/20 px-3 py-2.5">
+                  <Ship className="w-5 h-5 text-[#584531] flex-shrink-0" />
+                  <div>
+                    <p className="text-xs font-semibold text-[#3e2e1e]">{t('routeEstimateLabel')}</p>
+                    <p className="text-[11px] text-[#584531]/80 mt-0.5">{routeOrigin} → {routeDestination}</p>
+                    <p className="text-[11px] text-[#584531]/70 mt-1">{t('routeDaysLabel')}: ~28 {t('daysUnit')} · {t('routeCostLabel')}: USD 1.850</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        )}
       </div>
 
       {/* Navigation */}
@@ -452,15 +527,15 @@ export default function RegistroTipoPage({ params }: { params: { tipo: string } 
         {step < STEP_COUNT - 1 ? (
           <button className="inline-flex items-center gap-2 bg-[#584531] hover:bg-[#3e2e1e] text-[#ede5dc] font-semibold px-4 py-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                   disabled={!canAdvance()} onClick={handleNext}>
-            {t('btnNext')} <ChevronRight className="w-4 h-4 ml-1" />
+            {step === STEP_COUNT - 2
+              ? <>{t('btnAnalyze')} <ChevronRight className="w-4 h-4 ml-1" /></>
+              : <>{t('btnNext')} <ChevronRight className="w-4 h-4 ml-1" /></>
+            }
           </button>
         ) : (
           <button className="inline-flex items-center gap-2 bg-[#584531] hover:bg-[#3e2e1e] text-[#ede5dc] font-semibold px-4 py-2 transition-colors disabled:opacity-60 disabled:cursor-not-allowed text-sm"
-                  disabled={submitting} onClick={handleSubmit}>
-            {submitting
-              ? <><Loader2 className="w-4 h-4 animate-spin mr-1" /> {t('btnRegistering')}</>
-              : <><CheckCircle className="w-4 h-4 mr-1" /> {t('btnFinalize')}</>
-            }
+                  disabled={!analysisDone} onClick={handleFinish}>
+            <CheckCircle className="w-4 h-4 mr-1" /> {t('btnGoDashboard')}
           </button>
         )}
       </div>

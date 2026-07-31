@@ -19,6 +19,7 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import { cn, formatCNPJ } from '@/lib/utils'
+import { isValidCNPJ, isValidEmail, isValidPhoneBR, isValidPhoneIntl, formatPhoneBR } from '@/lib/validators'
 import type { EntityMember, EntityMemberRole } from '@/types'
 
 const ROLE_ICONS: Record<EntityMemberRole, React.ElementType> = {
@@ -39,14 +40,20 @@ export default function MinhaContaPage() {
   const t = useTranslations('account')
   const [saved, setSaved] = useState(false)
   const [cnpjValue, setCnpjValue] = useState(user.cnpj ?? '')
+  const [emailValue, setEmailValue] = useState(user.email ?? '')
+  const [phoneValue, setPhoneValue] = useState('')
+  const [errors, setErrors] = useState<{ email?: string; phone?: string; cnpj?: string }>({})
   const [inviteOpen, setInviteOpen] = useState(false)
   const [inviteEmail, setInviteEmail] = useState('')
   const [inviteRole, setInviteRole] = useState<EntityMemberRole>('OPERATOR')
   const [inviteSent, setInviteSent] = useState(false)
+  const [inviteError, setInviteError] = useState('')
   const [localMembers, setLocalMembers] = useState<EntityMember[]>(user.team_members ?? [])
 
   function handleInvite(e: React.FormEvent) {
     e.preventDefault()
+    if (!isValidEmail(inviteEmail)) { setInviteError(t('errInvalidEmail')); return }
+    setInviteError('')
     const newMember: EntityMember = {
       id: `invite-${Date.now()}`,
       name: inviteEmail.split('@')[0],
@@ -67,6 +74,18 @@ export default function MinhaContaPage() {
 
   function handleSave(e: React.FormEvent) {
     e.preventDefault()
+    const newErrors: typeof errors = {}
+    if (!isValidEmail(emailValue)) newErrors.email = t('errInvalidEmail')
+    if (phoneValue) {
+      const phoneOk = entityType === 'exportador' ? isValidPhoneBR(phoneValue) : isValidPhoneIntl(phoneValue)
+      if (!phoneOk) newErrors.phone = t('errInvalidPhone')
+    }
+    // Validação de dígito verificador só se aplica a exportador (empresa
+    // brasileira) - importador usa VAT/Tax ID livre, não é um CNPJ.
+    if (entityType === 'exportador' && cnpjValue && !isValidCNPJ(cnpjValue)) newErrors.cnpj = t('errInvalidCnpj')
+    setErrors(newErrors)
+    if (Object.keys(newErrors).length > 0) return
+
     setSaved(true)
     setTimeout(() => setSaved(false), 2500)
   }
@@ -98,13 +117,17 @@ export default function MinhaContaPage() {
               <label className="block text-xs text-slate-400 mb-1.5 flex items-center gap-1">
                 <Mail className="w-3 h-3" /> {t('email')}
               </label>
-              <input type="email" defaultValue={user.email} className="input w-full" required />
+              <input type="email" value={emailValue} onChange={(e) => setEmailValue(e.target.value)} className="input w-full" required />
+              {errors.email && <p className="text-xs text-red-600 mt-1">{errors.email}</p>}
             </div>
             <div>
               <label className="block text-xs text-slate-400 mb-1.5 flex items-center gap-1">
                 <Phone className="w-3 h-3" /> {t('phone')}
               </label>
-              <input type="tel" placeholder={t('phonePlaceholder')} className="input w-full" />
+              <input type="tel" placeholder={t('phonePlaceholder')} className="input w-full"
+                     value={phoneValue}
+                     onChange={(e) => setPhoneValue(entityType === 'exportador' ? formatPhoneBR(e.target.value) : e.target.value)} />
+              {errors.phone && <p className="text-xs text-red-600 mt-1">{errors.phone}</p>}
             </div>
           </div>
         </section>
@@ -123,9 +146,12 @@ export default function MinhaContaPage() {
             </div>
             <div>
               <label className="block text-xs text-slate-400 mb-1.5 flex items-center gap-1">
-                <FileText className="w-3 h-3" /> {t('cnpj')}
+                <FileText className="w-3 h-3" /> {config.cnpjLabel ?? t('cnpj')}
               </label>
-              <input type="text" value={cnpjValue} onChange={(e) => setCnpjValue(formatCNPJ(e.target.value))} className="input w-full" placeholder={t('cnpjPlaceholder')} />
+              <input type="text" value={cnpjValue}
+                     onChange={(e) => setCnpjValue(entityType === 'exportador' ? formatCNPJ(e.target.value) : e.target.value)}
+                     className="input w-full" placeholder={entityType === 'exportador' ? t('cnpjPlaceholder') : 'VAT / Tax ID'} />
+              {errors.cnpj && <p className="text-xs text-red-600 mt-1">{errors.cnpj}</p>}
             </div>
             <div>
               <label className="block text-xs text-slate-400 mb-1.5 flex items-center gap-1">
@@ -254,7 +280,7 @@ export default function MinhaContaPage() {
                 <UserPlus className="w-4 h-4 text-[#584531]" /> {t('inviteTitle')}
               </h3>
               <button
-                onClick={() => { setInviteOpen(false); setInviteSent(false) }}
+                onClick={() => { setInviteOpen(false); setInviteSent(false); setInviteError('') }}
                 className="text-[#584531]/50 hover:text-[#3e2e1e] text-xl leading-none"
               >&times;</button>
             </div>
@@ -277,6 +303,7 @@ export default function MinhaContaPage() {
                     onChange={(e) => setInviteEmail(e.target.value)}
                     className="input w-full"
                   />
+                  {inviteError && <p className="text-xs text-red-600 mt-1">{inviteError}</p>}
                 </div>
                 <div>
                   <label className="block text-xs text-slate-400 mb-1.5">{t('inviteRoleLabel')}</label>

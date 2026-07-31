@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import Link from 'next/link'
 import Image from 'next/image'
@@ -7,43 +7,24 @@ import { useTranslations } from 'next-intl'
 import {
   LayoutDashboard,
   ShoppingBag,
-  MessageSquare,
+  ClipboardList,
   GitBranch,
   DollarSign,
   BarChart2,
-  Package,
   Settings,
   LogOut,
-  FileText,
   User,
-  Truck,
-  Ship,
-  Briefcase,
-  Landmark,
-  Warehouse,
-  ShieldCheck,
-  Award,
-  FlaskConical,
+  Package,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { featureFlags } from '@/lib/feature-flags'
 import type { EntitySlug } from '@/lib/entity-config'
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
 
-const TRADING_ENTITIES: EntitySlug[] = ['exportador', 'importador']
-
 // Entity icon map for the user footer badge
 const ENTITY_ICONS: Record<EntitySlug, React.ElementType> = {
   exportador: Package,
   importador: ShoppingBag,
-  transportadora: Truck,
-  'companhia-navegacao': Ship,
-  despachante: Briefcase,
-  corretora: Landmark,
-  terminal: Warehouse,
-  seguradora: ShieldCheck,
-  certificadora: Award,
-  laboratorio: FlaskConical,
 }
 
 interface SidebarProps {
@@ -64,44 +45,25 @@ export function Sidebar({
   const pathname = usePathname()
   const router = useRouter()
   const t = useTranslations()
-  const isTrading = TRADING_ENTITIES.includes(entityType)
   const EntityIcon = ENTITY_ICONS[entityType] ?? Package
 
   // Locale-aware entity name using static keys so next-intl resolves correctly
   const entityName = ({
-    exportador:            t('entities.exportador'),
-    importador:            t('entities.importador'),
-    transportadora:        t('entities.transportadora'),
-    'companhia-navegacao': t('entities.companhia-navegacao'),
-    despachante:           t('entities.despachante'),
-    corretora:             t('entities.corretora'),
-    terminal:              t('entities.terminal'),
-    seguradora:            t('entities.seguradora'),
-    certificadora:         t('entities.certificadora'),
-    laboratorio:           t('entities.laboratorio'),
+    exportador: t('entities.exportador'),
+    importador: t('entities.importador'),
   } satisfies Record<EntitySlug, string>)[entityType]
 
-  // ─── Nav items built with translations ──────────────────────────────────
-  const tradingNav = [
-    { href: '/dashboard',        label: t('nav.overview'),       icon: LayoutDashboard },
-    { href: '/vitrine',          label: t('nav.offers'),         icon: ShoppingBag },
-    { href: '/negociacao',       label: t('nav.negotiations'),   icon: MessageSquare },
-    { href: '/workflow',         label: t('nav.workflow'),       icon: GitBranch },
-    { href: '/liquidacao',       label: t('nav.settlement'),     icon: DollarSign },
-    { href: '/mercado',          label: t('nav.market'),         icon: BarChart2 },
-    { href: '/servicos',         label: t('nav.marketplace'),    icon: Package },
-    { href: '/cadastro',         label: t('nav.registrations'),  icon: Settings },
-    { href: '/minha-conta',      label: t('nav.myAccount'),      icon: User },
+  // ─── Nav items - iguais para exportador e importador ────────────────────
+  const nav = [
+    { href: '/dashboard',   label: t('nav.overview'),      icon: LayoutDashboard },
+    { href: '/vitrine',     label: t('nav.offers'),        icon: ShoppingBag },
+    { href: '/pedidos',     label: t('nav.orders'),        icon: ClipboardList },
+    { href: '/workflow',    label: t('nav.workflow'),      icon: GitBranch },
+    { href: '/liquidacao',  label: t('nav.settlement'),    icon: DollarSign },
+    { href: '/mercado',     label: t('nav.market'),        icon: BarChart2 },
+    { href: '/cadastro',    label: t('nav.registrations'), icon: Settings },
+    { href: '/minha-conta', label: t('nav.myAccount'),     icon: User },
   ]
-
-  const providerNav = [
-    { href: '/dashboard',        label: t('nav.overview'),          icon: LayoutDashboard },
-    { href: '/contratos-servico',label: t('nav.serviceContracts'),  icon: FileText },
-    { href: '/servicos',         label: t('nav.marketplace'),       icon: Package },
-    { href: '/minha-conta',      label: t('nav.myAccount'),         icon: User },
-  ]
-
-  const nav = isTrading ? tradingNav : providerNav
 
   return (
     <aside className="fixed left-0 top-0 h-full w-64 flex flex-col z-40"
