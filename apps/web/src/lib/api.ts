@@ -1,200 +1,102 @@
 /**
- * Camada de acesso a dados.
- * Quando featureFlags.useMockData === true, retorna dados do JSON mockado.
- * Quando false, faz chamadas HTTP reais via axios.
+ * Cliente da API. Todas as chamadas vão para `/api/*` (reescrito pelo Next para a API),
+ * então os cookies httpOnly de sessão são do mesmo domínio. Sem mocks.
  */
-import axios from 'axios'
-import { featureFlags } from './feature-flags'
-import mockData from '@/mock/data.json'
-import type {
-  UserProfile,
-  Product,
-  Listing,
-  Order,
-  ExportWorkflow,
-  Liquidation,
-  InsurancePolicy,
-  MapaNotice,
-  Exporter,
-  PaginatedResponse,
-} from '@/types'
-
-const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
-  headers: { 'Content-Type': 'application/json' },
-})
-
-// Injeta token em cada request
-if (typeof window !== 'undefined') {
-  api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('access_token')
-    if (token) config.headers.Authorization = `Bearer ${token}`
-    return config
-  })
-}
-
-// Helper de delay para simular latência no mock
-const delay = (ms = 400) => new Promise((r) => setTimeout(r, ms))
-
-// ---- Usuários --------------------------------------------------
-export async function getMe(): Promise<UserProfile> {
-  if (featureFlags.useMockData) {
-    await delay()
-    return mockData.user as UserProfile
+export class ApiError extends Error {
+  constructor(
+    public status: number,
+    public code: string,
+    message: string,
+    public details?: unknown,
+  ) {
+    super(message)
+    this.name = 'ApiError'
   }
-  const { data } = await api.get<UserProfile>('/users/me')
-  return data
 }
 
-// ---- Produtos --------------------------------------------------
-export async function getProducts(): Promise<PaginatedResponse<Product>> {
-  if (featureFlags.useMockData) {
-    await delay()
-    return { data: mockData.products as Product[], total: mockData.products.length, page: 1, limit: 20, total_pages: 1 }
+type Query = Record<string, string | number | boolean | undefined | null>
+
+export interface ApiOptions {
+  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
+  body?: unknown
+  form?: FormData
+  query?: Query
+  signal?: AbortSignal
+}
+
+const CSRF_HEADERS = { 'x-requested-with': 'amazon-trade' }
+const NO_REFRESH = ['/auth/login', '/auth/register', '/auth/refresh', '/auth/forgot-password', '/auth/reset-password', '/auth/verify-email']
+
+export const buildUrl = (path: string, query?: Query) => {
+  const qs = query
+    ? Object.entries(query)
+        .filter(([, v]) => v !== undefined && v !== null && v !== '')
+        .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`)
+        .join('&')
+    : ''
+  return `/api${path}${qs ? `?${qs}` : ''}`
+}
+
+let refreshing: Promise<boolean> | null = null
+/** Renova a sessão uma única vez mesmo com várias requisições 401 simultâneas. */
+function refreshSession(): Promise<boolean> {
+  refreshing ??= fetch('/api/auth/refresh', { method: 'POST', headers: CSRF_HEADERS, credentials: 'same-origin' })
+    .then((r) => r.ok)
+    .catch(() => false)
+    .finally(() => {
+      setTimeout(() => (refreshing = null), 0)
+    })
+  return refreshing
+}
+
+async function send(path: string, opts: ApiOptions): Promise<Response> {
+  const headers: Record<string, string> = { ...CSRF_HEADERS }
+  let body: BodyInit | undefined
+  if (opts.form) body = opts.form
+  else if (opts.body !== undefined) {
+    headers['content-type'] = 'application/json'
+    body = JSON.stringify(opts.body)
   }
-  const { data } = await api.get<PaginatedResponse<Product>>('/products')
-  return data
+  return fetch(buildUrl(path, opts.query), { method: opts.method ?? (body ? 'POST' : 'GET'), headers, body, credentials: 'same-origin', signal: opts.signal })
 }
 
-export async function getProduct(id: string): Promise<Product> {
-  if (featureFlags.useMockData) {
-    await delay()
-    const p = mockData.products.find((p) => p.id === id)
-    if (!p) throw new Error('Produto não encontrado')
-    return p as Product
+async function request(path: string, opts: ApiOptions): Promise<Response> {
+  let res = await send(path, opts)
+  if (res.status === 401 && !NO_REFRESH.includes(path) && (await refreshSession())) res = await send(path, opts)
+  if (!res.ok) {
+    let payload: { error?: { code?: string; message?: string; details?: unknown } } = {}
+    try {
+      payload = await res.json()
+    } catch {
+      /* corpo vazio */
+    }
+    throw new ApiError(res.status, payload.error?.code ?? `http_${res.status}`, payload.error?.message ?? res.statusText, payload.error?.details)
   }
-  const { data } = await api.get<Product>(`/products/${id}`)
-  return data
+  return res
 }
 
-// ---- Anúncios (Vitrine) -----------------------------------------
-export async function getListings(): Promise<PaginatedResponse<Listing>> {
-  if (featureFlags.useMockData) {
-    await delay()
-    return { data: mockData.listings as Listing[], total: mockData.listings.length, page: 1, limit: 20, total_pages: 1 }
+export async function api<T = unknown>(path: string, opts: ApiOptions = {}): Promise<T> {
+  const res = await request(path, opts)
+  if (res.status === 204) return undefined as T
+  const text = await res.text()
+  return (text ? JSON.parse(text) : undefined) as T
+}
+
+/** Baixa um arquivo autenticado (documentos) e abre numa nova aba / salva. */
+export async function openFile(path: string, filename?: string) {
+  const res = await request(path, {})
+  const blob = await res.blob()
+  const url = URL.createObjectURL(blob)
+  if (filename && !blob.type.startsWith('application/pdf') && !blob.type.startsWith('image/')) {
+    const a = document.createElement('a')
+    a.href = url
+    a.download = filename
+    a.click()
+  } else {
+    window.open(url, '_blank', 'noopener')
   }
-  const { data } = await api.get<PaginatedResponse<Listing>>('/listings')
-  return data
+  setTimeout(() => URL.revokeObjectURL(url), 60_000)
 }
 
-export async function getListing(id: string): Promise<Listing> {
-  if (featureFlags.useMockData) {
-    await delay()
-    const l = mockData.listings.find((l) => l.id === id)
-    if (!l) throw new Error('Anúncio não encontrado')
-    return l as Listing
-  }
-  const { data } = await api.get<Listing>(`/listings/${id}`)
-  return data
-}
-
-export async function getExporterByCompanyName(companyName: string): Promise<Exporter | null> {
-  if (featureFlags.useMockData) {
-    await delay()
-    const exp = (mockData.exporters as Exporter[]).find((e) => e.company_name === companyName)
-    return exp ?? null
-  }
-  const { data } = await api.get<Exporter[]>('/exporters', { params: { company_name: companyName } })
-  return data[0] ?? null
-}
-
-export async function getExporter(id: string): Promise<Exporter> {
-  if (featureFlags.useMockData) {
-    await delay()
-    const exp = (mockData.exporters as Exporter[]).find((e) => e.id === id)
-    if (!exp) throw new Error('Exportador não encontrado')
-    return exp as Exporter
-  }
-  const { data } = await api.get<Exporter>(`/exporters/${id}`)
-  return data
-}
-
-// ---- Pedidos -----------------------------------------------------
-// Compra a preço fixo: o importador pede, o exportador aceita/recusa.
-export async function getOrders(): Promise<Order[]> {
-  if (featureFlags.useMockData) {
-    await delay()
-    return mockData.orders as Order[]
-  }
-  const { data } = await api.get<Order[]>('/orders')
-  return data
-}
-
-export async function getOrder(id: string): Promise<Order> {
-  if (featureFlags.useMockData) {
-    await delay()
-    const o = mockData.orders.find((o) => o.id === id)
-    if (!o) throw new Error('Pedido não encontrado')
-    return o as Order
-  }
-  const { data } = await api.get<Order>(`/orders/${id}`)
-  return data
-}
-
-// ---- Workflows -------------------------------------------------
-export async function getWorkflows(): Promise<ExportWorkflow[]> {
-  if (featureFlags.useMockData) {
-    await delay()
-    return mockData.workflows as ExportWorkflow[]
-  }
-  const { data } = await api.get<ExportWorkflow[]>('/workflows')
-  return data
-}
-
-export async function getWorkflow(id: string): Promise<ExportWorkflow> {
-  if (featureFlags.useMockData) {
-    await delay()
-    const w = mockData.workflows.find((w) => w.id === id)
-    if (!w) throw new Error('Workflow não encontrado')
-    return w as ExportWorkflow
-  }
-  const { data } = await api.get<ExportWorkflow>(`/workflows/${id}`)
-  return data
-}
-
-// ---- Liquidação ------------------------------------------------
-export async function getLiquidation(workflowId: string): Promise<Liquidation> {
-  if (featureFlags.useMockData) {
-    await delay()
-    const liq = (mockData.liquidation as Record<string, Liquidation>)[workflowId]
-    if (!liq) throw new Error('Liquidação não encontrada')
-    return liq
-  }
-  const { data } = await api.get<Liquidation>(`/liquidation/${workflowId}`)
-  return data
-}
-
-// ---- Seguros ---------------------------------------------------
-export async function getInsurancePolicies(workflowId: string): Promise<InsurancePolicy[]> {
-  if (featureFlags.useMockData) {
-    await delay()
-    return (mockData.insurance_policies as InsurancePolicy[]).filter(
-      (p) => p.workflow_id === workflowId,
-    )
-  }
-  const { data } = await api.get<InsurancePolicy[]>(`/insurance/policies?workflow_id=${workflowId}`)
-  return data
-}
-
-// ---- MAPA Notices ----------------------------------------------
-export async function getMapaNotices(): Promise<MapaNotice[]> {
-  if (featureFlags.useMockData) {
-    await delay()
-    return mockData.mapa_notices as MapaNotice[]
-  }
-  const { data } = await api.get<MapaNotice[]>('/market-intelligence/mapa-notices')
-  return data
-}
-
-// ---- Câmbio ----------------------------------------------------
-export async function getExchangeRates(): Promise<Record<string, number>> {
-  if (featureFlags.useMockData) {
-    await delay()
-    const { updated_at, ...rates } = mockData.exchange_rates
-    return rates
-  }
-  const { data } = await api.get<Record<string, number>>('/exchange-rates')
-  return data
-}
-
-export default api
+/** Mensagem de erro amigável a partir de qualquer exceção. */
+export const errorMessage = (e: unknown, fallback = 'Erro inesperado') => (e instanceof ApiError ? e.message || e.code : e instanceof Error ? e.message : fallback)

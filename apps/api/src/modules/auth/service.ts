@@ -41,7 +41,7 @@ async function createEmailToken(ctx: AppContext, userId: string, kind: 'VERIFY_E
 
 export async function sendVerificationEmail(ctx: AppContext, user: { id: string; email: string; fullName: string; locale: 'pt' | 'en' }) {
   const token = await createEmailToken(ctx, user.id, 'VERIFY_EMAIL', 48 * 3600)
-  const link = `${ctx.config.WEB_ORIGIN}/${user.locale}/verify-email?token=${token}`
+  const link = `${ctx.config.WEB_ORIGIN.split(",")[0]!.trim()}/verify-email?token=${token}`
   await ctx.mailer.send({
     to: user.email,
     subject: msg(user.locale, 'email.verify.subject'),
@@ -170,7 +170,7 @@ export async function requestPasswordReset(ctx: AppContext, email: string) {
   const [user] = await ctx.db.select().from(users).where(eq(users.email, email)).limit(1)
   if (!user || user.disabledAt) return // sem vazar existência
   const token = await createEmailToken(ctx, user.id, 'RESET_PASSWORD', 3600)
-  const link = `${ctx.config.WEB_ORIGIN}/${user.locale}/reset-password?token=${token}`
+  const link = `${ctx.config.WEB_ORIGIN.split(",")[0]!.trim()}/reset-password?token=${token}`
   await ctx.mailer.send({
     to: user.email,
     subject: msg(user.locale, 'email.reset.subject'),
@@ -238,7 +238,7 @@ export async function inviteMember(
     return u!
   })
   const token = await createEmailToken(ctx, user.id, 'INVITE', 7 * 24 * 3600)
-  const link = `${ctx.config.WEB_ORIGIN}/${user.locale}/reset-password?token=${token}`
+  const link = `${ctx.config.WEB_ORIGIN.split(",")[0]!.trim()}/reset-password?token=${token}`
   await ctx.mailer.send({
     to: user.email,
     subject: msg(user.locale, 'email.invite.subject'),

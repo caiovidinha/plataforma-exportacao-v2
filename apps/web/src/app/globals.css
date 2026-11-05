@@ -3,77 +3,103 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --dark: #dbcbba;
-  }
-
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
-
-  * {
-    @apply border-[#3e2e1e]/15;
-  }
-
   body {
-    background-color: #dbcbba;
-    color: #3e2e1e;
+    @apply bg-ink-50 text-ink-900 antialiased;
+    font-feature-settings: 'cv11', 'ss01';
   }
-
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+  * {
+    @apply border-ink-200;
   }
-  ::-webkit-scrollbar-track {
-    background: #dbcbba;
+  ::selection {
+    @apply bg-brand-200 text-brand-950;
   }
-  ::-webkit-scrollbar-thumb {
-    background: #584531;
-    border-radius: 0;
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand-500/60 ring-offset-1;
   }
 }
 
 @layer components {
-  .card {
-    @apply bg-white/50 border border-[#3e2e1e]/[0.12] p-5;
+  /* ---- botões ---- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50;
   }
-
   .btn-primary {
-    @apply inline-flex items-center gap-2 bg-[#584531] hover:bg-[#3e2e1e]
-      text-[#ede5dc] font-semibold px-4 py-2 transition-colors
-      disabled:opacity-50 disabled:cursor-not-allowed text-sm;
+    @apply btn bg-brand-600 text-white hover:bg-brand-700;
   }
-
   .btn-secondary {
-    @apply inline-flex items-center gap-2 bg-transparent hover:bg-[#584531]/10
-      text-[#584531] font-medium px-4 py-2 border border-[#584531]/35
-      transition-colors text-sm;
+    @apply btn border border-ink-300 bg-white text-ink-800 hover:bg-ink-100;
   }
-
   .btn-ghost {
-    @apply inline-flex items-center gap-2 text-[#584531]/80 hover:text-[#3e2e1e]
-      hover:bg-[#584531]/10 px-3 py-2 transition-colors text-sm;
+    @apply btn text-ink-600 hover:bg-ink-100 hover:text-ink-900;
+  }
+  .btn-danger {
+    @apply btn bg-red-600 text-white hover:bg-red-700;
+  }
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+  .btn-lg {
+    @apply px-6 py-3 text-base;
   }
 
-  .badge {
-    @apply inline-flex items-center gap-1 px-2.5 py-0.5 text-xs font-medium border;
-  }
-
+  /* ---- formulários ---- */
   .input {
-    @apply w-full bg-white/60 border border-[#3e2e1e]/20 px-3 py-2
-      text-sm text-[#3e2e1e] placeholder:text-[#584531]/40 focus:outline-none
-      focus:ring-2 focus:ring-[#584531]/30 focus:border-[#584531] transition;
+    @apply block w-full rounded-lg border border-ink-300 bg-white px-3 py-2 text-sm text-ink-900 placeholder:text-ink-400 transition-colors focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/25 disabled:bg-ink-100 disabled:text-ink-500;
   }
-
+  .input-error {
+    @apply border-red-400 focus:border-red-500 focus:ring-red-500/20;
+  }
   .label {
-    @apply block text-xs font-medium text-[#584531]/80 mb-1.5;
+    @apply mb-1 block text-sm font-medium text-ink-700;
+  }
+  .help {
+    @apply mt-1 text-xs text-ink-500;
+  }
+  .error-text {
+    @apply mt-1 text-xs text-red-600;
   }
 
-  .section-title {
-    @apply font-display text-lg font-semibold text-[#3e2e1e];
+  /* ---- superfícies ---- */
+  .card {
+    @apply rounded-xl border border-ink-200 bg-white shadow-card;
+  }
+  .card-pad {
+    @apply card p-5;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset;
+  }
+  .table-wrap {
+    @apply overflow-x-auto rounded-xl border border-ink-200 bg-white shadow-card;
+  }
+  .table-base {
+    @apply w-full text-left text-sm;
+  }
+  .table-base thead {
+    @apply bg-ink-50 text-xs uppercase tracking-wide text-ink-500;
+  }
+  .table-base th {
+    @apply px-4 py-3 font-medium;
+  }
+  .table-base td {
+    @apply border-t border-ink-100 px-4 py-3 align-middle;
+  }
+  .table-base tbody tr {
+    @apply transition-colors hover:bg-ink-50;
   }
 
-  .page-title {
-    @apply font-display text-2xl font-bold text-[#3e2e1e];
+  /* largura de conteúdo com respiro lateral de ~12% (vitrine do importador) */
+  .store-gutter {
+    @apply px-4 sm:px-8 lg:px-[8%] xl:px-[12%];
+  }
+}
+
+@layer utilities {
+  .scroll-thin {
+    scrollbar-width: thin;
   }
 }

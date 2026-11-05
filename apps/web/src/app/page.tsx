@@ -1,272 +1,214 @@
-import Link from 'next/link'
+import { ArrowRight, BadgeCheck, Calculator, ClipboardCheck, FileCheck2, Globe2, Handshake, Lock, Ship, ShieldCheck, Truck, Wallet } from 'lucide-react'
 import Image from 'next/image'
-import {
-  Globe, GitBranch, FileText, Package,
-  TrendingUp, Shield, ChevronRight, ArrowRight,
-} from 'lucide-react'
-import { getTranslations } from 'next-intl/server'
-import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
-import { ExportFlowAnimation } from '@/components/landing/ExportFlowAnimation'
+import Link from 'next/link'
+import { getStageDef, MAIN_FLOW } from '@amazon-trade/shared'
+import { Logo } from '@/components/brand/Logo'
+import { LocaleSwitch } from '@/components/layout/LocaleSwitch'
+import { getT } from '@/lib/i18n-server'
 
-export default async function LandingPage() {
-  const t = await getTranslations('landing')
+/** Landing pública — tom principal #1b6145. Conteúdo 100% estático (sem dados de exemplo fingindo ser reais). */
+export default function Landing() {
+  const { t, locale } = getT()
 
-  const FEATURES = [
-    { icon: Globe,      title: t('matchmakingTitle'),  desc: t('matchmakingDesc') },
-    { icon: FileText,   title: t('techSheetTitle'),    desc: t('techSheetDesc') },
-    { icon: GitBranch,  title: t('wfTitle'),           desc: t('wfDesc') },
-    { icon: Package,    title: t('marketplaceTitle'),  desc: t('marketplaceDesc') },
-    { icon: Shield,     title: t('securityTitle'),     desc: t('securityDesc') },
-    { icon: TrendingUp, title: t('marketIntelTitle'),  desc: t('marketIntelDesc') },
+  const steps = [
+    { icon: ClipboardCheck, title: t('landing.step1.title'), text: t('landing.step1.text') },
+    { icon: Calculator, title: t('landing.step2.title'), text: t('landing.step2.text') },
+    { icon: Handshake, title: t('landing.step3.title'), text: t('landing.step3.text') },
+    { icon: Ship, title: t('landing.step4.title'), text: t('landing.step4.text') },
   ]
-
-  const ENTITIES = [
-    { label: t('entityExporters'), desc: t('entityExportersDesc'), slug: 'exportador' },
-    { label: t('entityImporters'), desc: t('entityImportersDesc'), slug: 'importador' },
-  ]
-
-  const STEPS = [
-    { n: '01', title: t('step01Title'), desc: t('step01Desc') },
-    { n: '02', title: t('step02Title'), desc: t('step02Desc') },
-    { n: '03', title: t('step03Title'), desc: t('step03Desc') },
-    { n: '04', title: t('step04Title'), desc: t('step04Desc') },
-    { n: '05', title: t('step05Title'), desc: t('step05Desc') },
-    { n: '06', title: t('step06Title'), desc: t('step06Desc') },
+  const partners = [
+    { img: 'despachante', icon: FileCheck2, name: t('landing.partner.customs'), text: t('landing.partner.customs.text') },
+    { img: 'companhia-navegacao', icon: Ship, name: t('landing.partner.ocean'), text: t('landing.partner.ocean.text') },
+    { img: 'transportadora', icon: Truck, name: t('landing.partner.land'), text: t('landing.partner.land.text') },
+    { img: 'corretora', icon: Wallet, name: t('landing.partner.fx'), text: t('landing.partner.fx.text') },
+    { img: 'seguradora', icon: ShieldCheck, name: t('landing.partner.insurance'), text: t('landing.partner.insurance.text') },
   ]
 
   return (
-    <div className="min-h-screen bg-[#110b06] text-slate-100">
-      {/* ── NAVBAR ── */}
-      <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-24 py-4 border-b border-[#3e2e1e]/40 bg-[#584531]/50 backdrop-blur-md">
-        <Link href="/" className="flex items-center">
-          <Image src="/img/logo.webp" alt="Brazil X Hub" width={140} height={40} className="h-9 w-auto brightness-90" priority />
-        </Link>
-        <div className="flex items-center gap-3">
-          <LanguageSwitcher />
-          <Link href="/entrar" className="inline-flex items-center gap-2 text-[#ede5dc]/80 hover:text-[#ede5dc] px-3 py-2 rounded-lg transition-colors text-sm">{t('nav.signIn')}</Link>
-          <Link href="/registro" className="inline-flex items-center gap-2 bg-[#ede5dc] hover:bg-[#dbcbba] text-[#584531] shadow-sm px-2.5 py-1 rounded-full text-xs font-semibold transition-colors">{t('nav.register')}</Link>
-        </div>
-      </header>
+    <div className="bg-white">
+      {/* ------------------------------------------------ hero */}
+      <section className="relative isolate overflow-hidden bg-brand-900 text-white">
+        <Image src="/img/hero-background.webp" alt="" fill priority sizes="100vw" className="-z-20 object-cover object-center opacity-60 mix-blend-luminosity" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-brand-950 via-brand-900/90 to-brand-700/40" />
+        <header className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8">
+          <Logo tone="light" />
+          <nav className="hidden items-center gap-7 text-sm text-white/80 md:flex">
+            <a href="#como-funciona" className="hover:text-white">{t('landing.nav.how')}</a>
+            <a href="#para-quem" className="hover:text-white">{t('landing.nav.who')}</a>
+            <a href="#parceiros" className="hover:text-white">{t('landing.nav.partners')}</a>
+            <a href="#processo" className="hover:text-white">{t('landing.nav.process')}</a>
+          </nav>
+          <div className="flex items-center gap-4">
+            <LocaleSwitch tone="light" className="hidden sm:inline-flex" />
+            <Link href="/login" className="text-sm font-medium text-white/90 hover:text-white">{t('landing.login')}</Link>
+            <Link href="/register" className="hidden rounded-lg bg-white px-4 py-2 text-sm font-semibold text-brand-800 hover:bg-brand-50 sm:inline-block">{t('landing.register')}</Link>
+          </div>
+        </header>
 
-      {/* ── HERO ── */}
-      <section className="relative w-full">
-
-        {/* Fundo */}
-        <Image
-          src="/img/hero-background.webp"
-          alt="Castanha-do-Brasil"
-          width={2560}
-          height={1237}
-          className="w-screen h-auto block"
-          priority
-        />
-
-        {/* Elementos - esquerda, rodapé */}
-        <div className="absolute bottom-0 left-0 px-12 2xl:px-24 pb-6 2xl:pb-16 flex flex-col items-start gap-4 xl:gap-6 2xl:gap-9 max-w-xl 2xl:max-w-2xl">
-
-          {/* Subtítulo */}
-          <p className="font-montserrat text-sm xl:text-base 2xl:text-lg text-white leading-relaxed">
-            {t('hero.subtitle')}
+        <div className="mx-auto max-w-7xl px-5 pb-24 pt-14 sm:px-8 sm:pb-32 sm:pt-24">
+          <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-brand-100 ring-1 ring-white/20">
+            <BadgeCheck className="h-3.5 w-3.5" /> {t('landing.hero.badge')}
           </p>
-
-          {/* Headline */}
-          <h1 className="font-montserrat text-3xl xl:text-4xl 2xl:text-5xl font-medium text-white mb-1 -mt-1">
-            {t('hero.headline')}
-          </h1>
-
-          {/* Botões */}
-          <div className="flex flex-wrap gap-3">
-            <Link href="/registro"
-              className="inline-flex items-center gap-2 font-montserrat text-sm px-6 py-2 rounded-full bg-[#462a1f] hover:bg-[#5a3529] text-white transition-colors">
-              {t('hero.ctaPrimary')} <ArrowRight className="w-3.5 h-3.5" />
+          <h1 className="max-w-3xl text-4xl font-semibold leading-[1.08] tracking-tight sm:text-6xl">{t('landing.hero.title')}</h1>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-brand-50/90">{t('landing.hero.subtitle')}</p>
+          <div className="mt-9 flex flex-wrap gap-3">
+            <Link href="/register?type=EXPORTER" className="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-base font-semibold text-brand-800 shadow-lg hover:bg-brand-50">
+              {t('landing.cta.exporter')} <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link href="/entrar"
-              className="inline-flex items-center gap-2 font-montserrat text-sm px-6 py-2 rounded-full bg-[#574531] hover:bg-[#6b5540] text-white/80 transition-colors">
-              {t('hero.ctaSecondary')} <ArrowRight className="w-3.5 h-3.5" />
+            <Link href="/register?type=IMPORTER" className="inline-flex items-center gap-2 rounded-lg border border-white/40 px-6 py-3 text-base font-semibold text-white hover:bg-white/10">
+              {t('landing.cta.importer')}
             </Link>
           </div>
-
-          {/* Ícones */}
-          <Image
-            src="/img/hero-icons.webp"
-            alt="partners-icons"
-            width={500}
-            height={0}
-          />
-
+          <dl className="mt-14 grid max-w-3xl grid-cols-2 gap-6 border-t border-white/15 pt-8 sm:grid-cols-4">
+            {[
+              [t('landing.stat1.v'), t('landing.stat1.l')],
+              [t('landing.stat2.v'), t('landing.stat2.l')],
+              [t('landing.stat3.v'), t('landing.stat3.l')],
+              [t('landing.stat4.v'), t('landing.stat4.l')],
+            ].map(([v, l]) => (
+              <div key={l}>
+                <dt className="text-2xl font-semibold text-white sm:text-3xl">{v}</dt>
+                <dd className="mt-1 text-xs text-brand-100/80">{l}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
-
       </section>
 
-      {/* ── STATS STRIP ── */}
-      <section className="hidden border-y border-[#4a2e18]/60 bg-[#1c1208]/40">
-        <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-4 divide-x divide-[#4a2e18]/60">
+      {/* ------------------------------------------------ como funciona */}
+      <section id="como-funciona" className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
+        <div className="max-w-2xl">
+          <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">{t('landing.how.kicker')}</p>
+          <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink-900 sm:text-4xl">{t('landing.how.title')}</h2>
+          <p className="mt-4 text-lg text-ink-600">{t('landing.how.subtitle')}</p>
+        </div>
+        <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {steps.map((s, i) => (
+            <li key={s.title} className="relative rounded-2xl border border-ink-200 bg-white p-6 shadow-card">
+              <span className="absolute right-5 top-5 text-5xl font-semibold text-brand-50">{i + 1}</span>
+              <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-50 text-brand-700">
+                <s.icon className="h-5 w-5" />
+              </span>
+              <h3 className="mt-5 text-base font-semibold text-ink-900">{s.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink-600">{s.text}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* ------------------------------------------------ para quem */}
+      <section id="para-quem" className="bg-brand-50 py-20 sm:py-28">
+        <div className="mx-auto grid max-w-7xl gap-6 px-5 sm:px-8 lg:grid-cols-2">
           {[
-            { v: '120+', l: t('statsExporters') },
-            { v: '300+', l: t('statsImporters') },
-            { v: '42',   l: t('statsCountries') },
-            { v: '98%',  l: t('statsMapa') },
-          ].map((s) => (
-            <div key={s.l} className="py-8 text-center">
-              <p className="text-3xl font-display font-bold text-brand-300">{s.v}</p>
-              <p className="text-xs text-slate-500 mt-1">{s.l}</p>
-            </div>
+            { img: 'exportador', title: t('landing.exporter.title'), text: t('landing.exporter.text'), items: [t('landing.exporter.i1'), t('landing.exporter.i2'), t('landing.exporter.i3')], cta: t('landing.cta.exporter'), href: '/register?type=EXPORTER' },
+            { img: 'importador', title: t('landing.importer.title'), text: t('landing.importer.text'), items: [t('landing.importer.i1'), t('landing.importer.i2'), t('landing.importer.i3')], cta: t('landing.cta.importer'), href: '/register?type=IMPORTER' },
+          ].map((c) => (
+            <article key={c.img} className="overflow-hidden rounded-3xl bg-white shadow-card ring-1 ring-brand-100">
+              <div className="relative h-56">
+                <Image src={`/img/${c.img}.webp`} alt="" fill sizes="(min-width:1024px) 50vw, 100vw" className="object-cover object-top" />
+                <div className="absolute inset-0 bg-gradient-to-t from-white via-white/10 to-transparent" />
+              </div>
+              <div className="p-7 pt-2">
+                <h3 className="text-2xl font-semibold tracking-tight text-ink-900">{c.title}</h3>
+                <p className="mt-2 text-ink-600">{c.text}</p>
+                <ul className="mt-5 space-y-2.5">
+                  {c.items.map((i) => (
+                    <li key={i} className="flex gap-2.5 text-sm text-ink-700">
+                      <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" />
+                      {i}
+                    </li>
+                  ))}
+                </ul>
+                <Link href={c.href} className="mt-7 inline-flex items-center gap-2 rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700">
+                  {c.cta} <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </article>
           ))}
         </div>
       </section>
 
-      {/* ── FEATURES ── */}
-      <section id="funcionalidades" className="bg-[#ede5dc] w-full py-24">
-        <div className="max-w-5xl mx-auto px-6 space-y-12">
-          <div className="text-center space-y-2">
-            <h2 className="font-display text-[2.4rem] font-bold text-[#584531]">{t('featuresSectionTitle')}</h2>
-            <p className="text-[#584531] max-w-md mx-auto text-sm">{t('featuresSectionSubtitle')}</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {FEATURES.map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="bg-[#dbcbba] p-5 space-y-3">
-                <div className="w-10 h-10 bg-[#ede5dc] flex items-center justify-center">
-                  <Icon className="w-5 h-5 text-[#584531]" />
-                </div>
-                <h3 className="font-semibold text-[#584531]">{title}</h3>
-                <p className="text-sm text-[#584531] leading-relaxed">{desc}</p>
-              </div>
-            ))}
-          </div>
+      {/* ------------------------------------------------ parceiros */}
+      <section id="parceiros" className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
+        <div className="max-w-2xl">
+          <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">{t('landing.partners.kicker')}</p>
+          <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink-900 sm:text-4xl">{t('landing.partners.title')}</h2>
+          <p className="mt-4 text-lg text-ink-600">{t('landing.partners.subtitle')}</p>
         </div>
-      </section>
-
-      {/* ── EXPORT FLOW ANIMATION ── */}
-      <section id="fluxo" className="bg-[#ede5dc] w-full py-16 hidden">
-        <div className="max-w-5xl mx-auto px-6 space-y-8">
-          <div className="text-center space-y-1">
-            <p className="text-[0.7rem] tracking-widest uppercase text-[#584531]/50 font-medium">Do campo ao pagamento</p>
-            <h2 className="font-display text-2xl font-bold text-[#584531]">O fluxo completo da exportação</h2>
-          </div>
-          <ExportFlowAnimation />
-        </div>
-      </section>
-
-      {/* ── HOW IT WORKS ── */}
-      <section id="como-funciona" className="relative w-full overflow-hidden">
-        {/* Imagem de fundo */}
-        <Image
-          src="/img/banner-sec.webp"
-          alt=""
-          fill
-          className="object-cover opacity-60 pointer-events-none select-none"
-        />
-        {/* Conteúdo em fluxo normal */}
-        <div className="relative z-10 w-full max-w-5xl mx-auto px-6 py-24 space-y-12">
-          <div className="text-center space-y-2">
-            <h2 className="font-display text-[2.4rem] font-bold text-[#ede5dc]">{t('howWorksSectionTitle')}</h2>
-            <p className="text-[#ede5dc] text-sm max-w-lg mx-auto">{t('howWorksSectionSubtitle')}</p>
-          </div>
-          {/* Vídeo centralizado */}
-          <div className="relative w-full max-w-xl mx-auto aspect-video shadow-2xl ring-1 ring-white/10">
-            <iframe
-              src="https://www.youtube.com/embed/DSyAje9OG7g?rel=0&modestbranding=1"
-              title="Brazil X Hub"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="absolute inset-0 w-full h-full"
-            />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {STEPS.map((s) => (
-              <div key={s.n} className="bg-[#dbcbba] p-5 flex gap-4">
-                <span className="text-3xl font-display font-bold text-[#584531]/30 leading-none flex-shrink-0 select-none">
-                  {s.n}
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+          {partners.map((p) => (
+            <article key={p.name} className="group overflow-hidden rounded-2xl border border-ink-200 bg-white shadow-card transition-shadow hover:shadow-pop">
+              <div className="relative h-36 overflow-hidden bg-brand-900">
+                <Image src={`/img/${p.img}.webp`} alt="" fill sizes="(min-width:1024px) 20vw, 50vw" className="object-cover object-top opacity-80 transition-transform duration-500 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-brand-900/30" />
+                <span className="absolute bottom-3 left-3 grid h-9 w-9 place-items-center rounded-lg bg-white text-brand-700 shadow">
+                  <p.icon className="h-4.5 w-4.5" />
                 </span>
-                <div>
-                  <p className="font-semibold text-[#584531] text-sm">{s.title}</p>
-                  <p className="text-xs text-[#584531] mt-1 leading-relaxed">{s.desc}</p>
-                </div>
               </div>
-            ))}
+              <div className="p-4">
+                <h3 className="text-sm font-semibold text-ink-900">{p.name}</h3>
+                <p className="mt-1.5 text-xs leading-relaxed text-ink-600">{p.text}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+        <p className="mt-6 flex items-center gap-2 text-sm text-ink-500">
+          <Lock className="h-4 w-4" /> {t('landing.partners.privacy')}
+        </p>
+      </section>
+
+      {/* ------------------------------------------------ processo (etapas reais do embarque) */}
+      <section id="processo" className="bg-brand-950 py-20 text-white sm:py-28">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <div className="max-w-2xl">
+            <p className="text-sm font-semibold uppercase tracking-wider text-brand-300">{t('landing.process.kicker')}</p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">{t('landing.process.title')}</h2>
+            <p className="mt-4 text-lg text-brand-100/80">{t('landing.process.subtitle')}</p>
           </div>
+          <ol className="mt-12 grid gap-4 md:grid-cols-5">
+            {MAIN_FLOW.map((stage, i) => {
+              const def = getStageDef(stage)
+              return (
+                <li key={stage} className="relative rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
+                  <span className="text-xs font-semibold text-brand-300">{String(i + 1).padStart(2, '0')}</span>
+                  <h3 className="mt-2 text-base font-semibold">{def.title[locale]}</h3>
+                  <p className="mt-2 text-xs leading-relaxed text-brand-100/70">{def.description[locale]}</p>
+                </li>
+              )
+            })}
+          </ol>
         </div>
       </section>
 
-      {/* ── WHO USES IT ── */}
-      <section id="quem-usa" className="bg-[#dbcbba] w-full py-24">
-        <div className="max-w-5xl mx-auto px-6 space-y-12">
-          <div className="text-center space-y-2">
-            <h2 className="font-display text-[2.4rem] font-bold text-[#584531]">{t('whoUsesSectionTitle')}</h2>
-            <p className="text-[#584531] text-sm">{t('whoUsesSectionSubtitle')}</p>
+      {/* ------------------------------------------------ CTA + rodapé */}
+      <section className="bg-brand-600 py-16 text-white">
+        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-5 sm:px-8 md:flex-row md:items-center">
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">{t('landing.final.title')}</h2>
+            <p className="mt-2 text-brand-50/90">{t('landing.final.text')}</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-            {ENTITIES.map(({ label, desc, slug }) => (
-              <Link key={slug} href={`/registro/${slug}`}
-                className="bg-[#ede5dc] flex flex-col hover:brightness-105 transition-all cursor-pointer">
-                {/* Título acima da imagem — altura fixa para alinhar imagens */}
-                <div className="px-3 pt-6 pb-2 text-center flex items-center justify-center" style={{ maxHeight: '2.75rem' }}>
-                  <h3 className="font-display font-bold text-[#584531] uppercase tracking-wide text-[0.75rem] leading-tight">{label}</h3>
-                </div>
-                {/* Imagem com dimensões originais */}
-                <div className="px-3 pt-3">
-                  <Image
-                    src={`/img/${slug}.webp`}
-                    alt={label}
-                    width={400}
-                    height={300}
-                    className="w-full h-auto"
-                  />
-                </div>
-                {/* Texto + seta */}
-                <div className="px-3 pb-3 flex flex-col flex-1 justify-between gap-2">
-                  <p className="text-[0.62rem] text-[#584531] leading-relaxed">{desc}</p>
-                  <div className="flex justify-end">
-                    <ArrowRight className="w-3 h-3 text-[#584531]" />
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-          <div className="text-center">
-            <Link href="/registro" className="inline-flex items-center gap-2 text-sm px-6 py-2 rounded-full bg-[#462a1f] hover:bg-[#5a3529] text-white transition-colors">
-              {t('whoUsesCta')} <ChevronRight className="w-4 h-4" />
-            </Link>
-          </div>
+          <Link href="/register" className="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-semibold text-brand-800 hover:bg-brand-50">
+            {t('landing.register')} <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </section>
 
-      {/* ── CTA BANNER ── */}
-      <section className="bg-[#ede5dc] w-full pt-24 pb-12">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="bg-[#584531] p-10 text-center space-y-5">
-            <Image src="/img/logo-branca-icon.webp" alt="" width={40} height={40} className="mx-auto" />
-            <h2 className="font-display text-[1.95rem] md:text-[2.4rem] font-bold text-[#ede5dc]">
-              {t('ctaTitle')}
-            </h2>
-            <p className="text-[#ede5dc]/80 text-sm max-w-sm mx-auto">
-              {t('ctaSubtitle')}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Link href="/registro" className="inline-flex items-center gap-2 text-sm px-6 py-2 rounded-full bg-[#dbcbba] hover:bg-[#ede5dc] text-[#584531] transition-colors">
-                {t('ctaCreateAccount')} <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link href="/entrar" className="inline-flex items-center gap-2 text-sm px-6 py-2 rounded-full bg-[#574531] hover:bg-[#6b5540] text-white/80 transition-colors">
-                {t('ctaAlreadyHaveAccount')}
-              </Link>
-            </div>
+      <footer className="bg-brand-950 text-brand-100/80">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-10 sm:px-8 md:flex-row md:items-center md:justify-between">
+          <div>
+            <Logo tone="light" />
+            <p className="mt-3 max-w-sm text-xs leading-relaxed">{t('landing.footer.about')}</p>
           </div>
-            <div className="w-full flex items-center justify-center pt-12">
-              <Image
-              src="/img/logo-cor.webp"
-              alt="logo colorida"
-              width={110} height={37}
-              />
-            </div>
+          <div className="flex items-center gap-6 text-sm">
+            <Link href="/login" className="hover:text-white">{t('landing.login')}</Link>
+            <Link href="/register" className="hover:text-white">{t('landing.register')}</Link>
+            <LocaleSwitch tone="light" />
+          </div>
         </div>
-      </section>
-
-      {/* ── FOOTER ── */}
-      <footer className="bg-[#dbcbba] px-6 py-8 text-center text-xs text-[#584531]">
-        <p>{t('footerCopyright', { year: new Date().getFullYear() })}</p>
-        <p className="mt-1">{t('footerIntegrations')}</p>
+        <div className="border-t border-white/10 py-4 text-center text-xs text-brand-100/50">
+          <Globe2 className="mr-1.5 inline h-3 w-3" /> © {new Date().getFullYear()} Amazon Trade
+        </div>
       </footer>
     </div>
   )
 }
-

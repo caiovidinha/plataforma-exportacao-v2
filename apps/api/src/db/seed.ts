@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
-import { count, eq } from 'drizzle-orm'
+import { and, count, eq } from 'drizzle-orm'
 import { productInputSchema, sectionsFor, type CompanyType, type PartnerType } from '@amazon-trade/shared'
 import { createContext } from '../bootstrap'
 import type { AppContext } from '../context'
@@ -104,19 +104,22 @@ async function seedDemo(ctx: AppContext) {
   const exporter = await ensureDemoCompany(ctx, { email: 'exportador@demo.local', fullName: 'Marina Tavares', company: 'Castanhas do Xingu Ltda.', type: 'EXPORTER', country: 'BR', extra: { cnpj: '11222333000181' } })
   await ensureDemoCompany(ctx, { email: 'importador@demo.local', fullName: 'Lars Becker', company: 'Nordic Nuts GmbH', type: 'IMPORTER', country: 'DE', extra: { taxId: 'DE811234567' } })
 
-  const [{ n }] = await ctx.db.select({ n: count() }).from(products).where(eq(products.companyId, exporter.company!.id))
-  if (n > 0) return
   const catalog = [
     { name: 'Castanha-do-Brasil Crua In Natura', file: 'offer-castanha-crua.webp', price: 6.4, available: 90000, desc: 'Castanha crua, selecionada e descascada, safra do Pará. Baixa umidade e controle de aflatoxina por lote.' },
     { name: 'Castanha-do-Brasil Orgânica Certificada', file: 'offer-castanha-organica.webp', price: 8.9, available: 40000, desc: 'Origem extrativista com certificação orgânica e rastreabilidade por comunidade.' },
     { name: 'Castanha-do-Brasil Premium Tipo 1', file: 'offer-castanha-premium.webp', price: 7.6, available: 60000, desc: 'Calibre superior, seleção eletrônica e embalagem a vácuo para varejo.' },
   ]
   for (const c of catalog) {
-    const imageFileIds: string[] = []
+    const [existing] = await ctx.db.select().from(products).where(and(eq(products.companyId, exporter.company!.id), eq(products.name, c.name))).limit(1)
+    const imageFileIds: string[] = [...(existing?.imageFileIds ?? [])]
     const file = path.join(imageDir(), c.file)
-    if (existsSync(file)) {
+    if (!imageFileIds.length && existsSync(file)) {
       const stored = await storeFile(ctx, ctx.db, { ownerCompanyId: exporter.company!.id, kind: 'PRODUCT_IMAGE', buffer: readFileSync(file), mimeType: 'image/webp', originalName: c.file, createdBy: exporter.user.id })
       imageFileIds.push(stored.id)
+    }
+    if (existing) {
+      if (imageFileIds.length && !existing.imageFileIds.length) await ctx.db.update(products).set({ imageFileIds }).where(eq(products.id, existing.id))
+      continue
     }
     const input = productInputSchema.parse({
       name: c.name,
@@ -137,7 +140,8 @@ async function seedDemo(ctx: AppContext) {
       status: 'PUBLISHED',
       imageFileIds,
     })
-    await createProduct(ctx, exporter, input)
+    const created = await createProduct(ctx, exporter, input)
+    if (imageFileIds.length) await ctx.db.update(products).set({ imageFileIds }).where(eq(products.id, created.id))
   }
   console.log(`[seed] ${catalog.length} produtos de demonstração publicados`)
 }

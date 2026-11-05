@@ -1,37 +1,24 @@
-import type { Metadata } from 'next'
-import { Inter, Outfit, Montserrat } from 'next/font/google'
-import { Toaster } from 'react-hot-toast'
-import { NextIntlClientProvider } from 'next-intl'
-import { getMessages } from 'next-intl/server'
+import type { Metadata, Viewport } from 'next'
+import { Inter } from 'next/font/google'
+import type { ReactNode } from 'react'
+import { getLocale } from '@/lib/i18n-server'
+import { Providers } from './providers'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
-const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' })
-const montserrat = Montserrat({ subsets: ['latin'], variable: '--font-montserrat' })
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
 
 export const metadata: Metadata = {
-  title: {
-    default: 'Brazil X Hub',
-    template: '%s | Brazil X Hub',
-  },
-  description: 'B2B export platform for the Brazil Nut supply chain.',
+  title: { default: 'Amazon Trade', template: '%s · Amazon Trade' },
+  description: 'Plataforma de exportação de castanha-do-brasil: cadastro verificado, simulação transparente e acompanhamento ponta a ponta com parceiros logísticos.',
 }
+export const viewport: Viewport = { themeColor: '#1b6145', width: 'device-width', initialScale: 1 }
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const messages = await getMessages()
-
+export default function RootLayout({ children }: { children: ReactNode }) {
+  const locale = getLocale()
   return (
-    <html lang="en" className="dark">
-      <body className={`${inter.variable} ${outfit.variable} ${montserrat.variable} font-sans bg-dark text-slate-100 antialiased`}>
-        <NextIntlClientProvider messages={messages}>
-          {children}
-          <Toaster
-            position="bottom-right"
-            toastOptions={{
-              style: { background: '#261810', color: '#f1f5f9', border: '1px solid #3e281a' },
-            }}
-          />
-        </NextIntlClientProvider>
+    <html lang={locale === 'pt' ? 'pt-BR' : 'en'} className={inter.variable}>
+      <body className="font-sans">
+        <Providers locale={locale}>{children}</Providers>
       </body>
     </html>
   )
