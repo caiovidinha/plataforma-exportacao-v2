@@ -33,7 +33,7 @@ export interface SessionUser {
   id: string
   email: string
   fullName: string
-  locale: 'pt' | 'en'
+  locale: 'pt' | 'en' | 'es'
   emailVerified: boolean
   platformRole: PlatformRole
   company: { id: string; type: CompanyType; legalName: string; onboardingStatus: OnboardingStatus; memberRole: MemberRole } | null

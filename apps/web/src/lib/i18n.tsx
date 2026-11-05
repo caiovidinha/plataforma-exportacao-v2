@@ -2,7 +2,8 @@
 import { createContext, useCallback, useContext, type ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import type { L } from '@amazon-trade/shared'
-import { hasKey, translate, type Locale, type MessageKey } from './i18n-core'
+import { tr } from '@amazon-trade/shared'
+import { hasKey, INTL_TAG, translate, type Locale, type MessageKey } from './i18n-core'
 
 export type { Locale, MessageKey }
 export type TFn = (key: MessageKey, vars?: Record<string, string | number>) => string
@@ -15,7 +16,7 @@ export function LocaleProvider({ locale, children }: { locale: Locale; children:
 
 export const useLocale = () => useContext(LocaleContext)
 /** Tag BCP-47 para Intl (datas, números, moeda). */
-export const useIntlLocale = () => (useLocale() === 'pt' ? 'pt-BR' : 'en-US')
+export const useIntlLocale = () => INTL_TAG[useLocale()]
 
 export function useT(): TFn {
   const locale = useLocale()
@@ -25,7 +26,7 @@ export function useT(): TFn {
 /** Traduz um texto bilíngue de domínio (`L`), como rótulos de campos e etapas vindos de `@amazon-trade/shared`. */
 export function useL() {
   const locale = useLocale()
-  return useCallback((text: L | undefined | null) => (text ? text[locale] ?? text.pt : ''), [locale])
+  return useCallback((text: L | undefined | null) => (text ? tr(text, locale) : ''), [locale])
 }
 
 export function useSetLocale() {

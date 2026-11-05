@@ -39,7 +39,7 @@ async function createEmailToken(ctx: AppContext, userId: string, kind: 'VERIFY_E
   return token
 }
 
-export async function sendVerificationEmail(ctx: AppContext, user: { id: string; email: string; fullName: string; locale: 'pt' | 'en' }) {
+export async function sendVerificationEmail(ctx: AppContext, user: { id: string; email: string; fullName: string; locale: 'pt' | 'en' | 'es' }) {
   const token = await createEmailToken(ctx, user.id, 'VERIFY_EMAIL', 48 * 3600)
   const link = `${ctx.config.WEB_ORIGIN.split(",")[0]!.trim()}/verify-email?token=${token}`
   await ctx.mailer.send({

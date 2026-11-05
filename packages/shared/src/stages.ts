@@ -141,3 +141,48 @@ export const nextMainStage = (stage: ShipmentStage): ShipmentStage | null => {
 
 /** Todas as tarefas únicas por chave (para mapeamento de status de parceiros). */
 export const ALL_TASK_KEYS: string[] = [...new Set(STAGE_DEFS.flatMap((s) => s.tasks.map((t) => t.key)))]
+
+// ---------------------------------------------------------------- espanhol (textos de etapa/tarefa)
+const ES_STAGE: Record<string, { title: string; description: string }> = {
+  NEGOCIO: { title: 'Negocio', description: 'Contratos aceptados y servicios contratados con los socios (seguro, cambio, despacho aduanero, flete marítimo y terrestre).' },
+  MERCADORIA_PRONTA: { title: 'Mercancía lista', description: 'Factura emitida, recogida y entrega en el puerto, preparación de documentos y revisión de la carga antes del precinto.' },
+  MERCADORIA_PORTO: { title: 'Mercancía en el puerto', description: 'Inspección del MAPA, toma de muestras, prueba de aflatoxina, certificados y registro de la DU-E.' },
+  MERCADORIA_LIBERADA: { title: 'Mercancía liberada', description: 'Carga embarcada, BL emitido, contrato de cambio cerrado y pago liberado.' },
+  PAGAMENTO: { title: 'Pago', description: 'Recepción confirmada y liquidación del cambio.' },
+  NAO_PAGAMENTO: { title: 'Impago', description: 'Incumplimiento de contrato por falta de pago; activación del seguro.' },
+  MERCADORIA_RECUSADA: { title: 'Mercancía rechazada', description: 'Mercancía rechazada en destino; incumplimiento de contrato y cobertura del seguro.' },
+}
+const ES_TASK: Record<string, string> = {
+  CONTRACTS_ACCEPTED: 'Contratos aceptados por ambas partes',
+  INSURANCE_ISSUED: 'Seguro emitido',
+  FX_CONTRACT_OPENED: 'Operación de cambio abierta',
+  CUSTOMS_PROCESS_OPENED: 'Proceso de despacho abierto',
+  MARITIME_BOOKING_CONFIRMED: 'Booking marítimo confirmado',
+  LAND_TRANSPORT_SCHEDULED: 'Transporte terrestre programado',
+  INVOICE_ISSUED: 'Factura emitida',
+  CARGO_PICKED_UP: 'Carga recogida',
+  CARGO_DELIVERED_TO_PORT: 'Carga entregada en puerto/terminal',
+  EXPORT_DOCS_PREPARED: 'Documentos de exportación preparados',
+  PRE_SEAL_INSPECTION: 'Revisión de la carga antes del precinto',
+  MAPA_INSPECTION: 'Inspección del MAPA solicitada/realizada',
+  AFLATOXIN_LAB_REPORT: 'Informe de aflatoxina aprobado',
+  PHYTOSANITARY_CERTIFICATE: 'Certificado fitosanitario emitido',
+  EXPORT_DECLARATION_REGISTERED: 'DU-E registrada y despachada',
+  VESSEL_SPACE_CONFIRMED: 'Espacio en el buque confirmado',
+  CARGO_LOADED: 'Carga embarcada en el buque',
+  BL_ISSUED: 'BL emitido',
+  FX_CONTRACT_SIGNED: 'Contrato de cambio cerrado',
+  PAYMENT_RELEASE_AUTHORIZED: 'Liberación del pago autorizada',
+  PAYMENT_RECEIVED: 'Pago recibido por el exportador',
+  SHIPMENT_CLOSED: 'Embarque cerrado',
+  INSURANCE_CLAIM_OPENED: 'Siniestro abierto en la aseguradora',
+  LEGAL_REVIEW: 'Análisis jurídico',
+}
+for (const s of STAGE_DEFS) {
+  const e = ES_STAGE[s.stage]
+  if (e) {
+    s.title.es = e.title
+    s.description.es = e.description
+  }
+  for (const t of s.tasks) if (ES_TASK[t.key]) t.title.es = ES_TASK[t.key]
+}

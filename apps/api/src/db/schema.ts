@@ -54,7 +54,7 @@ export const users = pgTable('users', {
   passwordHash: text('password_hash').notNull(),
   fullName: text('full_name').notNull(),
   phone: text('phone'),
-  locale: text('locale').$type<'pt' | 'en'>().notNull().default('pt'),
+  locale: text('locale').$type<'pt' | 'en' | 'es'>().notNull().default('pt'),
   platformRole: text('platform_role').$type<PlatformRole>().notNull().default('NONE'),
   emailVerifiedAt: ts('email_verified_at'),
   disabledAt: ts('disabled_at'),

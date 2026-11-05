@@ -115,4 +115,20 @@ export const PARTNER_META: Record<PartnerType, PartnerMeta> = {
   },
 }
 
-export const partnerLabel = (type: PartnerType, locale: 'pt' | 'en' = 'pt') => PARTNER_META[type].label[locale]
+export const partnerLabel = (type: PartnerType, locale: 'pt' | 'en' | 'es' = 'pt') => PARTNER_META[type].label[locale] ?? PARTNER_META[type].label.en
+
+// ---------------------------------------------------------------- espanhol
+const ES_PARTNER: Record<PartnerType, { label: string; role: string }> = {
+  DESPACHANTE: { label: 'Agente de aduanas', role: 'Abre el proceso de despacho, registra la DU-E en Siscomex, solicita inspección del MAPA y certificados, y sigue la liberación.' },
+  TRANSPORTE_MARITIMO: { label: 'Transporte marítimo', role: 'Booking, confirmación de espacio, embarque, emisión del BL y seguimiento del buque/contenedor hasta el destino.' },
+  TRANSPORTE_TERRESTRE: { label: 'Transporte terrestre', role: 'Recoge la carga en el exportador y la entrega en el puerto/terminal de embarque.' },
+  CAMBIO: { label: 'Cambio', role: 'Contrato de cambio, recepción del pago del importador y liberación al exportador.' },
+  SEGURO: { label: 'Seguro', role: 'Cotización y emisión del seguro de la mercancía (y, a futuro, de crédito/pago y cosecha).' },
+  LABORATORIO: { label: 'Laboratorio acreditado', role: 'Análisis de aflatoxina e informes (fase 2).' },
+  CERTIFICADORA: { label: 'Certificadora', role: 'Certificados de origen/orgánicos y auditoría (fase 2).' },
+  TERMINAL: { label: 'Terminal aduanero', role: 'Almacenaje y estiba del contenedor (fase 2).' },
+}
+for (const [k, v] of Object.entries(ES_PARTNER) as [PartnerType, { label: string; role: string }][]) {
+  PARTNER_META[k].label.es = v.label
+  PARTNER_META[k].role.es = v.role
+}

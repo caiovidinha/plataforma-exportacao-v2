@@ -12,7 +12,7 @@ export interface AuthContext {
     id: string
     email: string
     fullName: string
-    locale: 'pt' | 'en'
+    locale: 'pt' | 'en' | 'es'
     platformRole: PlatformRole
     emailVerifiedAt: Date | null
   }

@@ -25,9 +25,9 @@ export const fmtRelative = (iso: string, locale = 'pt-BR') => {
   return rtf.format(Math.round(diff / 86400), 'day')
 }
 
-export const countryName = (code: string, locale: 'pt' | 'en' = 'pt') => {
+export const countryName = (code: string, locale: 'pt' | 'en' | 'es' = 'pt') => {
   const c = COUNTRIES.find((x) => x.code === code)
-  return c ? c.name[locale] ?? c.name.pt : code
+  return c ? c.name[locale] ?? (locale === 'es' ? c.name.en : c.name.pt) : code
 }
 
 export const portName = (code: string) => portByCode(code)?.name ?? code

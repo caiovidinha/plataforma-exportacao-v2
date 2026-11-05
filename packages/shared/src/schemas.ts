@@ -29,7 +29,7 @@ export const registerInputSchema = z.object({
   password: passwordSchema,
   fullName: z.string().trim().min(3).max(160),
   phone: z.string().trim().max(30).optional(),
-  locale: z.enum(['pt', 'en']).default('pt'),
+  locale: z.enum(['pt', 'en', 'es']).default('pt'),
   companyType: z.enum(COMPANY_TYPES),
   /** Nome inicial da empresa (completado no cadastro). */
   companyName: z.string().trim().min(2).max(200),

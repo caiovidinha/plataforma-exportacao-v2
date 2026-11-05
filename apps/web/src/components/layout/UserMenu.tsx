@@ -27,7 +27,9 @@ export function UserMenu({ user, className, light }: { user: SessionUser; classN
       <DropdownContent>
         <DropdownLabel>{user.email}</DropdownLabel>
         <DropdownSeparator />
-        <DropdownItem onSelect={() => setLocale(locale === 'pt' ? 'en' : 'pt')}>{locale === 'pt' ? 'English' : 'Português'}</DropdownItem>
+        {(['pt', 'en', 'es'] as const).filter((l) => l !== locale).map((l) => (
+          <DropdownItem key={l} onSelect={() => setLocale(l)}>{l === 'pt' ? 'Português' : l === 'en' ? 'English' : 'Español'}</DropdownItem>
+        ))}
         <DropdownSeparator />
         <DropdownItem danger onSelect={logout}>
           <LogOut className="h-4 w-4" /> {t('nav.logout')}

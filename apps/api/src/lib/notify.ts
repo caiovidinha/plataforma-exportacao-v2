@@ -14,7 +14,7 @@ export interface NotifyOptions {
   email?: boolean
 }
 
-async function deliver(ctx: AppContext, recipients: { id: string; email: string; locale: 'pt' | 'en'; emailVerifiedAt: Date | null }[], o: NotifyOptions) {
+async function deliver(ctx: AppContext, recipients: { id: string; email: string; locale: 'pt' | 'en' | 'es'; emailVerifiedAt: Date | null }[], o: NotifyOptions) {
   for (const u of recipients) {
     const title = msg(u.locale, o.titleKey, o.vars)
     const body = o.bodyKey ? msg(u.locale, o.bodyKey, o.vars) : ''

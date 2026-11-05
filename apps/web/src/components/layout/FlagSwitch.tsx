@@ -19,12 +19,19 @@ const US = (
   </svg>
 )
 
+const ES = (
+  <svg viewBox="0 0 32 32" className="h-full w-full" aria-hidden>
+    <rect width="32" height="32" fill="#c60b1e" />
+    <rect y="8" width="32" height="16" fill="#ffc400" />
+  </svg>
+)
+
 export function FlagSwitch({ className }: { className?: string }) {
   const locale = useLocale()
   const set = useSetLocale()
   return (
     <div className={cn('flex items-center gap-2', className)}>
-      {([['pt', BR, 'Português'], ['en', US, 'English']] as const).map(([l, flag, label]) => (
+      {([['pt', BR, 'Português'], ['en', US, 'English'], ['es', ES, 'Español']] as const).map(([l, flag, label]) => (
         <button
           key={l}
           type="button"

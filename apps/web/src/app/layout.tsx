@@ -17,7 +17,7 @@ export const viewport: Viewport = { themeColor: '#1b6145', width: 'device-width'
 export default function RootLayout({ children }: { children: ReactNode }) {
   const locale = getLocale()
   return (
-    <html lang={locale === 'pt' ? 'pt-BR' : 'en'} className={`${inter.variable} ${display.variable}`}>
+    <html lang={locale === 'pt' ? 'pt-BR' : locale} className={`${inter.variable} ${display.variable}`}>
       <body className="font-sans">
         <Providers locale={locale}>{children}</Providers>
       </body>

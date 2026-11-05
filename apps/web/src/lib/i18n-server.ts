@@ -2,7 +2,8 @@ import { cookies } from 'next/headers'
 import { translate, type Locale, type MessageKey } from './i18n-core'
 
 export function getLocale(): Locale {
-  return cookies().get('locale')?.value === 'en' ? 'en' : 'pt'
+  const v = cookies().get('locale')?.value
+  return v === 'en' || v === 'es' ? v : 'pt'
 }
 
 /** Tradutor para Server Components (landing). */

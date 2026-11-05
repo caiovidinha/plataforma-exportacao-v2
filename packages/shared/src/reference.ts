@@ -110,3 +110,11 @@ export const CERTIFICATIONS = [
   { value: 'HALAL', label: L('Halal', 'Halal') },
   { value: 'BRC', label: L('BRCGS', 'BRCGS') },
 ] as const
+
+const ES_COUNTRY: Record<string, string> = {
+  BR: 'Brasil', DE: 'Alemania', NL: 'Países Bajos', BE: 'Bélgica', FR: 'Francia', ES: 'España', IT: 'Italia', PT: 'Portugal', GB: 'Reino Unido', IE: 'Irlanda',
+  DK: 'Dinamarca', SE: 'Suecia', NO: 'Noruega', FI: 'Finlandia', PL: 'Polonia', CH: 'Suiza', AT: 'Austria', US: 'Estados Unidos', CA: 'Canadá', MX: 'México',
+  AR: 'Argentina', CL: 'Chile', CO: 'Colombia', PE: 'Perú', CN: 'China', HK: 'Hong Kong', JP: 'Japón', KR: 'Corea del Sur', IN: 'India', SG: 'Singapur',
+  AE: 'Emiratos Árabes Unidos', SA: 'Arabia Saudita', TR: 'Turquía', IL: 'Israel', AU: 'Australia', ZA: 'Sudáfrica',
+}
+for (const c of COUNTRIES) if (ES_COUNTRY[c.code]) c.name.es = ES_COUNTRY[c.code]

@@ -1,18 +1,31 @@
-import { ArrowRight, BadgeCheck, Calculator, ClipboardCheck, FileCheck2, Globe2, Handshake, Lock, Ship, ShieldCheck, Truck, Wallet } from 'lucide-react'
+import { ArrowRight, BadgeCheck, Calculator, FileCheck2, Handshake, Landmark, LineChart, Lock, PackageCheck, Route, ShieldCheck, Ship, Tags, Truck, Wallet } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getStageDef, MAIN_FLOW } from '@amazon-trade/shared'
+import { getStageDef, MAIN_FLOW, PARTNER_META, tr, type PartnerType } from '@amazon-trade/shared'
 import { Logo } from '@/components/brand/Logo'
 import { FlagSwitch } from '@/components/layout/FlagSwitch'
 import { LocaleSwitch } from '@/components/layout/LocaleSwitch'
 import { getT } from '@/lib/i18n-server'
 
-/** Landing pública — tom principal #1b6145. Conteúdo 100% estático (sem dados de exemplo fingindo ser reais). */
+/** Verde de destaque = o mesmo do botão "Log in" do banner. */
+const LIME = 'bg-[#a9d43f]'
+const GUTTER = 'px-[6%] md:px-[9%]'
+const VIDEO_ID = 'DSyAje9OG7g'
+
+/** Landing pública — banner no layout de referência, demais seções com o mesmo respiro lateral. */
 export default function Landing() {
   const { t, locale } = getT()
 
+  const features = [
+    { icon: Tags, title: t('landing.feat1.title'), text: t('landing.feat1.text') },
+    { icon: FileCheck2, title: t('landing.feat2.title'), text: t('landing.feat2.text') },
+    { icon: Route, title: t('landing.feat3.title'), text: t('landing.feat3.text') },
+    { icon: Truck, title: t('landing.feat4.title'), text: t('landing.feat4.text') },
+    { icon: ShieldCheck, title: t('landing.feat5.title'), text: t('landing.feat5.text') },
+    { icon: LineChart, title: t('landing.feat6.title'), text: t('landing.feat6.text') },
+  ]
   const steps = [
-    { icon: ClipboardCheck, title: t('landing.step1.title'), text: t('landing.step1.text') },
+    { icon: Landmark, title: t('landing.step1.title'), text: t('landing.step1.text') },
     { icon: Calculator, title: t('landing.step2.title'), text: t('landing.step2.text') },
     { icon: Handshake, title: t('landing.step3.title'), text: t('landing.step3.text') },
     { icon: Ship, title: t('landing.step4.title'), text: t('landing.step4.text') },
@@ -24,6 +37,7 @@ export default function Landing() {
     { img: 'corretora', icon: Wallet, name: t('landing.partner.fx'), text: t('landing.partner.fx.text') },
     { img: 'seguradora', icon: ShieldCheck, name: t('landing.partner.insurance'), text: t('landing.partner.insurance.text') },
   ]
+  const stagePartners = (stage: (typeof MAIN_FLOW)[number]) => [...new Set(getStageDef(stage).tasks.map((x) => x.partner).filter(Boolean))] as PartnerType[]
 
   return (
     <div className="bg-white">
@@ -45,7 +59,7 @@ export default function Landing() {
             </nav>
             <div className="flex items-center gap-4">
               <FlagSwitch />
-              <Link href="/login" className="inline-flex items-center gap-2 rounded-full bg-[#a9d43f] px-5 py-2 font-display text-sm font-medium text-brand-950 transition-colors hover:bg-[#bde253] md:text-[clamp(0.85rem,1.05vw,1rem)]">
+              <Link href="/login" className={`inline-flex items-center gap-2 rounded-full ${LIME} px-5 py-2 font-display text-sm font-medium text-brand-950 transition-colors hover:bg-[#bde253] md:text-[clamp(0.85rem,1.05vw,1rem)]`}>
                 <span className="h-2 w-2 rounded-full bg-brand-950" /> {t('landing.login')}
               </Link>
             </div>
@@ -59,58 +73,87 @@ export default function Landing() {
               <p className="text-[0.82em] text-white/85">{t('landing.hero.line3')}</p>
             </div>
             <div className="mt-8 flex flex-wrap gap-3 md:hidden">
-              <Link href="/register?type=EXPORTER" className="bg-white px-5 py-2.5 text-sm font-semibold text-brand-800">{t('landing.cta.exporter')}</Link>
+              <Link href="/register?type=EXPORTER" className={`${LIME} px-5 py-2.5 text-sm font-semibold text-brand-950`}>{t('landing.cta.exporter')}</Link>
               <Link href="/register?type=IMPORTER" className="border border-white/50 px-5 py-2.5 text-sm font-semibold">{t('landing.cta.importer')}</Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ------------------------------------------------ como funciona */}
-      <section id="como-funciona" className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
+      {/* ------------------------------------------------ recursos */}
+      <section id="recursos" className={`${GUTTER} py-20 md:py-28`}>
         <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">{t('landing.how.kicker')}</p>
-          <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink-900 sm:text-4xl">{t('landing.how.title')}</h2>
-          <p className="mt-4 text-lg text-ink-600">{t('landing.how.subtitle')}</p>
+          <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">{t('landing.feat.kicker')}</p>
+          <h2 className="mt-2 font-display text-3xl font-medium tracking-tight text-ink-900 md:text-4xl">{t('landing.feat.title')}</h2>
         </div>
-        <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((s, i) => (
-            <li key={s.title} className="relative rounded-2xl border border-ink-200 bg-white p-6 shadow-card">
-              <span className="absolute right-5 top-5 text-5xl font-semibold text-brand-50">{i + 1}</span>
-              <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-50 text-brand-700">
-                <s.icon className="h-5 w-5" />
+        <div className="mt-12 grid gap-px border border-ink-200 bg-ink-200 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((f) => (
+            <article key={f.title} className="bg-white p-7 transition-colors hover:bg-brand-50/60">
+              <span className={`grid h-12 w-12 place-items-center ${LIME} text-brand-950`}>
+                <f.icon className="h-5 w-5" />
               </span>
-              <h3 className="mt-5 text-base font-semibold text-ink-900">{s.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink-600">{s.text}</p>
-            </li>
+              <h3 className="mt-5 text-base font-semibold text-ink-900">{f.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink-600">{f.text}</p>
+            </article>
           ))}
-        </ol>
+        </div>
       </section>
 
-      {/* ------------------------------------------------ para quem */}
-      <section id="para-quem" className="bg-brand-50 py-20 sm:py-28">
-        <div className="mx-auto grid max-w-7xl gap-6 px-5 sm:px-8 lg:grid-cols-2">
+      {/* ------------------------------------------------ como funciona + vídeo */}
+      <section id="como-funciona" className="relative isolate overflow-hidden bg-brand-950 text-white">
+        <Image src="/img/hero-background.webp" alt="" fill sizes="100vw" className="-z-10 object-cover opacity-25 mix-blend-luminosity" />
+        <div className={`${GUTTER} py-20 md:py-28`}>
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-sm font-semibold uppercase tracking-wider text-[#a9d43f]">{t('landing.how.kicker')}</p>
+            <h2 className="mt-2 font-display text-3xl font-medium tracking-tight md:text-4xl">{t('landing.how.title')}</h2>
+            <p className="mt-4 text-brand-100/80">{t('landing.how.subtitle')}</p>
+          </div>
+          <div className="relative mx-auto mt-10 aspect-video w-full max-w-3xl shadow-2xl ring-1 ring-white/15">
+            <iframe
+              src={`https://www.youtube.com/embed/${VIDEO_ID}?rel=0&modestbranding=1`}
+              title="Amazon Trade"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 h-full w-full"
+            />
+          </div>
+          <ol className="mt-14 grid gap-px bg-white/15 sm:grid-cols-2 lg:grid-cols-4">
+            {steps.map((s, i) => (
+              <li key={s.title} className="relative bg-brand-950/90 p-6">
+                <span className="absolute right-5 top-4 font-display text-5xl font-light text-white/10">{i + 1}</span>
+                <span className={`grid h-11 w-11 place-items-center ${LIME} text-brand-950`}><s.icon className="h-5 w-5" /></span>
+                <h3 className="mt-5 text-base font-semibold">{s.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-brand-100/75">{s.text}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------ para quem (cards compactos, imagem até a borda) */}
+      <section id="para-quem" className={`bg-brand-50 ${GUTTER} py-16 md:py-24`}>
+        <div className="grid gap-6 lg:grid-cols-2">
           {[
             { img: 'exportador', title: t('landing.exporter.title'), text: t('landing.exporter.text'), items: [t('landing.exporter.i1'), t('landing.exporter.i2'), t('landing.exporter.i3')], cta: t('landing.cta.exporter'), href: '/register?type=EXPORTER' },
             { img: 'importador', title: t('landing.importer.title'), text: t('landing.importer.text'), items: [t('landing.importer.i1'), t('landing.importer.i2'), t('landing.importer.i3')], cta: t('landing.cta.importer'), href: '/register?type=IMPORTER' },
           ].map((c) => (
-            <article key={c.img} className="overflow-hidden rounded-3xl bg-white shadow-card ring-1 ring-brand-100">
-              <div className="relative h-56">
-                <Image src={`/img/${c.img}.webp`} alt="" fill sizes="(min-width:1024px) 50vw, 100vw" className="object-cover object-top" />
-                <div className="absolute inset-0 bg-gradient-to-t from-white via-white/10 to-transparent" />
+            <article key={c.img} className="flex flex-col overflow-hidden border border-brand-100 bg-white sm:flex-row">
+              <div className="relative h-44 shrink-0 overflow-hidden sm:h-auto sm:w-[38%]">
+                <Image src={`/img/${c.img}.webp`} alt="" fill sizes="(min-width:1024px) 20vw, 100vw" className="origin-top scale-[1.3] object-cover object-top" />
               </div>
-              <div className="p-7 pt-2">
-                <h3 className="text-2xl font-semibold tracking-tight text-ink-900">{c.title}</h3>
-                <p className="mt-2 text-ink-600">{c.text}</p>
-                <ul className="mt-5 space-y-2.5">
+              <div className="flex-1 p-6">
+                <h3 className="font-display text-xl font-medium text-ink-900">{c.title}</h3>
+                <p className="mt-1.5 text-sm text-ink-600">{c.text}</p>
+                <ul className="mt-4 space-y-2">
                   {c.items.map((i) => (
-                    <li key={i} className="flex gap-2.5 text-sm text-ink-700">
-                      <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" />
+                    <li key={i} className="flex gap-2 text-[13px] leading-snug text-ink-700">
+                      <BadgeCheck className="mt-px h-4 w-4 shrink-0 text-brand-600" />
                       {i}
                     </li>
                   ))}
                 </ul>
-                <Link href={c.href} className="mt-7 inline-flex items-center gap-2 rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700">
+                <Link href={c.href} className={`mt-5 inline-flex items-center gap-2 ${LIME} px-4 py-2 text-sm font-semibold text-brand-950 hover:bg-[#bde253]`}>
                   {c.cta} <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
@@ -120,20 +163,20 @@ export default function Landing() {
       </section>
 
       {/* ------------------------------------------------ parceiros */}
-      <section id="parceiros" className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
+      <section id="parceiros" className={`${GUTTER} py-20 md:py-28`}>
         <div className="max-w-2xl">
           <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">{t('landing.partners.kicker')}</p>
-          <h2 className="mt-2 text-3xl font-semibold tracking-tight text-ink-900 sm:text-4xl">{t('landing.partners.title')}</h2>
+          <h2 className="mt-2 font-display text-3xl font-medium tracking-tight text-ink-900 md:text-4xl">{t('landing.partners.title')}</h2>
           <p className="mt-4 text-lg text-ink-600">{t('landing.partners.subtitle')}</p>
         </div>
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
           {partners.map((p) => (
-            <article key={p.name} className="group overflow-hidden rounded-2xl border border-ink-200 bg-white shadow-card transition-shadow hover:shadow-pop">
+            <article key={p.name} className="group overflow-hidden border border-ink-200 bg-white transition-shadow hover:shadow-pop">
               <div className="relative h-36 overflow-hidden bg-brand-900">
-                <Image src={`/img/${p.img}.webp`} alt="" fill sizes="(min-width:1024px) 20vw, 50vw" className="object-cover object-top opacity-80 transition-transform duration-500 group-hover:scale-105" />
-                <div className="absolute inset-0 bg-brand-900/30" />
-                <span className="absolute bottom-3 left-3 grid h-9 w-9 place-items-center rounded-lg bg-white text-brand-700 shadow">
-                  <p.icon className="h-4.5 w-4.5" />
+                <Image src={`/img/${p.img}.webp`} alt="" fill sizes="(min-width:1024px) 18vw, 50vw" className="origin-top scale-[1.25] object-cover object-top opacity-85 transition-transform duration-500 group-hover:scale-[1.35]" />
+                <div className="absolute inset-0 bg-brand-900/25" />
+                <span className={`absolute bottom-0 left-0 grid h-10 w-10 place-items-center ${LIME} text-brand-950`}>
+                  <p.icon className="h-5 w-5" />
                 </span>
               </div>
               <div className="p-4">
@@ -148,46 +191,83 @@ export default function Landing() {
         </p>
       </section>
 
-      {/* ------------------------------------------------ processo (etapas reais do embarque) */}
-      <section id="processo" className="bg-brand-950 py-20 text-white sm:py-28">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+      {/* ------------------------------------------------ processo: caminho (path) das etapas */}
+      <section id="processo" className="bg-brand-950 py-20 text-white md:py-28">
+        <div className={GUTTER}>
           <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-wider text-brand-300">{t('landing.process.kicker')}</p>
-            <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">{t('landing.process.title')}</h2>
+            <p className="text-sm font-semibold uppercase tracking-wider text-[#a9d43f]">{t('landing.process.kicker')}</p>
+            <h2 className="mt-2 font-display text-3xl font-medium tracking-tight md:text-4xl">{t('landing.process.title')}</h2>
             <p className="mt-4 text-lg text-brand-100/80">{t('landing.process.subtitle')}</p>
           </div>
-          <ol className="mt-12 grid gap-4 md:grid-cols-5">
-            {MAIN_FLOW.map((stage, i) => {
-              const def = getStageDef(stage)
-              return (
-                <li key={stage} className="relative rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
-                  <span className="text-xs font-semibold text-brand-300">{String(i + 1).padStart(2, '0')}</span>
-                  <h3 className="mt-2 text-base font-semibold">{def.title[locale]}</h3>
-                  <p className="mt-2 text-xs leading-relaxed text-brand-100/70">{def.description[locale]}</p>
-                </li>
-              )
-            })}
-          </ol>
+
+          {/* trilho principal */}
+          <div className="relative mt-16">
+            <div aria-hidden className="absolute left-[10%] right-[10%] top-[19px] hidden h-[3px] bg-gradient-to-r from-[#a9d43f]/20 via-[#a9d43f] to-[#a9d43f]/20 md:block" />
+            <div aria-hidden className="absolute bottom-6 left-[19px] top-6 w-[3px] bg-[#a9d43f]/50 md:hidden" />
+            <ol className="relative grid gap-10 md:grid-cols-5 md:gap-4">
+              {MAIN_FLOW.map((stage, i) => {
+                const def = getStageDef(stage)
+                const last = i === MAIN_FLOW.length - 1
+                return (
+                  <li key={stage} className="relative flex gap-5 md:block md:text-center">
+                    <span className={`relative z-10 grid h-10 w-10 shrink-0 place-items-center font-display text-sm font-semibold text-brand-950 md:mx-auto ${last ? 'bg-white ring-4 ring-[#a9d43f]' : `${LIME} ring-4 ring-brand-950`}`}>
+                      {last ? <PackageCheck className="h-5 w-5" /> : String(i + 1).padStart(2, '0')}
+                    </span>
+                    <div className="md:mt-5">
+                      <h3 className="font-display text-lg font-medium">{tr(def.title, locale)}</h3>
+                      <p className="mt-2 text-[13px] leading-relaxed text-brand-100/70">{tr(def.description, locale)}</p>
+                      <div className="mt-3 flex flex-wrap gap-1.5 md:justify-center">
+                        {stagePartners(stage).map((p) => (
+                          <span key={p} className="border border-white/20 px-2 py-0.5 text-[11px] text-brand-100/80">{tr(PARTNER_META[p].label, locale)}</span>
+                        ))}
+                        {stagePartners(stage).length === 0 && <span className="border border-white/20 px-2 py-0.5 text-[11px] text-brand-100/80">{t('landing.process.platform')}</span>}
+                      </div>
+                    </div>
+                  </li>
+                )
+              })}
+            </ol>
+          </div>
+
+          {/* ramificações de exceção */}
+          <div className="relative mt-14 md:mx-[10%] md:mt-12">
+            <div aria-hidden className="absolute -top-12 right-[12.5%] hidden h-12 w-px border-l-2 border-dashed border-[#a9d43f]/60 md:block" />
+            <div aria-hidden className="absolute -top-12 right-[37.5%] hidden h-12 w-px border-l-2 border-dashed border-[#a9d43f]/60 md:block" />
+            <div className="grid gap-4 md:grid-cols-2">
+              {(['NAO_PAGAMENTO', 'MERCADORIA_RECUSADA'] as const).map((stage) => {
+                const def = getStageDef(stage)
+                return (
+                  <div key={stage} className="border border-dashed border-[#a9d43f]/50 bg-white/5 p-5">
+                    <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#a9d43f]">
+                      <ShieldCheck className="h-4 w-4" /> {t('landing.process.exception')}
+                    </p>
+                    <h3 className="mt-2 font-display text-base font-medium">{tr(def.title, locale)}</h3>
+                    <p className="mt-1 text-[13px] leading-relaxed text-brand-100/70">{tr(def.description, locale)}</p>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
         </div>
       </section>
 
       {/* ------------------------------------------------ CTA + rodapé */}
-      <section className="bg-brand-600 py-16 text-white">
-        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-5 sm:px-8 md:flex-row md:items-center">
+      <section className={`bg-brand-700 ${GUTTER} py-14 text-white`}>
+        <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div>
-            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">{t('landing.final.title')}</h2>
+            <h2 className="font-display text-2xl font-medium tracking-tight md:text-3xl">{t('landing.final.title')}</h2>
             <p className="mt-2 text-brand-50/90">{t('landing.final.text')}</p>
           </div>
-          <Link href="/register" className="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-semibold text-brand-800 hover:bg-brand-50">
+          <Link href="/register" className={`inline-flex items-center gap-2 ${LIME} px-6 py-3 font-semibold text-brand-950 hover:bg-[#bde253]`}>
             {t('landing.register')} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </section>
 
       <footer className="bg-brand-950 text-brand-100/80">
-        <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-10 sm:px-8 md:flex-row md:items-center md:justify-between">
+        <div className={`${GUTTER} flex flex-col gap-6 py-10 md:flex-row md:items-center md:justify-between`}>
           <div>
-            <Logo tone="light" />
+            <Logo tone="light" className="h-9" />
             <p className="mt-3 max-w-sm text-xs leading-relaxed">{t('landing.footer.about')}</p>
           </div>
           <div className="flex items-center gap-6 text-sm">
@@ -196,9 +276,7 @@ export default function Landing() {
             <LocaleSwitch tone="light" />
           </div>
         </div>
-        <div className="border-t border-white/10 py-4 text-center text-xs text-brand-100/50">
-          <Globe2 className="mr-1.5 inline h-3 w-3" /> © {new Date().getFullYear()} Amazon Trade
-        </div>
+        <div className="border-t border-white/10 py-4 text-center text-xs text-brand-100/50">© {new Date().getFullYear()} Amazon Trade</div>
       </footer>
     </div>
   )
