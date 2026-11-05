@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify'
+import { adminRoutes } from './admin/routes'
 import { catalogRoutes } from './catalog/routes'
 import { companyRoutes } from './companies/routes'
 import { dashboardRoutes } from './dashboard/routes'
@@ -20,6 +21,7 @@ export async function registerModules(app: FastifyInstance) {
   await app.register(shipmentRoutes)
   await app.register(notificationRoutes)
   await app.register(dashboardRoutes)
+  await app.register(adminRoutes)
   await app.register(integrationAdminRoutes)
   await app.register(webhookRoutes)
   await app.register(partnerActionRoutes)
