@@ -20,16 +20,24 @@ const MAGIC: { mime: string; test: (b: Buffer) => boolean }[] = [
 /** Valida tamanho, extensão e assinatura real do arquivo (não confia só no Content-Type). */
 export async function readValidatedUpload(part: MultipartFile, opts: { imagesOnly?: boolean } = {}) {
   const buffer = await part.toBuffer()
-  if ((part.file as unknown as { truncated?: boolean }).truncated || buffer.length > DOCUMENT_UPLOAD_RULES.maxBytes) {
+  if ((part.file as unknown as { truncated?: boolean }).truncated) {
+    throw badRequest('file_too_large', `Arquivo excede ${DOCUMENT_UPLOAD_RULES.maxBytes / 1024 / 1024} MB`)
+  }
+  return validateUploadBuffer(buffer, part.filename, opts)
+}
+
+/** Mesma validação para arquivos que não vêm de multipart (ex.: documentos baixados de parceiros). */
+export function validateUploadBuffer(buffer: Buffer, filename: string, opts: { imagesOnly?: boolean } = {}) {
+  if (buffer.length > DOCUMENT_UPLOAD_RULES.maxBytes) {
     throw badRequest('file_too_large', `Arquivo excede ${DOCUMENT_UPLOAD_RULES.maxBytes / 1024 / 1024} MB`)
   }
   if (buffer.length === 0) throw badRequest('file_empty')
-  const ext = part.filename.split('.').pop()?.toLowerCase() ?? ''
+  const ext = filename.split('.').pop()?.toLowerCase() ?? ''
   if (!DOCUMENT_UPLOAD_RULES.allowedExtensions.includes(ext)) throw badRequest('file_type_not_allowed', 'Use PDF, JPG ou PNG')
   const detected = MAGIC.find((m) => m.test(buffer))
   if (!detected) throw badRequest('file_content_invalid', 'Conteúdo do arquivo não corresponde a PDF/JPG/PNG')
   if (opts.imagesOnly && detected.mime === 'application/pdf') throw badRequest('file_type_not_allowed', 'Envie uma imagem (JPG/PNG)')
-  const safeName = part.filename.replace(/[^\w.\- ()]/g, '_').slice(0, 160)
+  const safeName = filename.replace(/[^\w.\- ()]/g, '_').slice(0, 160)
   return { buffer, mimeType: detected.mime, originalName: safeName }
 }
 

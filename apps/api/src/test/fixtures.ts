@@ -145,6 +145,20 @@ export async function createPublishedProduct(t: TestApp, exporter: Actor, over: 
   return res.json() as { id: string; name: string }
 }
 
+/** Simula → cria pedido → exportador confirma. Devolve ids do pedido e do embarque. */
+export async function createConfirmedShipment(t: TestApp, a: { exporter: Actor; importer: Actor; productId: string }) {
+  const sim = await t.app.inject({
+    method: 'POST', url: '/simulations', headers: a.importer.h,
+    payload: { productId: a.productId, quantityKg: 20000, destinationPort: 'NLRTM', incoterm: 'CIF', currency: 'USD', containerType: '40HC' },
+  })
+  if (sim.statusCode !== 201) throw new Error(`simulation failed ${sim.statusCode}: ${sim.body}`)
+  const order = await t.app.inject({ method: 'POST', url: '/orders', headers: a.importer.h, payload: { simulationId: sim.json().id } })
+  if (order.statusCode !== 201) throw new Error(`order failed ${order.statusCode}: ${order.body}`)
+  const decided = await t.app.inject({ method: 'POST', url: `/orders/${order.json().id}/decision`, headers: a.exporter.h, payload: { decision: 'ACCEPT' } })
+  if (decided.statusCode !== 200) throw new Error(`decision failed ${decided.statusCode}: ${decided.body}`)
+  return { orderId: order.json().id as string, shipmentId: decided.json().shipmentId as string }
+}
+
 export async function createPartner(
   t: TestApp,
   opts: { type: PartnerType; key?: string; mode?: IntegrationMode; adapter?: string; config?: Record<string, unknown>; enabled?: boolean; email?: string },

@@ -207,6 +207,8 @@ export const pricingConfigSchema = z.object({
 
 export const partnerActionSubmitSchema = z.object({
   action: z.enum(['ACCEPT', 'REJECT', 'UPDATE_STATUS', 'SEND_QUOTE']),
+  /** Tarefa-alvo; por padrão a do link. Só tarefas do tipo do parceiro são aceitas. */
+  taskKey: z.string().max(60).optional(),
   taskStatus: z.enum(['IN_PROGRESS', 'DONE', 'BLOCKED']).optional(),
   note: z.string().max(2000).optional(),
   quote: z.object({ amount: z.number().nonnegative(), currency: z.enum(CURRENCIES), validUntil: z.string().optional() }).optional(),

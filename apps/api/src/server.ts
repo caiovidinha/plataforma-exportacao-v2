@@ -1,12 +1,16 @@
 import { buildApp } from './app'
 import { createContext } from './bootstrap'
 import { registerModules } from './modules'
+import { startWorker } from './modules/integrations/worker'
 
 const ctx = await createContext()
 const app = await buildApp(ctx, { extraRoutes: registerModules })
 
+const worker = ctx.config.INTEGRATION_WORKER_ENABLED ? startWorker(ctx, app.log) : null
+
 const shutdown = async (signal: string) => {
   app.log.info(`${signal} recebido, encerrando...`)
+  worker?.stop()
   await app.close()
   await ctx.close()
   process.exit(0)

@@ -39,19 +39,24 @@ export class AdapterRegistry {
     return [...this.adapters.values()].map((a) => ({ id: a.id, capabilities: [...a.capabilities] }))
   }
 
-  private async buildRuntime(ctx: AppContext, partnerId: string): Promise<ResolvedIntegration | null> {
+  private async buildRuntime(ctx: AppContext, partnerId: string, opts: { integrationId?: string } = {}): Promise<ResolvedIntegration | null> {
     const [partnerRow] = await ctx.db.select().from(partners).where(eq(partners.id, partnerId)).limit(1)
-    if (!partnerRow || !partnerRow.active) return null
-    const rows = await ctx.db
-      .select()
-      .from(partnerIntegrations)
-      .where(and(eq(partnerIntegrations.partnerId, partnerId), eq(partnerIntegrations.enabled, true)))
-      .orderBy(desc(partnerIntegrations.environment)) // PRODUCTION antes de SANDBOX
-    const eligible = rows.filter((r) => ctx.config.NODE_ENV !== 'production' || r.environment === 'PRODUCTION')
+    if (!partnerRow) return null
+    if (!opts.integrationId && !partnerRow.active) return null
+    const rows = opts.integrationId
+      ? await ctx.db.select().from(partnerIntegrations).where(and(eq(partnerIntegrations.id, opts.integrationId), eq(partnerIntegrations.partnerId, partnerId)))
+      : await ctx.db
+          .select()
+          .from(partnerIntegrations)
+          .where(and(eq(partnerIntegrations.partnerId, partnerId), eq(partnerIntegrations.enabled, true)))
+          .orderBy(desc(partnerIntegrations.environment)) // PRODUCTION antes de SANDBOX
+    const eligible = opts.integrationId ? rows : rows.filter((r) => ctx.config.NODE_ENV !== 'production' || r.environment === 'PRODUCTION')
     const row = eligible[0]
     if (!row) return null
 
     const adapterId = (row.config.adapter as string | undefined) ?? defaultAdapterId(partnerRow.type, row.mode)
+    // o parceiro simulado nunca atende operações reais
+    if (adapterId === 'sandbox' && ctx.config.NODE_ENV === 'production') return null
     const adapter = this.adapters.get(adapterId)
     if (!adapter) return null
 
@@ -94,6 +99,11 @@ export class AdapterRegistry {
       },
     }
     return { adapter, adapterCtx, partner, integration }
+  }
+
+  /** Uma integração específica (mesmo desabilitada) — usado em "testar conexão" no backoffice. */
+  resolveById(ctx: AppContext, partnerId: string, integrationId: string) {
+    return this.buildRuntime(ctx, partnerId, { integrationId })
   }
 
   /** Integração ativa de um parceiro específico. */

@@ -20,7 +20,8 @@ async function deliver(ctx: AppContext, recipients: { id: string; email: string;
     const body = o.bodyKey ? msg(u.locale, o.bodyKey, o.vars) : ''
     await ctx.db.insert(notifications).values({ userId: u.id, kind: o.kind, title, body, link: o.link ?? null })
     if (o.email && u.emailVerifiedAt) {
-      const link = o.link ? `${ctx.config.WEB_ORIGIN}${o.link}` : ctx.config.WEB_ORIGIN
+      const origin = ctx.config.WEB_ORIGIN.split(',')[0]!.trim()
+      const link = o.link ? `${origin}${o.link}` : origin
       await ctx.mailer.send({ to: u.email, subject: `${title} — Amazon Trade`, text: `${title}\n\n${body}\n\n${link}` })
     }
   }

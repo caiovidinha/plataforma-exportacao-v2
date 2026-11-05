@@ -126,7 +126,12 @@ export interface PartnerAdapter {
   /** Polling de status (fallback quando não há webhook). */
   fetchStatus?(ctx: AdapterContext, externalRef: string): Promise<NormalizedPartnerEvent[]>
   cancel?(ctx: AdapterContext, externalRef: string): Promise<void>
-  /** Verifica assinatura e normaliza o corpo recebido em `POST /webhooks/:partnerKey`. */
+  /**
+   * Verificação de assinatura própria do parceiro. Se ausente, a plataforma aplica o esquema padrão
+   * (`x-at-timestamp` + `x-at-signature: sha256=HMAC(webhookSecret, "<ts>.<corpo>")`, tolerância de 5 min).
+   */
+  verifyWebhook?(ctx: AdapterContext, headers: Record<string, string | string[] | undefined>, rawBody: Buffer): boolean
+  /** Normaliza o corpo (já autenticado) recebido em `POST /webhooks/:partnerKey`. */
   parseWebhook?(ctx: AdapterContext, headers: Record<string, string | string[] | undefined>, rawBody: Buffer): Promise<WebhookParseResult>
   healthCheck?(ctx: AdapterContext): Promise<{ ok: boolean; detail?: string }>
 }

@@ -220,7 +220,8 @@ export interface PartnerDto {
   contactPhone: string | null
   active: boolean
   notes: string | null
-  integration: IntegrationDto | null
+  /** Uma integração por ambiente (SANDBOX / PRODUCTION). */
+  integrations: IntegrationDto[]
 }
 
 export interface IntegrationDto {

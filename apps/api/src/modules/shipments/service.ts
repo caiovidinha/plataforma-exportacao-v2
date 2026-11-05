@@ -164,6 +164,8 @@ export async function updateTask(ctx: AppContext, shipmentId: string, taskKey: s
   const task = candidates.find((t) => t.stage === shipment.stage) ?? candidates[0]
   if (!task) throw notFound('task_not_found')
   if (meta.partnerType && task.partnerType !== meta.partnerType) throw unprocessable('task_not_owned_by_partner', 'Este parceiro não é responsável pela tarefa')
+  // eventos tardios/duplicados de parceiros nunca reabrem uma tarefa concluída
+  if (meta.source === 'PARTNER' && task.status === 'DONE' && status !== 'DONE') return getShipmentDto(ctx, shipmentId)
 
   const now = meta.occurredAt ?? ctx.now()
   const after: AfterCommit = []

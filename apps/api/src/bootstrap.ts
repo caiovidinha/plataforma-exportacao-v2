@@ -3,6 +3,7 @@ import type { AppContext } from './context'
 import { createDb } from './db/client'
 import { createMailer } from './lib/mail'
 import { createStorage } from './lib/storage'
+import { registerDefaultAdapters } from './modules/integrations/adapters'
 import { AdapterRegistry } from './modules/integrations/registry'
 
 /** Monta o contexto da aplicação (db, mail, storage, adapters). */
@@ -18,5 +19,6 @@ export async function createContext(overrides: Partial<Config> = {}, parts: Part
     adapters: parts.adapters ?? new AdapterRegistry(),
     now: parts.now ?? (() => new Date()),
   }
+  if (!parts.adapters) registerDefaultAdapters(ctx)
   return Object.assign(ctx, { close: async () => void (await handle?.close()) })
 }
