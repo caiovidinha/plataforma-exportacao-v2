@@ -107,3 +107,53 @@ export async function createActor(
 
 export const allSections = (type: CompanyType) => sectionsFor(type)
 export const requiredDocs = (type: CompanyType) => documentTypesFor(type).filter((d) => d.required)
+
+// ---------------------------------------------------------------- catálogo / pricing / parceiros
+import { partnerIntegrations, partners, tariffs } from '../db/schema'
+import { SAMPLE_TARIFFS } from '../db/sample-tariffs'
+import type { PartnerType, IntegrationMode } from '@amazon-trade/shared'
+
+export async function seedSampleTariffs(t: TestApp) {
+  await t.ctx.db.insert(tariffs).values(
+    SAMPLE_TARIFFS.map((x) => ({ service: x.service, match: x.match, pricing: x.pricing, validFrom: x.validFrom, validTo: x.validTo ?? null, label: x.label, isSample: x.isSample })),
+  )
+}
+
+export const productPayload = (over: Record<string, unknown> = {}) => ({
+  name: 'Castanha-do-Brasil Crua In Natura',
+  category: 'Castanha-do-Brasil',
+  description: 'Castanha selecionada',
+  ncm: '0801.21.00',
+  packaging: 'Sacos de 25 kg',
+  originPort: 'BRBEL',
+  originState: 'PA',
+  harvestYear: 2026,
+  basePriceUsdPerKg: 5,
+  minOrderKg: 1000,
+  availableKg: 60000,
+  leadTimeDays: 20,
+  incoterms: ['FOB', 'CFR', 'CIF'],
+  destinationCountries: ['DE', 'NL'],
+  technicalSheet: { physicochemical: { maxMoisturePct: 5, aflatoxinTolerance: [{ country: 'DE', ppb: 4 }] } },
+  status: 'PUBLISHED',
+  ...over,
+})
+
+export async function createPublishedProduct(t: TestApp, exporter: Actor, over: Record<string, unknown> = {}) {
+  const res = await t.app.inject({ method: 'POST', url: '/products', headers: exporter.h, payload: productPayload(over) })
+  if (res.statusCode !== 201) throw new Error(`product create failed ${res.statusCode}: ${res.body}`)
+  return res.json() as { id: string; name: string }
+}
+
+export async function createPartner(
+  t: TestApp,
+  opts: { type: PartnerType; key?: string; mode?: IntegrationMode; adapter?: string; config?: Record<string, unknown>; enabled?: boolean; email?: string },
+) {
+  const key = opts.key ?? `${opts.type.toLowerCase().replace(/_/g, '-')}-${Math.random().toString(36).slice(2, 7)}`
+  const [partner] = await t.ctx.db.insert(partners).values({ type: opts.type, key, name: `Parceiro ${key}`, contactEmail: opts.email ?? `${key}@partner.test`, active: true }).returning()
+  const [integration] = await t.ctx.db
+    .insert(partnerIntegrations)
+    .values({ partnerId: partner!.id, mode: opts.mode ?? 'API', environment: 'SANDBOX', enabled: opts.enabled ?? true, config: { ...(opts.adapter ? { adapter: opts.adapter } : {}), ...(opts.config ?? {}) } })
+    .returning()
+  return { partner: partner!, integration: integration! }
+}
