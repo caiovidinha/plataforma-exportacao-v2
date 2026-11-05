@@ -1,0 +1,22 @@
+# PostgreSQL local para desenvolvimento (opcional: sem Docker a API usa PGlite embarcado).
+# Uso: docker compose up -d   e   DB_DRIVER=pg DATABASE_URL=postgres://amazon:amazon@localhost:5432/amazon_trade
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: amazon
+      POSTGRES_PASSWORD: amazon
+      POSTGRES_DB: amazon_trade
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U amazon -d amazon_trade']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:
