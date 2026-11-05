@@ -1,6 +1,7 @@
 'use client'
 import { ArrowRight, MailWarning } from 'lucide-react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import toast from 'react-hot-toast'
 import type { SessionUser } from '@amazon-trade/shared'
 import { api } from '@/lib/api'
@@ -11,6 +12,7 @@ import { Alert, Button } from '@/components/ui/primitives'
 /** Avisos globais: e-mail não verificado e cadastro pendente/recusado. */
 export function AccountBanners({ user, onboardingHref }: { user: SessionUser; onboardingHref: string }) {
   const t = useT()
+  const pathname = usePathname()
   const resend = useSend(() => api('/auth/resend-verification', { method: 'POST' }), { onSuccess: () => toast.success(t('banner.verify.sent')) })
   const status = user.company?.onboardingStatus
   return (
@@ -27,7 +29,7 @@ export function AccountBanners({ user, onboardingHref }: { user: SessionUser; on
           </div>
         </Alert>
       )}
-      {status && status !== 'APPROVED' && (
+      {status && status !== 'APPROVED' && !pathname.endsWith('/onboarding') && (
         <Alert tone={status === 'REJECTED' ? 'error' : status === 'CHANGES_REQUESTED' ? 'warn' : 'info'}>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <span>{t(`banner.onboarding.${status}` as never)}</span>
