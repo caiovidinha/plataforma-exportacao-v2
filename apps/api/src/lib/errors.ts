@@ -20,3 +20,13 @@ export const conflict = (code = 'conflict', message?: string, details?: unknown)
 export const unprocessable = (code = 'unprocessable', message?: string, details?: unknown) =>
   new AppError(422, code, message, details)
 export const tooMany = (code = 'too_many_requests', message?: string) => new AppError(429, code, message)
+
+/** Detecta violação de unicidade (Postgres 23505), inclusive embrulhada por Drizzle (`cause`). */
+export function isUniqueViolation(e: unknown): boolean {
+  let cur: unknown = e
+  for (let i = 0; i < 4 && cur; i++) {
+    if ((cur as { code?: string }).code === '23505') return true
+    cur = (cur as { cause?: unknown }).cause
+  }
+  return false
+}

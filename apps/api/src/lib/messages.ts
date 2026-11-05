@@ -20,6 +20,8 @@ const dict = {
   },
   'notif.onboarding.submitted': { pt: 'Cadastro enviado para análise', en: 'Registration submitted for review' },
   'notif.onboarding.submitted.body': { pt: '{company} enviou o cadastro para análise de compliance.', en: '{company} submitted its registration for compliance review.' },
+  'notif.onboarding.updated': { pt: 'Cadastro atualizado após aprovação', en: 'Registration updated after approval' },
+  'notif.onboarding.updated.body': { pt: '{company} alterou dados/documentos do cadastro. Revise quando possível.', en: '{company} changed registration data/documents. Please review.' },
   'notif.onboarding.approved': { pt: 'Cadastro aprovado', en: 'Registration approved' },
   'notif.onboarding.approved.body': { pt: 'Sua empresa foi aprovada. Você já pode operar na plataforma.', en: 'Your company has been approved. You can now operate on the platform.' },
   'notif.onboarding.rejected': { pt: 'Cadastro reprovado', en: 'Registration rejected' },
