@@ -38,7 +38,7 @@ export function FlagSwitch({ className }: { className?: string }) {
           aria-label={label}
           aria-pressed={locale === l}
           onClick={() => set(l)}
-          className={cn('h-6 w-6 overflow-hidden rounded-full ring-2 ring-offset-0 transition-opacity', locale === l ? 'opacity-100 ring-white/80' : 'opacity-70 ring-transparent hover:opacity-100')}
+          className={cn('h-6 w-6 overflow-hidden rounded-full ring-2 sm:h-[1.75cqw] sm:w-[1.75cqw] ring-offset-0 transition-opacity', locale === l ? 'opacity-100 ring-white/80' : 'opacity-70 ring-transparent hover:opacity-100')}
         >
           {flag}
         </button>

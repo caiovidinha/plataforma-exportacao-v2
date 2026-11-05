@@ -1,4 +1,4 @@
-import { ArrowRight, BadgeCheck, Calculator, FileCheck2, Handshake, Landmark, LineChart, Lock, PackageCheck, Route, ShieldCheck, Ship, Tags, Truck, Wallet } from 'lucide-react'
+import { Anchor, ArrowRight, BadgeCheck, BadgeDollarSign, Boxes, Calculator, FileCheck2, Flag, Handshake, Landmark, LineChart, Lock, MapPin, PackageCheck, Route, Sailboat, ShieldCheck, Ship, Tags, Truck, Wallet, type LucideIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getStageDef, MAIN_FLOW, PARTNER_META, tr, type PartnerType } from '@amazon-trade/shared'
@@ -11,6 +11,23 @@ import { getT } from '@/lib/i18n-server'
 const LIME = 'bg-[#a9d43f]'
 const GUTTER = 'px-[6%] md:px-[9%]'
 const VIDEO_ID = 'DSyAje9OG7g'
+
+/** Caminho sinuoso do diagrama (viewBox 1000×430) e posição (%) dos 5 marcos sobre ele. */
+const PATH = 'M 0,300 C 50,300 60,300 100,300 C 190,300 200,140 290,140 S 410,300 500,300 S 610,140 710,140 S 810,262 910,262 S 970,262 1000,262'
+const NODES = [
+  { x: 10, y: 70 },
+  { x: 29, y: 33 },
+  { x: 50, y: 70 },
+  { x: 71, y: 33 },
+  { x: 91, y: 61 },
+]
+const STAGE_ICON: Partial<Record<(typeof MAIN_FLOW)[number], LucideIcon>> = {
+  NEGOCIO: Handshake,
+  MERCADORIA_PRONTA: Boxes,
+  MERCADORIA_PORTO: Anchor,
+  MERCADORIA_LIBERADA: PackageCheck,
+  PAGAMENTO: BadgeDollarSign,
+}
 
 /** Landing pública — banner no layout de referência, demais seções com o mesmo respiro lateral. */
 export default function Landing() {
@@ -41,38 +58,38 @@ export default function Landing() {
 
   return (
     <div className="bg-white">
-      {/* ------------------------------------------------ banner (layout de referência) */}
+      {/* ------------------------------------------------ banner: tudo em cqw => escala igual à imagem de referência (1599×587) */}
       <section className="relative isolate overflow-hidden bg-[#02260f] text-white">
-        <div className="relative min-h-[480px] md:aspect-[2000/736] md:max-h-[520px] md:min-h-0">
+        <div className="relative min-h-[460px] sm:aspect-[2000/736] sm:min-h-0" style={{ containerType: 'inline-size' }}>
           <Image src="/img/banner-lp.jpg" alt="" fill priority sizes="100vw" className="-z-10 object-cover object-[72%_center]" />
-          <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#02260f]/70 via-transparent to-transparent md:hidden" />
+          <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#02260f]/70 via-transparent to-transparent sm:hidden" />
 
-          <header className="absolute inset-x-0 top-0 flex items-center justify-between px-[6%] pt-4 md:px-[9%] md:pt-[1.8%]">
+          <header className="absolute inset-x-0 top-0 flex items-center justify-between px-[6%] pt-5 sm:px-[8.9%] sm:pt-[1.6cqw]">
             <Link href="/" aria-label="Amazon Trade">
-              <Logo tone="light" className="h-7 md:h-[clamp(1.5rem,2.3vw,2.4rem)]" />
+              <Logo tone="light" className="h-7 sm:h-[2.35cqw]" />
             </Link>
-            <nav className="hidden items-center gap-[clamp(1.25rem,3.4vw,3.5rem)] font-display text-[clamp(0.7rem,0.85vw,0.85rem)] text-white md:flex">
+            <nav className="hidden items-center gap-[4.2cqw] font-display text-[1.05cqw] sm:flex">
               <a href="#como-funciona" className="hover:text-[#a9d43f]">{t('landing.nav.how')}</a>
               <a href="#para-quem" className="hover:text-[#a9d43f]">{t('landing.nav.who')}</a>
               <a href="#parceiros" className="hover:text-[#a9d43f]">{t('landing.nav.partners')}</a>
               <a href="#processo" className="hover:text-[#a9d43f]">{t('landing.nav.process')}</a>
             </nav>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 sm:gap-[1.1cqw]">
               <FlagSwitch />
-              <Link href="/login" className={`inline-flex items-center gap-2 rounded-full ${LIME} px-4 py-1.5 font-display text-xs font-medium text-brand-950 transition-colors hover:bg-[#bde253]`}>
-                <span className="h-1.5 w-1.5 rounded-full bg-brand-950" /> {t('landing.login')}
+              <Link href="/login" className={`inline-flex items-center gap-2 rounded-full ${LIME} px-4 py-1.5 font-display text-xs font-medium text-brand-950 transition-colors hover:bg-[#bde253] sm:gap-[0.5cqw] sm:px-[1.5cqw] sm:py-[0.6cqw] sm:text-[1cqw]`}>
+                <span className="h-1.5 w-1.5 rounded-full bg-brand-950 sm:h-[0.45cqw] sm:w-[0.45cqw]" /> {t('landing.login')}
               </Link>
             </div>
           </header>
 
-          <div className="absolute left-[6%] top-[20%] max-w-[88%] font-display md:left-[9%] md:top-[24%] md:max-w-[44%]">
-            <h1 className="max-w-[11em] text-[clamp(1.9rem,3.1vw,3.2rem)] font-normal leading-[1.05] tracking-tight">{t('landing.hero.title')}</h1>
-            <div className="mt-[clamp(0.75rem,1.4vw,1.6rem)] space-y-0.5 text-[clamp(0.8rem,1vw,1.05rem)] font-light leading-snug text-white/95">
+          <div className="absolute left-[6%] top-[22%] max-w-[88%] font-display sm:left-[8.9%] sm:top-[24.5%] sm:max-w-[48%]">
+            <h1 className="text-[2rem] font-normal leading-[1.08] tracking-tight sm:max-w-[39cqw] sm:text-[3.7cqw]">{t('landing.hero.title')}</h1>
+            <div className="mt-4 space-y-0.5 text-[0.95rem] font-light leading-snug text-white/95 sm:mt-[2.2cqw] sm:space-y-[0.15cqw] sm:text-[1.45cqw]">
               <p>{t('landing.hero.line1')}</p>
               <p>{t('landing.hero.line2')}</p>
               <p className="text-[0.82em] text-white/85">{t('landing.hero.line3')}</p>
             </div>
-            <div className="mt-6 flex flex-wrap gap-2 md:hidden">
+            <div className="mt-6 flex flex-wrap gap-2 sm:hidden">
               <Link href="/register?type=EXPORTER" className={`${LIME} px-4 py-2 text-xs font-semibold text-brand-950`}>{t('landing.cta.exporter')}</Link>
               <Link href="/register?type=IMPORTER" className="border border-white/50 px-4 py-2 text-xs font-semibold">{t('landing.cta.importer')}</Link>
             </div>
@@ -200,28 +217,68 @@ export default function Landing() {
             <p className="mt-2 text-sm text-brand-100/80">{t('landing.process.subtitle')}</p>
           </div>
 
-          {/* trilho principal */}
-          <div className="relative mt-10">
-            <div aria-hidden className="absolute left-[10%] right-[10%] top-[15px] hidden h-[2px] bg-gradient-to-r from-[#a9d43f]/20 via-[#a9d43f] to-[#a9d43f]/20 md:block" />
-            <div aria-hidden className="absolute bottom-6 left-[15px] top-6 w-[2px] bg-[#a9d43f]/50 md:hidden" />
-            <ol className="relative grid gap-10 md:grid-cols-5 md:gap-4">
+          {/* caminho ilustrado (desktop) */}
+          <div className="relative mt-6 hidden aspect-[1000/430] md:block">
+            <div aria-hidden className="absolute inset-0 opacity-[0.18] [background-image:radial-gradient(#a9d43f_1px,transparent_1px)] [background-size:22px_22px] [mask-image:radial-gradient(ellipse_at_center,black_35%,transparent_75%)]" />
+            <svg viewBox="0 0 1000 430" preserveAspectRatio="none" className="absolute inset-0 h-full w-full" aria-hidden>
+              <path d={PATH} fill="none" stroke="rgba(169,212,63,0.10)" strokeWidth="34" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+              <path d={PATH} fill="none" stroke="rgba(169,212,63,0.28)" strokeWidth="2" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+              <path d={PATH} fill="none" stroke="#a9d43f" strokeWidth="3" strokeLinecap="round" strokeDasharray="1 11" vectorEffect="non-scaling-stroke" />
+            </svg>
+
+            <span className="absolute left-[2.5%] top-[69%] -translate-x-1/2 -translate-y-full text-[#a9d43f]"><MapPin className="h-6 w-6" /></span>
+            <span className="absolute left-[97.5%] top-[53%] -translate-x-1/2 -translate-y-full text-[#a9d43f]"><Flag className="h-6 w-6" /></span>
+            {[
+              { Icon: Truck, x: 19, y: 54 },
+              { Icon: Ship, x: 60, y: 54 },
+              { Icon: Sailboat, x: 81, y: 44 },
+            ].map(({ Icon, x, y }, i) => (
+              <span key={i} className="absolute grid h-8 w-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-brand-900 text-brand-100/70 ring-1 ring-white/15" style={{ left: `${x}%`, top: `${y}%` }}>
+                <Icon className="h-4 w-4" />
+              </span>
+            ))}
+
+            {MAIN_FLOW.map((stage, i) => {
+              const def = getStageDef(stage)
+              const pt = NODES[i]!
+              const Icon = STAGE_ICON[stage]!
+              const above = pt.y < 50
+              return (
+                <div key={stage}>
+                  <div className="absolute z-10 -translate-x-1/2 -translate-y-1/2" style={{ left: `${pt.x}%`, top: `${pt.y}%` }}>
+                    <span className="absolute -inset-3 rounded-full bg-[#a9d43f]/15" />
+                    <span className={`relative grid h-16 w-16 place-items-center rounded-full ${i === MAIN_FLOW.length - 1 ? 'bg-white' : LIME} text-brand-950 shadow-[0_0_0_5px_#07201a,0_0_0_6px_rgba(169,212,63,0.5)]`}>
+                      <Icon className="h-7 w-7" />
+                    </span>
+                    <span className="absolute -right-1 -top-1 grid h-6 w-6 place-items-center rounded-full bg-brand-950 font-display text-[11px] font-semibold text-[#a9d43f] ring-1 ring-[#a9d43f]/60">{i + 1}</span>
+                  </div>
+                  <div className="absolute w-[19%] -translate-x-1/2 text-center" style={{ left: `${pt.x}%`, top: `${pt.y}%`, transform: `translate(-50%, ${above ? 'calc(-100% - 52px)' : '52px'})` }}>
+                    <h3 className="font-display text-sm font-medium">{tr(def.title, locale)}</h3>
+                    <p className="mt-1 text-[11px] leading-snug text-brand-100/65">{tr(def.description, locale)}</p>
+                    <div className="mt-2 flex flex-wrap justify-center gap-1">
+                      {stagePartners(stage).slice(0, 3).map((p) => (
+                        <span key={p} className="border border-white/20 px-1.5 py-px text-[10px] text-brand-100/80">{tr(PARTNER_META[p].label, locale)}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* versão vertical (mobile) */}
+          <div className="relative mt-8 md:hidden">
+            <div aria-hidden className="absolute bottom-6 left-[15px] top-6 w-[2px] bg-[#a9d43f]/50" />
+            <ol className="relative grid gap-8">
               {MAIN_FLOW.map((stage, i) => {
                 const def = getStageDef(stage)
-                const last = i === MAIN_FLOW.length - 1
+                const Icon = STAGE_ICON[stage]!
                 return (
-                  <li key={stage} className="relative flex gap-5 md:block md:text-center">
-                    <span className={`relative z-10 grid h-8 w-8 shrink-0 place-items-center font-display text-xs font-semibold text-brand-950 md:mx-auto ${last ? 'bg-white ring-2 ring-[#a9d43f]' : `${LIME} ring-2 ring-brand-950`}`}>
-                      {last ? <PackageCheck className="h-5 w-5" /> : String(i + 1).padStart(2, '0')}
-                    </span>
-                    <div className="md:mt-4">
-                      <h3 className="font-display text-sm font-medium">{tr(def.title, locale)}</h3>
-                      <p className="mt-1.5 text-[11px] leading-relaxed text-brand-100/70">{tr(def.description, locale)}</p>
-                      <div className="mt-3 flex flex-wrap gap-1.5 md:justify-center">
-                        {stagePartners(stage).map((p) => (
-                          <span key={p} className="border border-white/20 px-1.5 py-px text-[10px] text-brand-100/80">{tr(PARTNER_META[p].label, locale)}</span>
-                        ))}
-                        {stagePartners(stage).length === 0 && <span className="border border-white/20 px-1.5 py-px text-[10px] text-brand-100/80">{t('landing.process.platform')}</span>}
-                      </div>
+                  <li key={stage} className="relative flex gap-4">
+                    <span className={`relative z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full ${LIME} text-brand-950 ring-2 ring-brand-950`}><Icon className="h-4 w-4" /></span>
+                    <div>
+                      <h3 className="font-display text-sm font-medium">{i + 1}. {tr(def.title, locale)}</h3>
+                      <p className="mt-1 text-[11px] leading-relaxed text-brand-100/70">{tr(def.description, locale)}</p>
                     </div>
                   </li>
                 )
@@ -230,9 +287,7 @@ export default function Landing() {
           </div>
 
           {/* ramificações de exceção */}
-          <div className="relative mt-10 md:mx-[10%] md:mt-9">
-            <div aria-hidden className="absolute -top-9 right-[12.5%] hidden h-9 w-px border-l-2 border-dashed border-[#a9d43f]/60 md:block" />
-            <div aria-hidden className="absolute -top-9 right-[37.5%] hidden h-9 w-px border-l-2 border-dashed border-[#a9d43f]/60 md:block" />
+          <div className="relative mt-8 md:mx-[10%] md:mt-20">
             <div className="grid gap-4 md:grid-cols-2">
               {(['NAO_PAGAMENTO', 'MERCADORIA_RECUSADA'] as const).map((stage) => {
                 const def = getStageDef(stage)
