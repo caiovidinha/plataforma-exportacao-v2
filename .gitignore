@@ -1,4 +1,12 @@
-/.env.local
 node_modules/
 .next/
+dist/
+.data/
+storage/
+*.tsbuildinfo
+.env
+.env.local
+.env.*.local
 prompts/
+coverage/
+.turbo/
