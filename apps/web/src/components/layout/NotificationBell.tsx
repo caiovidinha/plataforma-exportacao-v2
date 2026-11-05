@@ -30,7 +30,7 @@ export function NotificationBell({ area }: { area: 'exporter' | 'store' | 'admin
       <DropdownTrigger asChild>
         <button type="button" className="relative rounded-lg p-2 text-ink-500 hover:bg-ink-100 hover:text-ink-800" aria-label={t('nav.notifications')}>
           <Bell className="h-5 w-5" />
-          {unread > 0 && <span className="absolute right-1 top-1 grid h-4 min-w-4 place-items-center rounded-full bg-brand-600 px-1 text-[10px] font-semibold text-white">{unread > 9 ? '9+' : unread}</span>}
+          {unread > 0 && <span className="absolute right-1 top-1 grid h-4 min-w-4 place-items-center rounded-none bg-brand-600 px-1 text-[10px] font-semibold text-white">{unread > 9 ? '9+' : unread}</span>}
         </button>
       </DropdownTrigger>
       <DropdownContent>

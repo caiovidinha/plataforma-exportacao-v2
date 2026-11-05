@@ -8,6 +8,8 @@ import type { Config } from 'tailwindcss'
 const config: Config = {
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
+    // identidade do projeto: cantos retos em tudo (círculos só onde explícito com rounded-full)
+    borderRadius: { none: '0', sm: '0', DEFAULT: '0', md: '0', lg: '0', xl: '0', '2xl': '0', '3xl': '0', full: '9999px' },
     extend: {
       colors: {
         brand: {
@@ -23,6 +25,7 @@ const config: Config = {
           900: '#0e3225',
           950: '#07201a',
         },
+        lime: { brand: '#a9d43f', hover: '#bde253' },
         ink: {
           50: '#f8f9fa',
           100: '#f1f3f5',
@@ -36,7 +39,7 @@ const config: Config = {
           900: '#14181d',
         },
       },
-      fontFamily: { sans: ['var(--font-inter)', 'system-ui', 'sans-serif'] },
+      fontFamily: { sans: ['var(--font-inter)', 'system-ui', 'sans-serif'], display: ['var(--font-display)', 'var(--font-inter)', 'system-ui', 'sans-serif'] },
       boxShadow: {
         card: '0 1px 2px rgba(20,24,29,0.04), 0 1px 1px rgba(20,24,29,0.03)',
         pop: '0 8px 30px rgba(20,24,29,0.12)',

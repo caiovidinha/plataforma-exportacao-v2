@@ -138,8 +138,8 @@ export const Alert = ({ tone = 'info', title, children, className }: { tone?: ke
 )
 
 export const ProgressBar = ({ value, className }: { value: number; className?: string }) => (
-  <div className={cn('h-2 w-full overflow-hidden rounded-full bg-ink-100', className)} role="progressbar" aria-valuenow={Math.round(value)} aria-valuemin={0} aria-valuemax={100}>
-    <div className="h-full rounded-full bg-brand-600 transition-all" style={{ width: `${Math.min(100, Math.max(0, value))}%` }} />
+  <div className={cn('h-2 w-full overflow-hidden rounded-none bg-ink-100', className)} role="progressbar" aria-valuenow={Math.round(value)} aria-valuemin={0} aria-valuemax={100}>
+    <div className="h-full rounded-none bg-brand-600 transition-all" style={{ width: `${Math.min(100, Math.max(0, value))}%` }} />
   </div>
 )
 
@@ -155,7 +155,7 @@ export function Tabs<T extends string>({ value, onChange, items }: { value: T; o
           className={cn('-mb-px whitespace-nowrap border-b-2 px-4 py-2.5 text-sm font-medium transition-colors', value === i.value ? 'border-brand-600 text-brand-700' : 'border-transparent text-ink-500 hover:text-ink-800')}
         >
           {i.label}
-          {i.count !== undefined && <span className="ml-1.5 rounded-full bg-ink-100 px-1.5 py-0.5 text-xs text-ink-600">{i.count}</span>}
+          {i.count !== undefined && <span className="ml-1.5 rounded-none bg-ink-100 px-1.5 py-0.5 text-xs text-ink-600">{i.count}</span>}
         </button>
       ))}
     </div>

@@ -71,7 +71,7 @@
     @apply card p-5;
   }
   .badge {
-    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset;
+    @apply inline-flex items-center gap-1 rounded-none px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset;
   }
   .table-wrap {
     @apply overflow-x-auto rounded-xl border border-ink-200 bg-white shadow-card;

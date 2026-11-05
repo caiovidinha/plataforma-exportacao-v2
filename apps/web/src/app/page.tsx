@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { getStageDef, MAIN_FLOW } from '@amazon-trade/shared'
 import { Logo } from '@/components/brand/Logo'
+import { FlagSwitch } from '@/components/layout/FlagSwitch'
 import { LocaleSwitch } from '@/components/layout/LocaleSwitch'
 import { getT } from '@/lib/i18n-server'
 
@@ -26,52 +27,42 @@ export default function Landing() {
 
   return (
     <div className="bg-white">
-      {/* ------------------------------------------------ hero */}
-      <section className="relative isolate overflow-hidden bg-brand-900 text-white">
-        <Image src="/img/hero-background.webp" alt="" fill priority sizes="100vw" className="-z-20 object-cover object-center opacity-60 mix-blend-luminosity" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-brand-950 via-brand-900/90 to-brand-700/40" />
-        <header className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8">
-          <Logo tone="light" />
-          <nav className="hidden items-center gap-7 text-sm text-white/80 md:flex">
-            <a href="#como-funciona" className="hover:text-white">{t('landing.nav.how')}</a>
-            <a href="#para-quem" className="hover:text-white">{t('landing.nav.who')}</a>
-            <a href="#parceiros" className="hover:text-white">{t('landing.nav.partners')}</a>
-            <a href="#processo" className="hover:text-white">{t('landing.nav.process')}</a>
-          </nav>
-          <div className="flex items-center gap-4">
-            <LocaleSwitch tone="light" className="hidden sm:inline-flex" />
-            <Link href="/login" className="text-sm font-medium text-white/90 hover:text-white">{t('landing.login')}</Link>
-            <Link href="/register" className="hidden rounded-lg bg-white px-4 py-2 text-sm font-semibold text-brand-800 hover:bg-brand-50 sm:inline-block">{t('landing.register')}</Link>
-          </div>
-        </header>
+      {/* ------------------------------------------------ banner (layout de referência) */}
+      <section className="relative isolate overflow-hidden bg-[#02260f] text-white">
+        <div className="relative min-h-[600px] md:aspect-[2000/736] md:min-h-0">
+          <Image src="/img/banner-lp.jpg" alt="" fill priority sizes="100vw" className="-z-10 object-cover object-[72%_center]" />
+          <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#02260f]/70 via-transparent to-transparent md:hidden" />
 
-        <div className="mx-auto max-w-7xl px-5 pb-24 pt-14 sm:px-8 sm:pb-32 sm:pt-24">
-          <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-brand-100 ring-1 ring-white/20">
-            <BadgeCheck className="h-3.5 w-3.5" /> {t('landing.hero.badge')}
-          </p>
-          <h1 className="max-w-3xl text-4xl font-semibold leading-[1.08] tracking-tight sm:text-6xl">{t('landing.hero.title')}</h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-brand-50/90">{t('landing.hero.subtitle')}</p>
-          <div className="mt-9 flex flex-wrap gap-3">
-            <Link href="/register?type=EXPORTER" className="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-base font-semibold text-brand-800 shadow-lg hover:bg-brand-50">
-              {t('landing.cta.exporter')} <ArrowRight className="h-4 w-4" />
+          <header className="absolute inset-x-0 top-0 flex items-center justify-between px-[6%] pt-6 md:px-[9%] md:pt-[2.2%]">
+            <Link href="/" aria-label="Amazon Trade">
+              <Logo tone="light" className="h-9 md:h-[clamp(2rem,3.4vw,3.2rem)]" />
             </Link>
-            <Link href="/register?type=IMPORTER" className="inline-flex items-center gap-2 rounded-lg border border-white/40 px-6 py-3 text-base font-semibold text-white hover:bg-white/10">
-              {t('landing.cta.importer')}
-            </Link>
+            <nav className="hidden items-center gap-[clamp(1.5rem,4.6vw,5rem)] font-display text-[clamp(0.8rem,1.1vw,1.05rem)] text-white md:flex">
+              <a href="#como-funciona" className="hover:text-[#a9d43f]">{t('landing.nav.how')}</a>
+              <a href="#para-quem" className="hover:text-[#a9d43f]">{t('landing.nav.who')}</a>
+              <a href="#parceiros" className="hover:text-[#a9d43f]">{t('landing.nav.partners')}</a>
+              <a href="#processo" className="hover:text-[#a9d43f]">{t('landing.nav.process')}</a>
+            </nav>
+            <div className="flex items-center gap-4">
+              <FlagSwitch />
+              <Link href="/login" className="inline-flex items-center gap-2 rounded-full bg-[#a9d43f] px-5 py-2 font-display text-sm font-medium text-brand-950 transition-colors hover:bg-[#bde253] md:text-[clamp(0.85rem,1.05vw,1rem)]">
+                <span className="h-2 w-2 rounded-full bg-brand-950" /> {t('landing.login')}
+              </Link>
+            </div>
+          </header>
+
+          <div className="absolute left-[6%] top-[22%] max-w-[88%] font-display md:left-[9%] md:top-[24%] md:max-w-[46%]">
+            <h1 className="text-[clamp(2.4rem,4.7vw,4.9rem)] font-normal leading-[1.02] tracking-tight">{t('landing.hero.title')}</h1>
+            <div className="mt-[clamp(1rem,2.4vw,2.6rem)] space-y-1 text-[clamp(0.95rem,1.5vw,1.55rem)] font-light leading-snug text-white/95">
+              <p>{t('landing.hero.line1')}</p>
+              <p>{t('landing.hero.line2')}</p>
+              <p className="text-[0.82em] text-white/85">{t('landing.hero.line3')}</p>
+            </div>
+            <div className="mt-8 flex flex-wrap gap-3 md:hidden">
+              <Link href="/register?type=EXPORTER" className="bg-white px-5 py-2.5 text-sm font-semibold text-brand-800">{t('landing.cta.exporter')}</Link>
+              <Link href="/register?type=IMPORTER" className="border border-white/50 px-5 py-2.5 text-sm font-semibold">{t('landing.cta.importer')}</Link>
+            </div>
           </div>
-          <dl className="mt-14 grid max-w-3xl grid-cols-2 gap-6 border-t border-white/15 pt-8 sm:grid-cols-4">
-            {[
-              [t('landing.stat1.v'), t('landing.stat1.l')],
-              [t('landing.stat2.v'), t('landing.stat2.l')],
-              [t('landing.stat3.v'), t('landing.stat3.l')],
-              [t('landing.stat4.v'), t('landing.stat4.l')],
-            ].map(([v, l]) => (
-              <div key={l}>
-                <dt className="text-2xl font-semibold text-white sm:text-3xl">{v}</dt>
-                <dd className="mt-1 text-xs text-brand-100/80">{l}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
       </section>
 

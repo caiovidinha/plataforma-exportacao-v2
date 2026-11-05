@@ -18,7 +18,7 @@ export function ProductCard({ p }: { p: ProductDto }) {
         ) : (
           <div className="grid h-full place-items-center text-ink-300"><PackageSearch className="h-10 w-10" /></div>
         )}
-        <span className="absolute left-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-xs font-medium text-ink-700 shadow-sm">{p.harvestYear}</span>
+        <span className="absolute left-3 top-3 rounded-none bg-white/95 px-2.5 py-1 text-xs font-medium text-ink-700 shadow-sm">{p.harvestYear}</span>
       </div>
       <div className="flex flex-1 flex-col p-4">
         <p className="text-xs text-ink-500">

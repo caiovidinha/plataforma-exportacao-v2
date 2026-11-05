@@ -102,7 +102,7 @@ export function ChipSelect({ options, value, onChange }: { options: { value: str
             type="button"
             aria-pressed={on}
             onClick={() => onChange(on ? value.filter((v) => v !== o.value) : [...value, o.value])}
-            className={cn('rounded-full border px-3 py-1 text-xs font-medium transition-colors', on ? 'border-brand-600 bg-brand-600 text-white' : 'border-ink-300 bg-white text-ink-700 hover:border-ink-400')}
+            className={cn('rounded-none border px-3 py-1 text-xs font-medium transition-colors', on ? 'border-brand-600 bg-brand-600 text-white' : 'border-ink-300 bg-white text-ink-700 hover:border-ink-400')}
           >
             {o.label}
           </button>

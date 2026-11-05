@@ -16,7 +16,7 @@ export function UserMenu({ user, className, light }: { user: SessionUser; classN
     <DropdownMenu>
       <DropdownTrigger asChild>
         <button type="button" className={cn('flex items-center gap-2 rounded-lg p-1.5 pr-2 hover:bg-ink-100', light && 'hover:bg-white/10', className)}>
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-brand-600 text-xs font-semibold text-white">{initials(user.fullName)}</span>
+          <span className="grid h-8 w-8 place-items-center rounded-none bg-brand-600 text-xs font-semibold text-white">{initials(user.fullName)}</span>
           <span className="hidden max-w-[10rem] text-left leading-tight lg:block">
             <span className={cn('block truncate text-sm font-medium', light ? 'text-white' : 'text-ink-900')}>{user.fullName}</span>
             <span className={cn('block truncate text-xs', light ? 'text-white/70' : 'text-ink-500')}>{user.company?.legalName ?? t(`role.${user.platformRole}` as never)}</span>

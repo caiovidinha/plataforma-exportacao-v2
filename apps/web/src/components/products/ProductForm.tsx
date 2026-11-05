@@ -241,7 +241,7 @@ export function ProductForm({ product }: { product?: ProductDto }) {
               <div key={img.id} className="group relative h-28 w-28 overflow-hidden rounded-xl border border-ink-200">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={img.url} alt="" className="h-full w-full object-cover" />
-                <button type="button" onClick={() => removeImage.mutate(img.id)} className="absolute right-1 top-1 rounded-full bg-white/90 p-1 text-red-600 opacity-0 shadow transition-opacity group-hover:opacity-100" aria-label={t('common.remove')}><X className="h-3.5 w-3.5" /></button>
+                <button type="button" onClick={() => removeImage.mutate(img.id)} className="absolute right-1 top-1 rounded-none bg-white/90 p-1 text-red-600 opacity-0 shadow transition-opacity group-hover:opacity-100" aria-label={t('common.remove')}><X className="h-3.5 w-3.5" /></button>
               </div>
             ))}
             {product.images.length < 8 && (
